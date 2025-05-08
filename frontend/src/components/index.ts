@@ -1,3 +1,4 @@
-import Sidebar from "./dashboard/Sidebar";
+import Landing from "./Landing"
+import Icons from "./Icons"
 
-export { Sidebar }
+export { Landing, Icons }
