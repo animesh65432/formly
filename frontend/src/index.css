@@ -93,9 +93,6 @@ button {
     color: #747bff;
   }
 
-  button {
-    background-color: #f9f9f9;
-  }
 }
 
 @theme inline {
