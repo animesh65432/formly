@@ -8,14 +8,14 @@ import { Popover, PopoverTrigger, PopoverContent } from "../../components/ui/pop
 const Header: React.FC = () => {
     const [isopen, setopen] = useState<boolean>(false)
     return (
-        <header className='mt-10 h-[10vh] flex lg:justify-around justify-between items-center w-[80vw] m-auto bg-white p-6 border-white rounded-lg backdrop-blur-md'>
+        <header className='mt-10 sticky top-0 h-[10vh] flex lg:justify-around justify-between items-center w-[80vw] m-auto bg-white p-6 border-white rounded-md backdrop-blur-md'>
             <div className='lg:text-3xl md:text-2xl text-xl font-bold'>Fromly</div>
-            <div className='lg:flex hidden items-center gap-10 text-slate-700  font-semibold text-xl'>
+            <div className='lg:flex hidden items-center gap-10 text-slate-600  font-semibold text-xl'>
                 <ul>Features</ul>
                 <ul>Contact</ul>
             </div>
             <div className='lg:block hidden'>
-                <Button className='bg-green-900 hover:bg-green-700  text-white rounded-full p-6'>
+                <Button className='bg-green-900 hover:bg-green-700  text-white rounded-full p-5'>
                     Get Started
                     <span className='bg-white text-black rounded-full font-bold p-1 ml-2'>
                         <Icons.arrowRight className='h-4 w-4' />
