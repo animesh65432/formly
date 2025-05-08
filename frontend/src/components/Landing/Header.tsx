@@ -8,11 +8,19 @@ import { Popover, PopoverTrigger, PopoverContent } from "../../components/ui/pop
 const Header: React.FC = () => {
     const [isopen, setopen] = useState<boolean>(false)
     return (
-        <header className='mt-10 sticky top-0 h-[10vh] flex lg:justify-around justify-between items-center w-[80vw] m-auto bg-white p-6 border-white rounded-md backdrop-blur-md'>
-            <div className='lg:text-3xl md:text-2xl text-xl font-bold'>Fromly</div>
-            <div className='lg:flex hidden items-center gap-10 text-slate-600  font-semibold text-xl'>
-                <ul>Features</ul>
-                <ul>Contact</ul>
+        <header className='mt-10  fixed z-50 top-0 h-[10vh] flex lg:justify-around justify-between items-center w-[80vw] m-auto bg-white p-6 border-white rounded-md backdrop-blur-md'>
+            <div className='lg:text-3xl md:text-2xl text-xl font-bold'>
+                <a href='#main' className='text-green-800'>Fromly</a>
+            </div>
+            <div className='lg:flex hidden items-center gap-10   font-semibold text-xl'>
+                <ul className='text-gray-500 hover:text-black transition'>
+                    <a href='#Features'>Features</a>
+                </ul>
+                <ul className='text-gray-500 hover:text-black transition'>
+                    <a href='#contact'>
+                        Contact
+                    </a>
+                </ul>
             </div>
             <div className='lg:block hidden'>
                 <Button className='bg-green-900 hover:bg-green-700  text-white rounded-full p-5'>
