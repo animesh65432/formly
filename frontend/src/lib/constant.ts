@@ -68,3 +68,38 @@ export const whyfromly = [
 
     }
 ]
+
+export const faq = [
+    {
+        "question": "What is Fromly?",
+        "answer": "Fromly is a modern form builder that lets you create beautiful, interactive forms using a Notion-style editor. It's built for creators, marketers, and teams who want more than just Google Forms."
+    },
+    {
+        "question": "How is Fromly different from Google Forms or Typeform?",
+        "answer": "Fromly offers a block-based editor (like Notion), better customization, AI-powered summaries, and powerful integrations with tools like Google Sheets, Notion, and WhatsApp — all without needing code."
+    },
+    {
+        "question": "Do I need coding skills to use Fromly?",
+        "answer": "Nope! Fromly is designed to be no-code. You can build, style, and share forms visually — no technical background required."
+    },
+    {
+        "question": "Can I integrate Fromly with other apps?",
+        "answer": "Yes. Fromly supports integrations with tools like Google Sheets, Notion, WhatsApp, and others using APIs and tools like Zapier or Make.com."
+    },
+    {
+        "question": "How does the AI summary feature work?",
+        "answer": "Fromly uses GPT-based AI to automatically summarize your form responses, helping you identify key insights or top leads — especially useful for high-volume submissions."
+    },
+    {
+        "question": "Can I create forms in different languages?",
+        "answer": "Yes! You can build multilingual forms and collect responses in your preferred language, depending on your target audience."
+    },
+    {
+        "question": "Is Fromly free to use?",
+        "answer": "Fromly will offer both free and premium plans. Free users can create and share basic forms, while premium features include integrations, AI summaries, and more."
+    },
+    {
+        "question": "What happens to my data?",
+        "answer": "Your data is securely stored and encrypted. Fromly does not share your data with third parties, and you can export your form responses anytime."
+    }
+]

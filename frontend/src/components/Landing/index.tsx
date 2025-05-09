@@ -3,6 +3,7 @@ import Header from './Header'
 import Herosection from './Herosection'
 import Footer from './Footer'
 import Whyfromly from './Whyfromly'
+import FAQ from './Faq'
 const Landing: React.FC = () => {
     return (
         <main className="flex flex-col   min-h-screen  bg-slate-100 w-[100vw] overflow-hidden ">
@@ -14,6 +15,9 @@ const Landing: React.FC = () => {
             </section>
             <section id='Features' className="flex-grow">
                 <Whyfromly />
+            </section>
+            <section>
+                <FAQ />
             </section>
             <section id='contact'>
                 <Footer />
