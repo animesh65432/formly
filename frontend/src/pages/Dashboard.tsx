@@ -1,6 +1,9 @@
-export default function Dashboard() {
+import { Dashboard } from "../components"
+
+export default function DashboardPage() {
     return (
-        <div>
-        </div>
+
+        <Dashboard />
+
     )
 }

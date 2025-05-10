@@ -23,6 +23,9 @@ import {
     User,
     X,
     Menu,
+    Pen,
+    LayoutTemplate,
+    Workflow,
     type Icon as LucideIcon,
 } from "lucide-react"
 import type { LucideProps } from "lucide-react"
@@ -71,7 +74,10 @@ const Icons = {
     ),
     twitter: Twitter,
     check: Check,
-    Menu: Menu
+    Menu: Menu,
+    create: Pen,
+    Template: LayoutTemplate,
+    Integrations: Workflow
 }
 
 export default Icons
