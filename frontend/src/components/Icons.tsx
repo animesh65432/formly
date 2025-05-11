@@ -20,12 +20,19 @@ import {
     SunMedium,
     Trash,
     Twitter,
-    User,
     X,
     Menu,
     Pen,
     LayoutTemplate,
     Workflow,
+    AlignLeft,
+    Calendar,
+    Heading1,
+    Mail,
+    Phone,
+    Type,
+    User,
+
     type Icon as LucideIcon,
 } from "lucide-react"
 import type { LucideProps } from "lucide-react"
@@ -77,7 +84,13 @@ const Icons = {
     Menu: Menu,
     create: Pen,
     Template: LayoutTemplate,
-    Integrations: Workflow
+    Integrations: Workflow,
+    text: Type,
+    paragraph: AlignLeft,
+    heading: Heading1,
+    mail: Mail,
+    phone: Phone,
+    calender: Calendar,
 }
 
 export default Icons
