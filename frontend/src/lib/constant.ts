@@ -1,16 +1,25 @@
 import {
+    Hash,
+    CircleDot,
+    FileText,
+    FileUp,
+    Star,
+    LayoutPanelTop,
+    Key,
+    Link,
+    Type,
     AlignLeft,
-    Calendar,
-    Check,
-    ChevronDown,
     Heading1,
-    ImageIcon,
     Mail,
     Phone,
-    Type,
+    ChevronDown,
+    Check,
+    Calendar,
+    ImageIcon,
     Square
 } from "lucide-react"
 import type { FormElement, FormBlock } from "../types"
+
 
 
 export const blurIn = {
@@ -129,6 +138,14 @@ export const formElements: FormElement[] = [
     { id: "date", name: "Date", icon: Calendar },
     { id: "image", name: "Image", icon: ImageIcon },
     { id: "button", name: "Button", icon: Square },
+    { id: "number", name: "Number Input", icon: Hash },
+    { id: "radio", name: "Radio Group", icon: CircleDot },
+    { id: "textarea", name: "Long Text", icon: FileText },
+    { id: "file", name: "File Upload", icon: FileUp },
+    { id: "rating", name: "Rating", icon: Star },
+    { id: "section", name: "Section Break", icon: LayoutPanelTop },
+    { id: "password", name: "Password", icon: Key },
+    { id: "url", name: "URL Input", icon: Link },
 ]
 
 export const initialBlocks: FormBlock[] = [

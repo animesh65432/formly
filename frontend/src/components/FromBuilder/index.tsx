@@ -1,7 +1,7 @@
 import React from 'react'
-import FormElements from './FromElements'
-import FromPreview from './FromPreview'
-import FromEdit from './FromEdit'
+import FormElements from './Elements'
+import FromEdit from './Edit'
+import FromPreview from './Preview'
 
 const Frombuilder: React.FC = () => {
     return (
