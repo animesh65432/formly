@@ -1,3 +1,18 @@
+import {
+    AlignLeft,
+    Calendar,
+    Check,
+    ChevronDown,
+    Heading1,
+    ImageIcon,
+    Mail,
+    Phone,
+    Type,
+    Square
+} from "lucide-react"
+import type { FormElement, FormBlock } from "../types"
+
+
 export const blurIn = {
     initial: {
         opacity: 0,
@@ -103,3 +118,80 @@ export const faq = [
         "answer": "Your data is securely stored and encrypted. Fromly does not share your data with third parties, and you can export your form responses anytime."
     }
 ]
+export const formElements: FormElement[] = [
+    { id: "text", name: "Input", icon: Type },
+    { id: "paragraph", name: "Paragraph", icon: AlignLeft },
+    { id: "heading", name: "Heading", icon: Heading1 },
+    { id: "email", name: "Email", icon: Mail },
+    { id: "phone", name: "Phone", icon: Phone },
+    { id: "dropdown", name: "Dropdown", icon: ChevronDown },
+    { id: "checkbox", name: "Checkbox", icon: Check },
+    { id: "date", name: "Date", icon: Calendar },
+    { id: "image", name: "Image", icon: ImageIcon },
+    { id: "button", name: "Button", icon: Square },
+]
+
+export const initialBlocks: FormBlock[] = [
+    {
+        id: "block1",
+        type: "heading",
+        content: "Customer Feedback Form",
+        settings: {
+            label: "Customer Feedback Form",
+            required: false,
+            placeholder: "",
+            description: "We value your feedback!",
+            fieldId: "heading-1",
+        },
+    },
+    {
+        id: "block2",
+        type: "text",
+        content: "Name",
+        settings: {
+            label: "Name",
+            required: true,
+            placeholder: "Enter your full name",
+            description: "",
+            fieldId: "name-field",
+        },
+    },
+    {
+        id: "block3",
+        type: "email",
+        content: "Email",
+        settings: {
+            label: "Email",
+            required: true,
+            placeholder: "your@email.com",
+            description: "We'll never share your email with anyone else.",
+            fieldId: "email-field",
+        },
+    },
+    {
+        id: "block4",
+        type: "dropdown",
+        content: "How did you hear about us?",
+        settings: {
+            label: "How did you hear about us?",
+            required: false,
+            placeholder: "Select an option",
+            description: "",
+            options: ["Social Media", "Friend", "Advertisement", "Other"],
+            fieldId: "source-field",
+        },
+    },
+    {
+        id: "block5",
+        type: "paragraph",
+        content: "Additional Comments",
+        settings: {
+            label: "Additional Comments",
+            required: false,
+            placeholder: "Tell us more about your experience...",
+            description: "Any additional feedback is appreciated",
+            fieldId: "comments-field",
+        },
+    },
+]
+
