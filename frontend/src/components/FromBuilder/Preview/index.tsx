@@ -3,10 +3,10 @@ import { useFormBuilderStore } from "../../../store/frombuilder";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { generateSchema } from "../../../lib/generateSchema";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../ui/form';
-import { Input } from '../../ui/input';
-import { motion } from "framer-motion";
-
+import AnimateWrapper from './AnimateWrapper';
+import { Button } from '../../ui/button';
+import { Form } from '../../ui/form';
+import RenderField from './RenderField';
 const Preview: React.FC = () => {
     const { blocks } = useFormBuilderStore();
     const [lastAddedId, setLastAddedId] = useState<string | null>(null);
@@ -19,7 +19,6 @@ const Preview: React.FC = () => {
         defaultValues: {},
     });
 
-
     useEffect(() => {
         if (blocks.length > prevBlocksLength) {
             const lastBlock = blocks[blocks.length - 1];
@@ -29,52 +28,38 @@ const Preview: React.FC = () => {
             }
         }
         setPrevBlocksLength(blocks.length);
-    }, [blocks.length]);
+    }, [blocks]);
 
-    const onSubmit = () => {
-        console.log("");
-    }
+    const onSubmit = (data: any) => {
+        console.log("Form submitted with data:", data);
+    };
 
     return (
-        <div className='col-span-3 w-[100%] flex justify-center'>
-            <div className='w-[50%] '>
+        <div className="col-span-3 w-full flex justify-center">
+            <div className="w-1/2">
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                         {blocks.map((block) => {
-                            const name = block.id;
-                            const isNewlyAdded = block.id === lastAddedId;
+                            const isNew = block.id === lastAddedId;
 
-                            const formField = (
-                                <FormField
-                                    key={block.id}
-                                    control={form.control}
-                                    name={name}
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel className='text-green-800 font-semibold'>{block.props.label}</FormLabel>
-                                            <FormControl>
-                                                <Input placeholder={block.props.placeholder || ""} {...field} className='text-green-800 placeholder:text-green-800 placeholder:text-center' />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            );
-
-                            if (block.type === "email" || block.type === "text") {
-                                return isNewlyAdded ? (
-                                    <motion.div
-                                        key={block.id}
-                                        initial={{ x: -100, opacity: 0 }}
-                                        animate={{ x: 0, opacity: 1 }}
-                                        transition={{ type: "spring", stiffness: 100 }}
-                                    >
-                                        {formField}
-                                    </motion.div>
-                                ) : (
-                                    <div key={block.id}>{formField}</div>
+                            if (block.type === "text" || block.type === "email") {
+                                return (
+                                    <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
+                                        <RenderField block={block} form={form} />
+                                    </AnimateWrapper>
                                 );
                             }
+
+                            if (block.type === "button") {
+                                return (
+                                    <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
+                                        <Button type="submit" className="bg-green-800">
+                                            {block.props?.label || 'Submit'}
+                                        </Button>
+                                    </AnimateWrapper>
+                                );
+                            }
+
                             return null;
                         })}
                     </form>

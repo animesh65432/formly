@@ -7,7 +7,7 @@ export const generateSchema = () => {
     blocks.forEach((block) => {
         const name = `block-${block.id}`;
         if (block.type === "email") {
-            shape[name] = block.props.required
+            shape[name] = block.props?.required
                 ? z.string().email("Invalid email").min(1, "Required")
                 : z.string().email("Invalid email").optional();
         }
