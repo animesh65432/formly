@@ -34,9 +34,10 @@ const Preview: React.FC = () => {
     const onSubmit = (data: any) => {
         console.log("Form submitted with data:", data);
     };
+    console.log(blocks)
 
     return (
-        <div className="col-span-3 w-full flex justify-center">
+        <div className="col-span-3 w-full flex justify-center h-[90vh] scrollbar-custom-x">
             <div className="w-1/2">
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
