@@ -7,6 +7,7 @@ import AnimateWrapper from './AnimateWrapper';
 import { Button } from '../../ui/button';
 import { Form } from '../../ui/form';
 import RenderField from './RenderField';
+//it's the preview section
 const Preview: React.FC = () => {
     const { blocks } = useFormBuilderStore();
     const [lastAddedId, setLastAddedId] = useState<string | null>(null);
