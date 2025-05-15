@@ -12,7 +12,12 @@ const Element: React.FC<Props> = ({ element }) => {
     const { addBlock } = useFormBuilderStore()
 
     const add = (element: FormElement) => {
-        addBlock({ id: uuidv4(), type: element.id, props: { label: "", placeholder: "", required: false } })
+        if (element.id === "email") {
+            addBlock({ id: uuidv4(), type: element.id, props: { label: "Email", placeholder: "example@gmail.com", required: false } })
+        }
+        else if (element.id === "text") {
+            addBlock({ id: uuidv4(), type: element.id, props: { label: "label", placeholder: "", required: false } })
+        }
     }
     return (
         <div onClick={() => add(element)} className='flex bg-green-50 text-green-800 items-center hover:bg-green-300 font-medium text-xl gap-3 px-4 py-2 rounded-md transition-colors cursor-pointer'>
