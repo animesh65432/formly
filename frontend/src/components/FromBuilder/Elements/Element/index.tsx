@@ -18,6 +18,10 @@ const Element: React.FC<Props> = ({ element }) => {
         else if (element.id === "text") {
             addBlock({ id: uuidv4(), type: element.id, props: { label: "label", placeholder: "", required: false } })
         }
+        else if (element.id === "button") {
+            console.log(element.id)
+            addBlock({ id: uuidv4(), type: element.id, props: { label: "button", placeholder: "", required: true } })
+        }
     }
     return (
         <div onClick={() => add(element)} className='flex bg-green-50 text-green-800 items-center hover:bg-green-300 font-medium text-xl gap-3 px-4 py-2 rounded-md transition-colors cursor-pointer'>
