@@ -1,9 +1,9 @@
 import { create } from "zustand";
 
-type FormBlock = {
+export type FormBlock = {
     id: string;
     type: string
-    props: {
+    props?: {
         label: string;
         placeholder: string;
         required: boolean;
