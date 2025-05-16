@@ -12,14 +12,10 @@ const Element: React.FC<Props> = ({ element }) => {
     const { addBlock } = useFormBuilderStore()
 
     const add = (element: FormElement) => {
-        if (element.id === "email") {
-            addBlock({ id: uuidv4(), type: element.id, props: { label: "Email", placeholder: "example@gmail.com", required: false } })
-        }
-        else if (element.id === "text") {
-            addBlock({ id: uuidv4(), type: element.id, props: { label: "label", placeholder: "", required: false } })
+        if (element.id === "email" || element.id === "text" || element.id === "phone" || element.id === "number" || element.id === "password" || element.id === "url" || element.id === "text" || element.id === "paragraph") {
+            addBlock({ id: uuidv4(), type: element.id, props: { label: element.id, placeholder: element.name, required: false } })
         }
         else if (element.id === "button") {
-            console.log(element.id)
             addBlock({ id: uuidv4(), type: element.id, props: { label: "button", placeholder: "", required: true } })
         }
     }

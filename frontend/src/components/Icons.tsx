@@ -32,7 +32,7 @@ import {
     Phone,
     Type,
     User,
-
+    Trash2,
     type Icon as LucideIcon,
 } from "lucide-react"
 import type { LucideProps } from "lucide-react"
@@ -91,6 +91,7 @@ const Icons = {
     mail: Mail,
     phone: Phone,
     calender: Calendar,
+    delete: Trash2,
 }
 
 export default Icons
