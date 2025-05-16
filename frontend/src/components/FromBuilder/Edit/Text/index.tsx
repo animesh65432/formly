@@ -31,14 +31,13 @@ const Text: React.FC<Props> = ({ handleChange, block }) => {
 
 
 
-            <div className="flex items-center mt-2">
-                <input
-                    type="checkbox"
-                    id="required"
-                    checked={block.props?.required || false}
-                    className="mr-2 h-5 w-5 bg-white border border-green-700 text-green-800"
-                    onChange={(e) => handleChange('required', e.target.checked)}
+            <div className="flex items-center gap-2 mt-2">
+                <div
+                    onClick={() => handleChange('required', !block.props?.required)}
+                    className={`h-4 w-4 border-2 border-green-800 cursor-pointer ${block.props?.required ? "bg-green-800" : "bg-white"
+                        }`}
                 />
+
                 <label htmlFor="required" className="text-green-700 font-semibold bg-white hover:text-green-800">Required</label>
             </div>
         </div>

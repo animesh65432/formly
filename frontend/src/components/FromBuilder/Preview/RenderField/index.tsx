@@ -7,11 +7,10 @@ const RenderField: React.FC<{
     form: any;
     setSelectElementId: React.Dispatch<React.SetStateAction<string | null>>
 }> = ({ block, form, setSelectElementId }) => {
-
+    console.log(block)
     const handleClick = (blockId: string) => {
         console.log(blockId)
         setSelectElementId(blockId);
-        // setSelectElementId(blockId)
     };
     return (
         <FormField
@@ -26,7 +25,7 @@ const RenderField: React.FC<{
                         <Input
                             placeholder={block.props?.placeholder || ""}
                             {...field}
-                            className="text-green-800 placeholder:text-green-800 placeholder:text-center"
+                            className="text-green-800 placeholder:text-green-800 "
                         />
                     </FormControl>
                     <FormMessage />

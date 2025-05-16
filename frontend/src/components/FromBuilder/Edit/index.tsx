@@ -46,7 +46,7 @@ const FormEdit: React.FC<Props> = ({ selectElementId }) => {
     return (
         <div className='col-span-1 h-[90vh] border-l-4 border-green-700 p-3 overflow-y-auto'>
             <p className='text-green-700 text-xl font-semibold text-center mb-4'>Settings</p>
-            {(block.type === "text" || block.type === "email") && <Text handleChange={handleChange} block={block} />}
+            {(block.type === "text" || block.type === "email" || block.type === "phone" || block.type === "number" || block.type === "password" || block.type === "url") && <Text handleChange={handleChange} block={block} />}
         </div>
     )
 }

@@ -48,7 +48,7 @@ const Preview: React.FC<Props> = ({ setSelectElementId }) => {
                         {blocks.map((block) => {
                             const isNew = block.id === lastAddedId;
 
-                            if (block.type === "text" || block.type === "email") {
+                            if (block.type === "text" || block.type === "email" || block.type === "phone" || block.type === "number" || block.type === "password" || block.type === "url") {
                                 return (
                                     <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
                                         <RenderField block={block} form={form} setSelectElementId={setSelectElementId} />
