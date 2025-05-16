@@ -1,14 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import FormElements from './Elements'
 import FromEdit from './Edit'
-import FromPreview from './Preview'
+import Preview from "./Preview/main"
 
 const Frombuilder: React.FC = () => {
+    const [selectElementId, setSelectElementId] = useState<string | null>("")
+    console.log(selectElementId)
     return (
         <div className='grid grid-cols-5 w-[100vw] h-[90vh]'>
             <FormElements />
-            <FromPreview />
-            <FromEdit />
+            <Preview setSelectElementId={setSelectElementId} />
+            <FromEdit selectElementId={selectElementId} />
         </div>
     )
 }

@@ -4,7 +4,6 @@ import {
     FileText,
     FileUp,
     Star,
-    LayoutPanelTop,
     Key,
     Link,
     Type,
@@ -18,7 +17,7 @@ import {
     ImageIcon,
     Square
 } from "lucide-react"
-import type { FormElement, FormBlock } from "../types"
+import type { FormElement } from "../types"
 
 
 
@@ -143,72 +142,7 @@ export const formElements: FormElement[] = [
     { id: "textarea", name: "Long Text", icon: FileText },
     { id: "file", name: "File Upload", icon: FileUp },
     { id: "rating", name: "Rating", icon: Star },
-    { id: "section", name: "Section Break", icon: LayoutPanelTop },
     { id: "password", name: "Password", icon: Key },
     { id: "url", name: "URL Input", icon: Link },
-]
-
-export const initialBlocks: FormBlock[] = [
-    {
-        id: "block1",
-        type: "heading",
-        content: "Customer Feedback Form",
-        settings: {
-            label: "Customer Feedback Form",
-            required: false,
-            placeholder: "",
-            description: "We value your feedback!",
-            fieldId: "heading-1",
-        },
-    },
-    {
-        id: "block2",
-        type: "text",
-        content: "Name",
-        settings: {
-            label: "Name",
-            required: true,
-            placeholder: "Enter your full name",
-            description: "",
-            fieldId: "name-field",
-        },
-    },
-    {
-        id: "block3",
-        type: "email",
-        content: "Email",
-        settings: {
-            label: "Email",
-            required: true,
-            placeholder: "your@email.com",
-            description: "We'll never share your email with anyone else.",
-            fieldId: "email-field",
-        },
-    },
-    {
-        id: "block4",
-        type: "dropdown",
-        content: "How did you hear about us?",
-        settings: {
-            label: "How did you hear about us?",
-            required: false,
-            placeholder: "Select an option",
-            description: "",
-            options: ["Social Media", "Friend", "Advertisement", "Other"],
-            fieldId: "source-field",
-        },
-    },
-    {
-        id: "block5",
-        type: "paragraph",
-        content: "Additional Comments",
-        settings: {
-            label: "Additional Comments",
-            required: false,
-            placeholder: "Tell us more about your experience...",
-            description: "Any additional feedback is appreciated",
-            fieldId: "comments-field",
-        },
-    },
 ]
 
