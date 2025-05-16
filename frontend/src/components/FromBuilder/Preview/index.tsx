@@ -4,9 +4,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { generateSchema } from "../../../lib/generateSchema";
 import AnimateWrapper from './AnimateWrapper';
-import { Button } from '../../ui/button';
-import { Form } from '../../ui/form';
-import InputTypes from './InputTypes';
+import { Form } from '../../ui/form'
+import { ParagraphBlock, InputTypes, ButtonBlock } from "./index"
 
 type Props = {
     setSelectElementId: React.Dispatch<React.SetStateAction<string | null>>
@@ -16,6 +15,7 @@ const Preview: React.FC<Props> = ({ setSelectElementId }) => {
     const { blocks } = useFormBuilderStore();
     const [lastAddedId, setLastAddedId] = useState<string | null>(null);
     const [prevBlocksLength, setPrevBlocksLength] = useState(0);
+
 
     const schema = useMemo(() => generateSchema(), [blocks]);
 
@@ -56,14 +56,18 @@ const Preview: React.FC<Props> = ({ setSelectElementId }) => {
                                 );
                             }
 
+                            if (block.type === "paragraph") {
+                                return <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
+                                    <ParagraphBlock block={block} setSelectElementId={setSelectElementId} form={form} />
+                                </AnimateWrapper>
+                            }
+
+                            if (block.type === "") { }
+
                             if (block.type === "button") {
                                 return (
                                     <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
-                                        <div className='w-[100%] flex justify-center'>
-                                            <Button type="submit" className="bg-green-800  hover:bg-green-700 rounded-2xl p-5">
-                                                {block.props?.label || 'Submit'}
-                                            </Button>
-                                        </div>
+                                        <ButtonBlock block={block} />
                                     </AnimateWrapper>
                                 );
                             }

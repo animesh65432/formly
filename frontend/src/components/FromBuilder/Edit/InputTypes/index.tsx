@@ -1,5 +1,5 @@
 import React from 'react'
-import type { FormBlock } from '../../../../store/frombuilder'
+import type { FormBlock } from '../../../../types'
 
 type Props = {
     handleChange: (field: string, value: string | boolean) => void,

@@ -1,21 +1,5 @@
 import { create } from "zustand";
-
-export type FormBlock = {
-    id: string;
-    type: string;
-    props?: {
-        label?: string;
-        placeholder?: string;
-        required?: boolean;
-    };
-};
-
-type FormBuilderState = {
-    blocks: FormBlock[];
-    addBlock: (block: FormBlock) => void;
-    removeBlock: (id: string) => void;
-    updateBlock: (id: string, updatedBlock: FormBlock) => void;
-};
+import type { FormBlock, FormBuilderState } from "../types"
 
 export const useFormBuilderStore = create<FormBuilderState>((set) => ({
     blocks: [],

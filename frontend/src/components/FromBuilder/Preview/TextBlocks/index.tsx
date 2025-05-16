@@ -1,24 +1,22 @@
 import React from 'react'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../../ui/form';
-import { Input } from '../../../ui/input';
 import type { FormBlock } from "../../../../types"
 import Icons from '../../../Icons';
 import { useFormBuilderStore } from '../../../../store/frombuilder';
-
+import { Textarea } from "../../../ui/textarea"
 type Props = {
     block: FormBlock;
     form: any;
     setSelectElementId: React.Dispatch<React.SetStateAction<string | null>>
 }
 
-const RenderField: React.FC<Props> = ({ block, form, setSelectElementId }) => {
+const TextBolck: React.FC<Props> = ({ setSelectElementId, block, form }) => {
     const { removeBlock } = useFormBuilderStore()
     const handleClick = (blockId: string) => {
-        console.log(blockId)
         setSelectElementId(blockId);
     };
-    return (
 
+    return (
         <FormField
             control={form.control}
             name={block.id}
@@ -29,7 +27,7 @@ const RenderField: React.FC<Props> = ({ block, form, setSelectElementId }) => {
                     </FormLabel>
                     <FormControl>
                         <div className='flex gap-2 items-center'>
-                            <Input
+                            <Textarea
                                 onClick={() => handleClick(block.id)}
                                 placeholder={block.props?.placeholder || ""}
                                 {...field}
@@ -42,9 +40,7 @@ const RenderField: React.FC<Props> = ({ block, form, setSelectElementId }) => {
                 </FormItem>
             )}
         />
+    )
+}
 
-
-    );
-};
-
-export default RenderField
+export default TextBolck

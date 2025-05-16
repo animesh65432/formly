@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 
-
 const AnimateWrapper: React.FC<{ isAnimated: boolean; children: React.ReactNode; id: string }> = ({
     isAnimated,
     children,
