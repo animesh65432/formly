@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { generateSchema } from "../../../lib/generateSchema";
 import AnimateWrapper from './AnimateWrapper';
 import { Form } from '../../ui/form'
-import { ParagraphBlock, InputTypes, ButtonBlock, HeadingBlock, TextBolck } from "./index"
+import { ParagraphBlock, InputTypes, ButtonBlock, HeadingBlock, TextBolck, DropdownBlock } from "./index"
 
 type Props = {
     setSelectElementId: React.Dispatch<React.SetStateAction<string | null>>
@@ -69,6 +69,13 @@ const Preview: React.FC<Props> = ({ setSelectElementId }) => {
                                 return (
                                     <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
                                         <TextBolck block={block} form={form} setSelectElementId={setSelectElementId} />
+                                    </AnimateWrapper>
+                                );
+                            }
+                            else if (block.type === "dropdown") {
+                                return (
+                                    <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
+                                        <DropdownBlock block={block} form={form} setSelectElementId={setSelectElementId} />
                                     </AnimateWrapper>
                                 );
                             }

@@ -22,6 +22,9 @@ const Element: React.FC<Props> = ({ element }) => {
         else if (element.id === "heading") {
             addBlock({ id: uuidv4(), type: element.id, props: { label: "heading" } })
         }
+        else if (element.id === "dropdown") {
+            addBlock({ id: uuidv4(), type: element.id, props: { label: "dropdown", options: [], required: false } })
+        }
         else if (element.id === "button") {
             addBlock({ id: uuidv4(), type: element.id, props: { label: "button", placeholder: "", required: true } })
         }
