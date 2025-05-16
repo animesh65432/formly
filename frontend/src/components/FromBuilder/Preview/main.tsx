@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { generateSchema } from "../../../lib/generateSchema";
 import AnimateWrapper from './AnimateWrapper';
 import { Form } from '../../ui/form'
-import { ParagraphBlock, InputTypes, ButtonBlock } from "./index"
+import { ParagraphBlock, InputTypes, ButtonBlock, HeadingBlock, TextBolck } from "./index"
 
 type Props = {
     setSelectElementId: React.Dispatch<React.SetStateAction<string | null>>
@@ -44,7 +44,7 @@ const Preview: React.FC<Props> = ({ setSelectElementId }) => {
         <div className="col-span-3 w-full flex justify-center h-[90vh] scrollbar-custom-x">
             <div className="w-1/2">
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4  border-green-800">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4   border-green-800">
                         {blocks.map((block) => {
                             const isNew = block.id === lastAddedId;
 
@@ -55,16 +55,24 @@ const Preview: React.FC<Props> = ({ setSelectElementId }) => {
                                     </AnimateWrapper>
                                 );
                             }
-
-                            if (block.type === "paragraph") {
+                            else if (block.type === "paragraph") {
                                 return <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
                                     <ParagraphBlock block={block} setSelectElementId={setSelectElementId} form={form} />
                                 </AnimateWrapper>
                             }
-
-                            if (block.type === "") { }
-
-                            if (block.type === "button") {
+                            else if (block.type === "heading") {
+                                return <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
+                                    <HeadingBlock block={block} setSelectElementId={setSelectElementId} form={form} />
+                                </AnimateWrapper>
+                            }
+                            else if (block.type === "textarea") {
+                                return (
+                                    <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
+                                        <TextBolck block={block} form={form} setSelectElementId={setSelectElementId} />
+                                    </AnimateWrapper>
+                                );
+                            }
+                            else if (block.type === "button") {
                                 return (
                                     <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
                                         <ButtonBlock block={block} />

@@ -13,6 +13,7 @@ export type FormBlock = {
         label?: string;
         placeholder?: string;
         required?: boolean;
+        options?: []
     };
 };
 export type FormBuilderState = {
