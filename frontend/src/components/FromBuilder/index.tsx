@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import FormElements from './Elements'
 import FromEdit from './Edit'
-import Preview from './Preview'
+import Preview from "./Preview/main"
 
 const Frombuilder: React.FC = () => {
     const [selectElementId, setSelectElementId] = useState<string | null>("")
