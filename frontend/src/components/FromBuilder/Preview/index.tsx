@@ -6,7 +6,7 @@ import { generateSchema } from "../../../lib/generateSchema";
 import AnimateWrapper from './AnimateWrapper';
 import { Button } from '../../ui/button';
 import { Form } from '../../ui/form';
-import RenderField from './RenderField';
+import InputTypes from './InputTypes';
 
 type Props = {
     setSelectElementId: React.Dispatch<React.SetStateAction<string | null>>
@@ -51,7 +51,7 @@ const Preview: React.FC<Props> = ({ setSelectElementId }) => {
                             if (block.type === "text" || block.type === "email" || block.type === "phone" || block.type === "number" || block.type === "password" || block.type === "url") {
                                 return (
                                     <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
-                                        <RenderField block={block} form={form} setSelectElementId={setSelectElementId} />
+                                        <InputTypes block={block} form={form} setSelectElementId={setSelectElementId} />
                                     </AnimateWrapper>
                                 );
                             }

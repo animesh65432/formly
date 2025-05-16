@@ -6,7 +6,7 @@ type Props = {
     block: FormBlock
 }
 
-const Text: React.FC<Props> = ({ handleChange, block }) => {
+const InputTypes: React.FC<Props> = ({ handleChange, block }) => {
     return (
         <div className='flex flex-col gap-4'>
             <div>
@@ -44,4 +44,4 @@ const Text: React.FC<Props> = ({ handleChange, block }) => {
     )
 }
 
-export default Text
+export default InputTypes

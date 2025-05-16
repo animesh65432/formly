@@ -4,7 +4,6 @@ import {
     FileText,
     FileUp,
     Star,
-    LayoutPanelTop,
     Key,
     Link,
     Type,
@@ -143,7 +142,6 @@ export const formElements: FormElement[] = [
     { id: "textarea", name: "Long Text", icon: FileText },
     { id: "file", name: "File Upload", icon: FileUp },
     { id: "rating", name: "Rating", icon: Star },
-    { id: "section", name: "Section Break", icon: LayoutPanelTop },
     { id: "password", name: "Password", icon: Key },
     { id: "url", name: "URL Input", icon: Link },
 ]
