@@ -24,7 +24,7 @@ const RenderField: React.FC<Props> = ({ block, form, setSelectElementId }) => {
             name={block.id}
             render={({ field }) => (
                 <FormItem >
-                    <FormLabel className="text-green-800 font-semibold">
+                    <FormLabel className="text-green-800 font-semibold md:text-xl text-sm">
                         {block.props?.label}
                     </FormLabel>
                     <FormControl>
@@ -33,7 +33,7 @@ const RenderField: React.FC<Props> = ({ block, form, setSelectElementId }) => {
                                 onClick={() => handleClick(block.id)}
                                 placeholder={block.props?.placeholder || ""}
                                 {...field}
-                                className="text-green-800 placeholder:text-green-800 "
+                                className="text-green-800 placeholder:text-green-800 placeholder:text-xl"
                             />
                             <Icons.delete className='text-red-800' onClick={() => removeBlock(block.id)} />
                         </div>

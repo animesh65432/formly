@@ -22,7 +22,7 @@ const TextBolck: React.FC<Props> = ({ setSelectElementId, block, form }) => {
             name={block.id}
             render={({ field }) => (
                 <FormItem >
-                    <FormLabel className="text-green-800 font-semibold">
+                    <FormLabel className="text-green-800 font-semibold md:text-xl text-sm">
                         {block.props?.label}
                     </FormLabel>
                     <FormControl>
