@@ -1,6 +1,6 @@
 import {
     Hash,
-    CircleDot,
+    // CircleDot,
     FileText,
     FileUp,
     Star,
@@ -12,7 +12,7 @@ import {
     Mail,
     Phone,
     ChevronDown,
-    Check,
+    // Check,
     Calendar,
     ImageIcon,
     Square
