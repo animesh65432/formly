@@ -22,7 +22,7 @@ const HeadingBlock: React.FC<Props> = ({ block, setSelectElementId, form }) => {
             name={block.id}
             render={() => (
                 <FormItem onClick={handleClick} className="cursor-pointer flex justify-between">
-                    <h2 className="text-green-900 font-bold text-2xl">
+                    <h2 className="text-green-900 font-bold md:text-3xl text-xl">
                         {block.props?.label || "Heading Title"}
                     </h2>
                     <Icons.delete className='text-red-800' onClick={() => removeBlock(block.id)} />

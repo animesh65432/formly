@@ -40,6 +40,8 @@ const CheckboxGroupBlock: React.FC<Props> = ({ block, form, setSelectElementId }
                                                     : selected.filter((val: string) => val !== opt);
                                                 field.onChange(updated);
                                             }}
+
+                                            className="border-2 border-green-800"
                                         />
                                     </FormControl>
                                     <FormLabel className="font-normal">{opt}</FormLabel>

@@ -21,21 +21,25 @@ const ParagraphBlock: React.FC<Props> = ({ block, setSelectElementId, form }) =>
             control={form.control}
             name={block.id}
             render={() => (
-                <FormItem className="cursor-pointer ">
-                    <div className='flex  items-center justify-between'>
-                        <div onClick={handleClick} className='flex flex-col gap-1'>
-                            <FormLabel className="text-green-800 font-semibold mb-1">
+                <FormItem className="cursor-pointer">
+                    <div className="flex flex-wrap items-start justify-between gap-2">
+                        <div onClick={handleClick} className="flex flex-col gap-1 w-[90%]">
+                            <FormLabel className="text-green-800 font-semibold mb-1 md:text-xl text-sm">
                                 {block.props?.label}
                             </FormLabel>
-                            <p className="text-green-700 text-sm">
+                            <p className="text-green-700 text-sm md:text-xl break-words">
                                 {block.props?.placeholder || "Paragraph text here..."}
                             </p>
                         </div>
-                        <Icons.delete className='text-red-800' onClick={() => removeBlock(block.id)} />
+                        <Icons.delete
+                            className="text-red-800"
+                            onClick={() => removeBlock(block.id)}
+                        />
                     </div>
                 </FormItem>
             )}
         />
+
     );
 };
 
