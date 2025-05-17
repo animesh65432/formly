@@ -3,4 +3,4 @@ dist
 package-lock.json/
 .env
 bun.lockb
-venv
+venvpackage-lock.json
