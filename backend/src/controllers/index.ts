@@ -1,3 +1,3 @@
-import { createUser, loginUser } from "./users"
+import { createUser, loginUser, googleAuth } from "./users"
 
-export { createUser, loginUser }
+export { createUser, loginUser, googleAuth }
