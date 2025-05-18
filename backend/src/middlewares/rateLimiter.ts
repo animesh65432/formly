@@ -42,7 +42,7 @@ const RateLimiter = (limit: number, windowMs: number) => {
             }
 
 
-            res.status(429).json({ message: "Too many requests." });
+            res.status(429).json({ message: "Too many requests. please try again later" });
             return
         } catch (err) {
             console.error("Rate limiter error:", err);
