@@ -3,10 +3,12 @@ import { Button } from "../../components/ui/button"
 import { Icons } from "../../components"
 import MobileSidebar from './MobileSidebar'
 import { Popover, PopoverTrigger, PopoverContent } from "../../components/ui/popover"
+import { useNavigate } from "react-router-dom"
 
 
 const Header: React.FC = () => {
     const [isopen, setopen] = useState<boolean>(false)
+    const navigate = useNavigate()
     return (
         <header className='mt-10  fixed z-50 top-0 h-[10vh] flex lg:justify-around justify-between items-center w-[80vw] m-auto bg-white shadow p-6 border-white rounded-md '>
             <div className='lg:text-3xl md:text-2xl text-xl font-bold'>
@@ -23,7 +25,7 @@ const Header: React.FC = () => {
                 </ul>
             </div>
             <div className='lg:block hidden'>
-                <Button className='bg-green-900 hover:bg-green-700  text-white rounded-full p-5'>
+                <Button onClick={() => navigate("/singin")} className='bg-green-900 hover:bg-green-700  text-white rounded-full p-5'>
                     Get Started
                     <span className='bg-white text-black rounded-full font-bold p-1 ml-2'>
                         <Icons.arrowRight className='h-4 w-4' />
