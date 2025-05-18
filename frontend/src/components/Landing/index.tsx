@@ -4,7 +4,10 @@ import Herosection from './Herosection'
 import Footer from './Footer'
 import Whyfromly from './Whyfromly'
 import FAQ from './Faq'
+import { useNavigate } from "react-router-dom"
 const Landing: React.FC = () => {
+
+    const navigate = useNavigate();
     return (
         <main className="flex flex-col   min-h-screen  bg-slate-100 w-[100vw] overflow-hidden ">
             <section id='main' className='w-[100vw] flex justify-center '>
