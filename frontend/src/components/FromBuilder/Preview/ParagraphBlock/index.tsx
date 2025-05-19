@@ -1,8 +1,9 @@
 import React from 'react';
-import { FormItem, FormLabel, FormField } from '../../../ui/form';
+import { FormItem, FormLabel, FormField, FormControl } from '../../../ui/form';
 import type { FormBlock } from "../../../../types";
 import Icons from '../../../Icons';
 import { useFormBuilderStore } from '../../../../store/frombuilder';
+import { Input } from '../../../ui/input';
 
 type Props = {
     block: FormBlock;
@@ -12,30 +13,30 @@ type Props = {
 
 const ParagraphBlock: React.FC<Props> = ({ block, setSelectElementId, form }) => {
     const { removeBlock } = useFormBuilderStore()
-    const handleClick = () => {
-        setSelectElementId(block.id);
+    const handleClick = (id: string) => {
+        setSelectElementId(id);
     };
 
     return (
         <FormField
             control={form.control}
             name={block.id}
-            render={() => (
+            render={(field) => (
                 <FormItem className="cursor-pointer">
-                    <div className="flex flex-wrap items-start justify-between gap-2">
-                        <div onClick={handleClick} className="flex flex-col gap-1 w-[90%]">
-                            <FormLabel className="text-green-800 font-semibold mb-1 md:text-xl text-sm">
-                                {block.props?.label}
-                            </FormLabel>
-                            <p className="text-green-700 text-sm md:text-xl break-words">
-                                {block.props?.placeholder || "Paragraph text here..."}
-                            </p>
+                    <FormLabel className="text-green-800 font-semibold mb-1 md:text-xl text-sm">
+                        {block.props?.label}
+                    </FormLabel>
+                    <FormControl>
+                        <div className='flex gap-2 items-center'>
+                            <Input
+                                onClick={() => handleClick(block.id)}
+                                placeholder={block.props?.placeholder || ""}
+                                {...field}
+                                className="text-green-800 placeholder:text-green-800 placeholder:text-xl"
+                            />
+                            <Icons.delete className='text-red-800' onClick={() => removeBlock(block.id)} />
                         </div>
-                        <Icons.delete
-                            className="text-red-800"
-                            onClick={() => removeBlock(block.id)}
-                        />
-                    </div>
+                    </FormControl>
                 </FormItem>
             )}
         />

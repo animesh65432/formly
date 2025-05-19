@@ -41,7 +41,43 @@ export const generateSchema = () => {
                 ? z.string().url("Invalid URL").min(1, "Required")
                 : z.string().url("Invalid URL").optional();
         }
-
+        else if (block.type === "input") {
+            shape[name] = block.props?.required
+                ? z.string().min(1, "Required")
+                : z.string().optional();
+        }
+        else if (block.type === "paragraph") {
+            shape[name] = block.props?.required
+                ? z.string().min(1, "Required")
+                : z.string().optional();
+        }
+        else if (block.type === "heading") {
+            shape[name] = z.string().optional();
+        }
+        else if (block.type === "dropdown") {
+            const options: string[] = block.props?.options || [];
+            shape[name] = block.props?.required
+                ? z.string().refine((val: string) => options.includes(val), "Invalid selection")
+                : z.string().optional();
+        }
+        else if (block.type === "date") {
+            shape[name] = block.props?.required 
+                ? z.coerce.date({
+                    invalid_type_error: "Invalid date",
+                    required_error: "Required"
+                })
+                : z.coerce.date().optional().refine(date => date instanceof Date || date === undefined, {
+                    message: "Invalid date"
+                });
+        }
+        else if (block.type === "textarea") {
+            shape[name] = block.props?.required
+                ? z.string().min(1, "Required")
+                : z.string().optional();
+        }
+        else {
+            shape[name] = z.any();
+        }
     });
 
     return z.object(shape);
