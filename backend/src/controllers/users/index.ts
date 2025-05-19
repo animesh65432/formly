@@ -3,6 +3,7 @@ import db from "../../db"
 import bcrypt from "bcrypt"
 import { createToken } from "../../utils"
 import { asyncerrorhandler } from "../../middlewares"
+import { googleclient } from "../../service"
 
 
 const createUser = asyncerrorhandler(async (req: Request, res: Response) => {
@@ -69,4 +70,48 @@ const loginUser = asyncerrorhandler(async (req: Request, res: Response) => {
     return
 })
 
-export { createUser, loginUser }
+const googleAuth = asyncerrorhandler(async (req: Request, res: Response) => {
+    const { credential, clientId } = req.body;
+
+    if (!credential || !clientId) {
+        res.status(400).json({ message: "Missing credential or client ID" });
+        return
+    }
+
+    const ticket = await googleclient.verifyIdToken({
+        idToken: credential,
+        audience: clientId,
+    });
+
+    const payload = ticket.getPayload();
+
+    if (!payload || !payload.email) {
+        res.status(400).json({ message: "Invalid Google token payload" });
+        return
+    }
+
+    const { email } = payload
+
+    let user = await db.user.findUnique({
+        where: {
+            email
+
+        },
+    });
+
+    if (!user) {
+        user = await db.user.create({
+            data: { email },
+        });
+    }
+
+    const token = createToken(user.email)
+
+    res.status(user ? 200 : 201).json({
+        message: user ? "Successfully logged in" : "Account created and logged in",
+        token
+    });
+    return
+});
+
+export { createUser, loginUser, googleAuth }
