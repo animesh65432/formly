@@ -14,7 +14,7 @@ type Props = {
 const HeadingBlock: React.FC<Props> = ({ block, setSelectElementId, form }) => {
     const { removeBlock } = useFormBuilderStore();
     const handleClick = (id: string) => {
-        setSelectElementId(block.id);
+        setSelectElementId(id);
     };
 
     return (
