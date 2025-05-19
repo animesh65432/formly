@@ -4,18 +4,51 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { generateSchema } from "../../../lib/generateSchema";
 import AnimateWrapper from './AnimateWrapper';
-import { Form } from '../../ui/form'
-import { RadioGroupBlock, ParagraphBlock, InputTypes, ButtonBlock, HeadingBlock, TextBolck, DropdownBlock, DatePicker, Checkbox, ImageUploadBlock, RatingBlock, FileUploadBlock } from "./index"
+import { Form } from '../../ui/form';
+import {
+    RadioGroupBlock,
+    ParagraphBlock,
+    InputTypes,
+    ButtonBlock,
+    HeadingBlock,
+    TextBolck,
+    DropdownBlock,
+    DatePicker,
+    Checkbox,
+    ImageUploadBlock,
+    RatingBlock,
+    FileUploadBlock,
+} from "./index";
+import type { FormBlock } from "../../../types"
 
 type Props = {
-    setSelectElementId: React.Dispatch<React.SetStateAction<string | null>>
-}
+    setSelectElementId: React.Dispatch<React.SetStateAction<string | null>>;
+};
+
+const BLOCK_COMPONENT_MAP: Record<string, any> = {
+    text: InputTypes,
+    email: InputTypes,
+    phone: InputTypes,
+    number: InputTypes,
+    password: InputTypes,
+    url: InputTypes,
+    paragraph: ParagraphBlock,
+    heading: HeadingBlock,
+    textarea: TextBolck,
+    dropdown: DropdownBlock,
+    date: DatePicker,
+    checkbox: Checkbox,
+    image: ImageUploadBlock,
+    rating: RatingBlock,
+    button: ButtonBlock,
+    file: FileUploadBlock,
+    radio: RadioGroupBlock,
+};
 
 const Preview: React.FC<Props> = ({ setSelectElementId }) => {
     const { blocks } = useFormBuilderStore();
     const [lastAddedId, setLastAddedId] = useState<string | null>(null);
     const [prevBlocksLength, setPrevBlocksLength] = useState(0);
-
 
     const schema = useMemo(() => generateSchema(), [blocks]);
 
@@ -39,86 +72,29 @@ const Preview: React.FC<Props> = ({ setSelectElementId }) => {
         console.log("Form submitted with data:", data);
     };
 
+    const renderBlock = (block: FormBlock) => {
+        const isNew = block.id === lastAddedId;
+        const Component = BLOCK_COMPONENT_MAP[block.type] || InputTypes;
+
+        const props = {
+            block,
+            form,
+            setSelectElementId: block.type === "checkbox" ? setLastAddedId : setSelectElementId,
+        };
+
+        return (
+            <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
+                <Component {...props} />
+            </AnimateWrapper>
+        );
+    };
+
     return (
         <div className="col-span-3 w-full flex justify-center h-[90vh] scrollbar-custom-x">
             <div className="w-1/2">
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4   border-green-800">
-                        {blocks.map((block) => {
-                            const isNew = block.id === lastAddedId;
-
-                            if (block.type === "text" || block.type === "email" || block.type === "phone" || block.type === "number" || block.type === "password" || block.type === "url") {
-                                return (
-                                    <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
-                                        <InputTypes block={block} form={form} setSelectElementId={setSelectElementId} />
-                                    </AnimateWrapper>
-                                );
-                            }
-                            else if (block.type === "paragraph") {
-                                return <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
-                                    <ParagraphBlock block={block} setSelectElementId={setSelectElementId} form={form} />
-                                </AnimateWrapper>
-                            }
-                            else if (block.type === "heading") {
-                                return <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
-                                    <HeadingBlock block={block} setSelectElementId={setSelectElementId} form={form} />
-                                </AnimateWrapper>
-                            }
-                            else if (block.type === "textarea") {
-                                return (
-                                    <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
-                                        <TextBolck block={block} form={form} setSelectElementId={setSelectElementId} />
-                                    </AnimateWrapper>
-                                );
-                            }
-                            else if (block.type === "dropdown") {
-                                return (
-                                    <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
-                                        <DropdownBlock block={block} form={form} setSelectElementId={setSelectElementId} />
-                                    </AnimateWrapper>
-                                );
-                            }
-                            else if (block.type === "date") {
-                                return <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
-                                    <DatePicker block={block} form={form} setSelectElementId={setSelectElementId} />
-                                </AnimateWrapper>
-
-                            }
-                            else if (block.type === "checkbox") {
-                                return <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
-                                    <Checkbox block={block} form={form} setSelectElementId={setLastAddedId} />
-                                </AnimateWrapper>
-                            }
-                            else if (block.type === "image") {
-                                return <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
-                                    <ImageUploadBlock block={block} form={form} setSelectElementId={setSelectElementId} />
-                                </AnimateWrapper>
-                            }
-                            else if (block.type === "rating") {
-                                return <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
-                                    <RatingBlock block={block} form={form} setSelectElementId={setSelectElementId} />
-                                </AnimateWrapper>
-                            }
-                            else if (block.type === "button") {
-                                return (
-                                    <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
-                                        <ButtonBlock block={block} />
-                                    </AnimateWrapper>
-                                );
-                            }
-                            else if (block.type === "file") {
-                                return (<AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
-                                    <FileUploadBlock block={block} setSelectElementId={setSelectElementId} form={form} />
-                                </AnimateWrapper>)
-                            }
-                            else {
-                                return <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
-                                    <RadioGroupBlock block={block} setSelectElementId={setSelectElementId} form={form} />
-                                </AnimateWrapper>
-                            }
-
-                            return null;
-                        })}
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 border-green-800">
+                        {blocks.map(renderBlock)}
                     </form>
                 </Form>
             </div>
