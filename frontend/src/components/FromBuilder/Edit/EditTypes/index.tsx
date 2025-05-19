@@ -30,16 +30,17 @@ const EditTypes: React.FC<Props> = ({ handleChange, block, }) => {
                     />
                 </div>
             }
-            <div className="flex items-center gap-2 mt-2">
-                <div
-                    onClick={() => handleChange('required', !block.props?.required)}
-                    className={`h-4 w-4 border-2 border-green-800 cursor-pointer ${block.props?.required ? "bg-green-800" : "bg-white"
-                        }`}
-                />
+            {block.type === "heading" ? null :
+                <div className="flex items-center gap-2 mt-2">
+                    <div
+                        onClick={() => handleChange('required', !block.props?.required)}
+                        className={`h-4 w-4 border-2 border-green-800 cursor-pointer ${block.props?.required ? "bg-green-800" : "bg-white"
+                            }`}
+                    />
 
-                <label htmlFor="required" className="text-green-700 font-semibold bg-white hover:text-green-800">Required</label>
-            </div>
-            <button className='flex w-[40%] justify-end md:text-xl text-white font-semibold bg-green-800'>add opitons</button>
+                    <label htmlFor="required" className="text-green-700 font-semibold bg-white hover:text-green-800">Required</label>
+                </div>}
+
         </div>
     )
 }
