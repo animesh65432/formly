@@ -6,6 +6,8 @@ type Props = {
     selectElementId: string | null
 }
 
+
+
 const FormEdit: React.FC<Props> = ({ selectElementId }) => {
     if (!selectElementId) {
         return (
@@ -33,7 +35,7 @@ const FormEdit: React.FC<Props> = ({ selectElementId }) => {
         )
     }
 
-    const handleChange = (field: string, value: string | boolean) => {
+    const handleChange = (field: string, value: string | boolean | string[]) => {
         updateBlock(block.id, {
             ...block,
             props: {

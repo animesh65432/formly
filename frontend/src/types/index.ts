@@ -13,9 +13,10 @@ export type FormBlock = {
         label?: string;
         placeholder?: string;
         required?: boolean;
-        options?: []
+        options?: string[];
     };
 };
+
 export type FormBuilderState = {
     blocks: FormBlock[];
     addBlock: (block: FormBlock) => void;
