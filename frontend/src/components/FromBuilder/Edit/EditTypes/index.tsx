@@ -43,31 +43,17 @@ const EditTypes: React.FC<Props> = ({ handleChange, block, }) => {
                     />
                 </div>
             }
-            <div className="flex items-center gap-3 mt-2">
-                <div
-                    onClick={() => handleChange('required', !block.props?.required)}
-                    className={`h-5 w-5 border-2 border-green-800 rounded-sm cursor-pointer transition-colors 
-                        ${block.props?.required ? "bg-green-800" : "bg-white hover:bg-green-50"
-                    }`}
-                    role='checkbox'
-                    aria-checked={block.props?.required}
-                />
+            {block.type === "heading" ? null :
+                <div className="flex items-center gap-2 mt-2">
+                    <div
+                        onClick={() => handleChange('required', !block.props?.required)}
+                        className={`h-4 w-4 border-2 border-green-800 cursor-pointer ${block.props?.required ? "bg-green-800" : "bg-white"
+                            }`}
+                    />
 
-                <label htmlFor="required" 
-                className="text-green-700 
-                font-semibold text-sm md:text-base
-                bg-white hover:text-green-800 cursor-pointer">Required</label>
-            </div>
-            <button 
-            className='
-                w-full md:w-auto self-end px-6 py-2 text-sm md:text-base font-semibold text-white 
-                bg-green-800 hover:bg-green-700 active:bg-green-900 rounded-lg transition-colors 
-                transform hover:scale-105 active:scale-95
-                '
-            type='button'
-            >
-                Add Options
-            </button>
+                    <label htmlFor="required" className="text-green-700 font-semibold bg-white hover:text-green-800">Required</label>
+                </div>}
+
         </div>
     )
 }

@@ -4,18 +4,51 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { generateSchema } from "../../../lib/generateSchema";
 import AnimateWrapper from './AnimateWrapper';
-import { Form } from '../../ui/form'
-import { RadioGroupBlock, ParagraphBlock, InputTypes, ButtonBlock, HeadingBlock, TextBolck, DropdownBlock, DatePicker, Checkbox, ImageUploadBlock, RatingBlock, FileUploadBlock } from "./index"
+import { Form } from '../../ui/form';
+import {
+    RadioGroupBlock,
+    ParagraphBlock,
+    InputTypes,
+    ButtonBlock,
+    HeadingBlock,
+    TextBolck,
+    DropdownBlock,
+    DatePicker,
+    Checkbox,
+    ImageUploadBlock,
+    RatingBlock,
+    FileUploadBlock,
+} from "./index";
+import type { FormBlock } from "../../../types"
 
 type Props = {
-    setSelectElementId: React.Dispatch<React.SetStateAction<string | null>>
-}
+    setSelectElementId: React.Dispatch<React.SetStateAction<string | null>>;
+};
+
+const BLOCK_COMPONENT_MAP: Record<string, any> = {
+    text: InputTypes,
+    email: InputTypes,
+    phone: InputTypes,
+    number: InputTypes,
+    password: InputTypes,
+    url: InputTypes,
+    paragraph: ParagraphBlock,
+    heading: HeadingBlock,
+    textarea: TextBolck,
+    dropdown: DropdownBlock,
+    date: DatePicker,
+    checkbox: Checkbox,
+    image: ImageUploadBlock,
+    rating: RatingBlock,
+    button: ButtonBlock,
+    file: FileUploadBlock,
+    radio: RadioGroupBlock,
+};
 
 const Preview: React.FC<Props> = ({ setSelectElementId }) => {
     const { blocks } = useFormBuilderStore();
     const [lastAddedId, setLastAddedId] = useState<string | null>(null);
     const [prevBlocksLength, setPrevBlocksLength] = useState(0);
-
 
     const schema = useMemo(() => generateSchema(), [blocks]);
 
@@ -39,132 +72,29 @@ const Preview: React.FC<Props> = ({ setSelectElementId }) => {
         console.log("Form submitted with data:", data);
     };
 
+    const renderBlock = (block: FormBlock) => {
+        const isNew = block.id === lastAddedId;
+        const Component = BLOCK_COMPONENT_MAP[block.type] || InputTypes;
+
+        const props = {
+            block,
+            form,
+            setSelectElementId: block.type === "checkbox" ? setLastAddedId : setSelectElementId,
+        };
+
+        return (
+            <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
+                <Component {...props} />
+            </AnimateWrapper>
+        );
+    };
+
     return (
         <div className="col-span-3 w-full flex justify-center min-h-[90vh] overflow-y-auto scrollbar-custom-x p-3">
             <div className="w-full md:w-1/2 px-4 md:px-6 lg:px-8 max-w-2xl xl:max-w-4xl 2xl:max-w-5xl">
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 border-green-800 ">
-                        {blocks.map((block) => {
-                            const isNew = block.id === lastAddedId;
-
-                            const ResponsiveWrapper = ({ children }: { children:React.ReactNode }) => (
-                                <div className='px-2 sm:px-4 md:px-0'>
-                                    {children}
-                                </div>
-                            )
-
-                            if (
-                                block.type === "text" || block.type === "email" || block.type === "phone" || 
-                                block.type === "number" || block.type === "password" || block.type === "url"
-                            ) {
-                                return (
-                                    <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
-                                        <ResponsiveWrapper>
-                                            <InputTypes block={block} form={form} setSelectElementId={setSelectElementId} />
-                                        </ResponsiveWrapper>
-                                    </AnimateWrapper>
-                                );
-                            }
-                            else if (block.type === "paragraph") {
-                                return (
-                                    <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
-                                        <ResponsiveWrapper>
-                                            <ParagraphBlock block={block} setSelectElementId={setSelectElementId} form={form} />
-                                        </ResponsiveWrapper>
-                                    </AnimateWrapper>
-                                )
-                            }
-                            else if (block.type === "heading") {
-                                return (
-                                    <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
-                                        <ResponsiveWrapper>
-                                            <HeadingBlock block={block} setSelectElementId={setSelectElementId} form={form} />
-                                        </ResponsiveWrapper>
-                                    </AnimateWrapper>
-                                )
-                            }
-                            else if (block.type === "textarea") {
-                                return (
-                                    <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
-                                        <ResponsiveWrapper>
-                                            <TextBolck block={block} form={form} setSelectElementId={setSelectElementId} />
-                                        </ResponsiveWrapper>
-                                    </AnimateWrapper>
-                                );
-                            }
-                            else if (block.type === "dropdown") {
-                                return (
-                                    <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
-                                        <ResponsiveWrapper>
-                                            <DropdownBlock block={block} form={form} setSelectElementId={setSelectElementId} />
-                                        </ResponsiveWrapper>
-                                    </AnimateWrapper>
-                                );
-                            }
-                            else if (block.type === "date") {
-                                return (
-                                    <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
-                                        <ResponsiveWrapper>
-                                            <DatePicker block={block} form={form} setSelectElementId={setSelectElementId} />
-                                        </ResponsiveWrapper>
-                                    </AnimateWrapper>
-                                )
-                            }
-                            else if (block.type === "checkbox") {
-                                return (
-                                    <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
-                                        <ResponsiveWrapper>
-                                            <Checkbox block={block} form={form} setSelectElementId={setLastAddedId} />
-                                        </ResponsiveWrapper>
-                                    </AnimateWrapper>
-                                )
-                            }
-                            else if (block.type === "image") {
-                                return (
-                                    <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
-                                        <ResponsiveWrapper>
-                                            <ImageUploadBlock block={block} form={form} setSelectElementId={setSelectElementId} />
-                                        </ResponsiveWrapper>
-                                    </AnimateWrapper>
-                                )
-                            }
-                            else if (block.type === "rating") {
-                                return (
-                                    <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
-                                        <ResponsiveWrapper>
-                                            <RatingBlock block={block} form={form} setSelectElementId={setSelectElementId} />
-                                        </ResponsiveWrapper>
-                                    </AnimateWrapper>
-                                )
-                            }
-                            else if (block.type === "button") {
-                                return (
-                                    <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
-                                        <div className='flex justify-center px-4 sm:px-8'>
-                                            <ButtonBlock block={block} />
-                                        </div>
-                                    </AnimateWrapper>
-                                );
-                            }
-                            else if (block.type === "file") {
-                                return (
-                                    <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
-                                        <ResponsiveWrapper>
-                                            <FileUploadBlock block={block} setSelectElementId={setSelectElementId} form={form} />
-                                        </ResponsiveWrapper>
-                                    </AnimateWrapper>
-                                )
-                            }
-                            else {
-                                return (
-                                <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
-                                    <RadioGroupBlock block={block} setSelectElementId={setSelectElementId} form={form} />
-                                </AnimateWrapper>
-                                )
-                            }
-
-                            return null;
-                        })}
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 border-green-800">
+                        {blocks.map(renderBlock)}
                     </form>
                 </Form>
             </div>
