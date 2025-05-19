@@ -5,7 +5,6 @@ import Preview from "./Preview/main"
 
 const Frombuilder: React.FC = () => {
     const [selectElementId, setSelectElementId] = useState<string | null>("")
-    console.log(selectElementId)
     return (
         <div className='w-full min-h-[90vh] p-4'>
             {/* Main grid container */}
