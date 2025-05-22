@@ -24,10 +24,10 @@ const Element: React.FC<Props> = ({ element }) => {
         items-center hover:bg-green-300
         active:bg-green-400  
         font-medium md:text-xl 
-        text-base gap-2 px-1 py-3 rounded-md transition-colors cursor-pointer w-full'>
+        text-sm gap-2 px-1 py-3 rounded-md transition-colors cursor-pointer lg:w-full w-[90%] m-auto'>
             <element.icon className='flex-shrink-0 text-2xl md:w-8 md:h-8 md:text-3xl w-3' />
             <span className="truncate text-sm md:text-base">{element.name}</span>
-            <Icons.add className="ml-auto flex-shrink-0 w-6 h-6 md:w-8 md:h-8" />
+            <Icons.add className="ml-auto flex-shrink-0 w-4 h-4 md:w-8 md:h-8" />
         </div>
     )
 }
