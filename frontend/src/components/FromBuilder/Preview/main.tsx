@@ -5,45 +5,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { generateSchema } from "../../../lib/generateSchema";
 import AnimateWrapper from './AnimateWrapper';
 import { Form } from '../../ui/form';
-import {
-    RadioGroupBlock,
-    ParagraphBlock,
-    InputTypes,
-    ButtonBlock,
-    HeadingBlock,
-    TextBolck,
-    DropdownBlock,
-    DatePicker,
-    Checkbox,
-    ImageUploadBlock,
-    RatingBlock,
-    FileUploadBlock,
-} from "./index";
 import type { FormBlock } from "../../../types"
+import { InputTypes } from "./index"
+import { BLOCK_COMPONENT_MAP } from "../../../lib"
+import FromMobileElements from "../Elements/Mobile"
 
 type Props = {
     setSelectElementId: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
-const BLOCK_COMPONENT_MAP: Record<string, any> = {
-    text: InputTypes,
-    email: InputTypes,
-    phone: InputTypes,
-    number: InputTypes,
-    password: InputTypes,
-    url: InputTypes,
-    paragraph: ParagraphBlock,
-    heading: HeadingBlock,
-    textarea: TextBolck,
-    dropdown: DropdownBlock,
-    date: DatePicker,
-    checkbox: Checkbox,
-    image: ImageUploadBlock,
-    rating: RatingBlock,
-    button: ButtonBlock,
-    file: FileUploadBlock,
-    radio: RadioGroupBlock,
-};
 
 const Preview: React.FC<Props> = ({ setSelectElementId }) => {
     const { blocks } = useFormBuilderStore();
@@ -92,6 +62,9 @@ const Preview: React.FC<Props> = ({ setSelectElementId }) => {
     return (
 
         <div className='h-[90vh] scrollbar-custom-x'>
+            <div className='lg:hidden block mb-4'>
+                <FromMobileElements />
+            </div>
             <Form {...form} >
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 border-green-800">
                     {blocks.map(renderBlock)}
