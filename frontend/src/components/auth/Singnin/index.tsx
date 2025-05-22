@@ -94,11 +94,13 @@ const SignIn: React.FC = () => {
 
                     <CardContent className="flex flex-col items-center justify-center py-4">
                         <div className="flex gap-0.5 items-start">
-                            did not have an account?{" "}
+                            Do not have an account?{" "}
                             <span
                                 className="text-green-800 dark:text-white"
                                 onClick={() => navigate("/signup")}
-                            >Singup</span>
+                            >
+                                Sign Up
+                            </span>
                         </div>
                         <div className="md:text-xl text-sm text-black font-semibold dark:text-gray-500">or</div>
                     </CardContent>
