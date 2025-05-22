@@ -90,15 +90,15 @@ const Preview: React.FC<Props> = ({ setSelectElementId }) => {
     };
 
     return (
-        <div className="col-span-3 w-full flex justify-center min-h-[90vh] overflow-y-auto scrollbar-custom-x p-3">
-            <div className="w-full md:w-1/2 px-4 md:px-6 lg:px-8 max-w-2xl xl:max-w-4xl 2xl:max-w-5xl">
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 border-green-800">
-                        {blocks.map(renderBlock)}
-                    </form>
-                </Form>
-            </div>
+
+        <div className='h-[90vh] scrollbar-custom-x'>
+            <Form {...form} >
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 border-green-800">
+                    {blocks.map(renderBlock)}
+                </form>
+            </Form>
         </div>
+
     );
 };
 

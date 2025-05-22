@@ -31,7 +31,7 @@ const DropdownBlock: React.FC<Props> = ({ block, form, setSelectElementId }) => 
                 control={form.control}
                 name={block.id}
                 render={({ field }) => (
-                    <FormItem className="space-y-2" >
+                    <FormItem className="w-[30vw] m-auto" >
                         <FormLabel className="text-green-800 font-semibold text-sm md:text-lg">
                             {block.props?.label}
                         </FormLabel>

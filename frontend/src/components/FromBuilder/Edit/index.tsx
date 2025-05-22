@@ -11,7 +11,7 @@ type Props = {
 const FormEdit: React.FC<Props> = ({ selectElementId }) => {
     if (!selectElementId) {
         return (
-            <div className='col-span-1 flex flex-col items-center justify-center border-l-4 border-green-700 h-[90vh] p-3'>
+            <div className=' flex flex-col items-center justify-center border-l-4 border-green-700 h-[90vh] p-3'>
                 <p className="text-green-700 text-xl font-semibold">
                     No element selected
                 </p>
@@ -27,7 +27,7 @@ const FormEdit: React.FC<Props> = ({ selectElementId }) => {
 
     if (!block) {
         return (
-            <div className='col-span-1 flex flex-col items-center justify-center border-l-4 border-green-700 h-[90vh] p-3'>
+            <div className=' flex flex-col items-center justify-center border-l-4 border-green-700 h-[90vh] p-3'>
                 <p className="text-green-700 text-xl font-semibold">
                     Element not found
                 </p>
@@ -46,7 +46,7 @@ const FormEdit: React.FC<Props> = ({ selectElementId }) => {
     };
 
     return (
-        <div className='col-span-1 h-[90vh] border-l-4 border-green-700 p-3 overflow-y-auto'>
+        <div className=' h-[90vh] border-l-4 border-green-700 p-3 overflow-y-auto'>
             <p className='text-green-700 text-xl font-semibold text-center mb-4'>Settings</p>
             <EditTypes handleChange={handleChange} block={block} />
         </div>

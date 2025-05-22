@@ -24,7 +24,7 @@ const RatingBlock: React.FC<Props> = ({ block, form, setSelectElementId }) => {
             control={form.control}
             name={block.id}
             render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-[30vw] m-auto">
                     <FormLabel className="text-green-800 font-semibold md:text-xl text-sm">
                         {block.props?.label || "Rating"}
                     </FormLabel>
