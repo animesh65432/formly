@@ -22,7 +22,7 @@ const ParagraphBlock: React.FC<Props> = ({ block, setSelectElementId, form }) =>
             control={form.control}
             name={block.id}
             render={(field) => (
-                <FormItem className="cursor-pointer">
+                <FormItem className="w-[30vw] m-auto">
                     <FormLabel className="text-green-800 font-semibold mb-1 md:text-xl text-sm">
                         {block.props?.label}
                     </FormLabel>
@@ -32,7 +32,7 @@ const ParagraphBlock: React.FC<Props> = ({ block, setSelectElementId, form }) =>
                                 onClick={() => handleClick(block.id)}
                                 placeholder={block.props?.placeholder || ""}
                                 {...field}
-                                className="text-green-800 placeholder:text-green-800 placeholder:text-xl"
+                                className="bg-white text-green-800 placeholder:text-green-800 placeholder:text-xl"
                             />
                             <Icons.delete className='text-red-800' onClick={() => removeBlock(block.id)} />
                         </div>

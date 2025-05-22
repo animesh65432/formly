@@ -23,13 +23,13 @@ const ImageUploadBlock: React.FC<Props> = ({ block, form, setSelectElementId }) 
             control={form.control}
             name={block.id}
             render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-[30vw] m-auto">
                     <FormLabel className="md:text-xl text-sm font-semibold text-green-800">
                         {block.props?.label || "Upload Image"}
                     </FormLabel>
                     <FormControl>
                         <div className="flex justify-between items-center">
-                            <div className="relative w-[90%]">
+                            <div >
                                 <input
                                     type="file"
                                     accept="image/*"
@@ -41,7 +41,7 @@ const ImageUploadBlock: React.FC<Props> = ({ block, form, setSelectElementId }) 
                                             reader.readAsDataURL(file);
                                         }
                                     }}
-                                    className="block w-full px-3 py-2 text-sm text-green-800 rounded-md border-2 border-gray-700 shadow-md file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-green-800 file:text-white hover:file:bg-green-700 cursor-pointer"
+                                    className="block w-[29vw] bg-white p-2 text-sm text-green-800 rounded-md shadow-md file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-green-800 file:text-white hover:file:bg-green-700 cursor-pointer"
                                     onClick={() => setSelectElementId(block.id)}
                                 />
 
@@ -51,13 +51,6 @@ const ImageUploadBlock: React.FC<Props> = ({ block, form, setSelectElementId }) 
                             </div>
                         </div>
                     </FormControl>
-                    {field.value && (
-                        <img
-                            src={field.value}
-                            alt="Uploaded preview"
-                            className="mt-2 h-32 object-cover rounded-md border"
-                        />
-                    )}
                     <FormMessage />
                 </FormItem>
             )}
