@@ -14,7 +14,7 @@ const Mobile: React.FC = () => {
             <SheetTrigger>
                 <div className='flex gap-2'>
                     <Atom className='text-green-800 font-bold' />
-                    <span className='text-green-800 font-bold md:text-xl text-sm'>Elements</span>
+                    <span className='text-green-800 font-bold sm:text-xl text-sm'>Elements</span>
                 </div>
             </SheetTrigger>
             <SheetContent>

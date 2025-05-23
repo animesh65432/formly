@@ -24,40 +24,48 @@ type Props = {
 };
 
 const DropdownBlock: React.FC<Props> = ({ block, form, setSelectElementId }) => {
-    const { removeBlock } = useFormBuilderStore()
+    const { removeBlock } = useFormBuilderStore();
+
     return (
         <div onClick={() => setSelectElementId(block.id)}>
             <FormField
                 control={form.control}
                 name={block.id}
                 render={({ field }) => (
-                    <FormItem className="w-[60vw] lg:w-[30vw] m-auto" >
-                        <FormLabel className="text-green-800 font-semibold text-sm md:text-lg">
+                    <FormItem className="w-[60vw] lg:w-[30vw] m-auto">
+                        <FormLabel className="text-green-800 font-semibold text-sm lg:text-xl">
                             {block.props?.label}
                         </FormLabel>
                         <FormControl>
-                            <Select onValueChange={field.onChange} value={field.value}>
-                                <div className="flex justify-between items-center">
-                                    <SelectTrigger className="border-2 border-grey-100 text-green-800 bg-white md:text-lg text-sm w-full rounded-md">
-                                        <SelectValue placeholder={block.props?.placeholder} />
+                            <div className="flex justify-between items-center">
+                                <Select onValueChange={field.onChange} value={field.value}>
+                                    <SelectTrigger className="border-2 border-grey-100 text-green-800 bg-white w-full rounded-md">
+                                        <SelectValue
+                                            placeholder={block.props?.placeholder}
+                                            className="text-sm lg:text-xl"
+                                        />
                                     </SelectTrigger>
-                                    <div>
-                                        <SelectContent className="border border-green-800 bg-white text-green-800 z-50">
-                                            {block.props?.options?.map((option: any, index: number) => (
-                                                <SelectItem key={index} value={option.value}>
-                                                    {option.label}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </div>
-                                    <div>
-                                        <Icons.delete className="text-red-800" onClick={() => removeBlock(block.id)} />
-                                    </div>
-                                </div>
-                            </Select>
+                                    <SelectContent className="border border-green-800 bg-white text-green-800 z-50">
+                                        {block.props?.options?.map((option: any, index: number) => (
+                                            <SelectItem
+                                                key={index}
+                                                value={option.value}
+                                                className="text-sm lg:text-xl"
+                                            >
+                                                {option.label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <Icons.delete
+                                    className="text-red-800 h-5 w-5 sm:h-8 sm:w-8 ml-2"
+                                    onClick={() => removeBlock(block.id)}
+                                />
+                            </div>
                         </FormControl>
-                        <FormMessage />
-
+                        <div className="text-sm lg:text-xl">
+                            <FormMessage />
+                        </div>
                     </FormItem>
                 )}
             />
