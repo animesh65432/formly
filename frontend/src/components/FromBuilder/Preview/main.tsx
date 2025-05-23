@@ -49,7 +49,7 @@ const Preview: React.FC<Props> = ({ setSelectElementId }) => {
         const props = {
             block,
             form,
-            setSelectElementId: block.type === "checkbox" ? setLastAddedId : setSelectElementId,
+            setSelectElementId: block.type === "checkbox" ? setLastAddedId : setSelectElementId
         };
 
         return (
