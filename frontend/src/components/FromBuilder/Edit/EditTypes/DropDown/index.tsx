@@ -1,5 +1,6 @@
 import React from 'react'
 import type { FormBlock } from "../../../../../types"
+import Icons from "../../../../Icons";
 
 type Props = {
     block: FormBlock,
@@ -30,7 +31,7 @@ const DropDown: React.FC<Props> = ({ block, handleChange }) => {
 
     return (
         <div>
-            <label className='text-sm md:text-base text-green-700 font-semibold block mb-2 md:mb-1'>Options</label>
+            <label className=' text-sm md:text-base text-green-700 font-semibold block mb-2 md:mb-1'>Options</label>
             <div className="flex flex-col gap-2">
                 {(block.props?.options || []).map((option: string, index: number) => (
                     <div key={index} className="flex items-center gap-2">
@@ -42,20 +43,11 @@ const DropDown: React.FC<Props> = ({ block, handleChange }) => {
                             border border-green-700 
                             rounded p-2 flex-1 text-green-800
                             placeholder:text-green-600
+                            w-[13vw]
                         '
                             onChange={(e) => updateOption(index, e.target.value)}
                         />
-                        <button
-                            onClick={() => removeOption(index)}
-                            className="
-                            bg-red-500 hover:bg-red-600 
-                            text-white px-2 py-1 rounded
-                            text-sm font-medium
-                        "
-                            type="button"
-                        >
-                            ×
-                        </button>
+                        <Icons.delete className="text-red-800 w-5 h-5 sm:w-6 sm:h-6" onClick={() => removeOption(index)} />
                     </div>
                 ))}
                 <button

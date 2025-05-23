@@ -27,7 +27,7 @@ const DateBlock: React.FC<Props> = ({ block, form, setSelectElementId }) => {
             control={form.control}
             name={block.id}
             render={({ field }) => (
-                <FormItem className="w-[60vw] lg:w-[30vw] m-auto">
+                <FormItem className="w-[60vw] lg:w-[30vw] m-auto" onClick={() => setSelectElementId(block.id)}>
                     <div className="flex justify-between items-center mb-2">
                         <FormLabel className="text-sm lg:text-xl text-green-800 font-semibold">
                             {block.props?.label}
@@ -38,12 +38,11 @@ const DateBlock: React.FC<Props> = ({ block, form, setSelectElementId }) => {
                         <PopoverTrigger asChild>
                             <FormControl>
                                 <div
-                                    onClick={() => setSelectElementId(block.id)}
                                     className="flex items-center justify-between gap-2  bg-white rounded-md shadow-sm p-2 cursor-pointer hover:border-green-700 transition-colors"
                                 >
                                     <div className="flex gap-4">
                                         <span className="text-sm lg:text-xl text-green-800">
-                                            {field.value ? format(field.value, "PPP") : "Select a date"}
+                                            {field.value ? format(field.value, "PPP") : `${block.props?.placeholder}`}
                                         </span>
                                         <Icons.calender className="w-5 h-5 md:w-6 md:h-6 text-green-600" />
                                     </div>

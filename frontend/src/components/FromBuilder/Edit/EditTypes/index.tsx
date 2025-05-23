@@ -1,6 +1,9 @@
 import React from 'react'
 import type { FormBlock } from '../../../../types'
+import Label from './Label'
+import Placeholder from './Placeholder'
 import DropDown from './DropDown'
+import Required from './Required'
 
 type Props = {
     handleChange: (field: string, value: string | boolean | string[]) => void,
@@ -8,51 +11,24 @@ type Props = {
 }
 
 const EditTypes: React.FC<Props> = ({ handleChange, block }) => {
+    console.log(block)
     return (
         <div className='flex flex-col gap-4 px-4 sm:px-0 max-w-md mx-auto w-full'>
-            <div>
-                <label className='text-sm md:text-base text-green-700 font-semibold block mb-2 md:mb-1'>Label</label>
-                <input
-                    type="text"
-                    value={block.props?.label || ''}
-                    className='
-                        border border-green-700 
-                        rounded p-2 w-full text-green-800 
-                        placeholder:text-green-800 
-                    '
-                    onChange={(e) => handleChange('label', e.target.value)}
-                />
-            </div>
+            <Label block={block} handleChange={handleChange} />
 
-            {block.type === "heading" ? null : (
-                <div>
-                    <label className='text-sm md:text-base text-green-700 font-semibold block mb-2 md:mb-1'>Placeholder</label>
-                    <input
-                        type="text"
-                        value={block.props?.placeholder || ''}
-                        className='
-                            border border-green-700 
-                            rounded-lg p-2 w-full text-sm md:text-base 
-                            text-green-800 placeholder:text-green-800
-                        '
-                        onChange={(e) => handleChange('placeholder', e.target.value)}
-                    />
-                </div>
-            )}
-
-            {block.type === "heading" ? null : (
-                <div className="flex items-center gap-2 mt-2">
-                    <div
-                        onClick={() => handleChange('required', !block.props?.required)}
-                        className={`h-4 w-4 border-2 border-green-800 cursor-pointer ${block.props?.required ? "bg-green-800" : "bg-white"}`}
-                    />
-                    <label htmlFor="required" className="text-green-700 font-semibold bg-white">Required</label>
-                </div>
-            )}
+            {block.type === "heading" || block.type === "image" || block.type === "file" ? null : (
+                <Placeholder block={block} handleChange={handleChange} />
+            )
+            }
+            {
+                block.type === "heading" ? null : (
+                    <Required block={block} handleChange={handleChange} />
+                )
+            }
 
             {block.type === "dropdown" && <DropDown block={block} handleChange={handleChange} />}
 
-        </div>
+        </div >
     )
 }
 

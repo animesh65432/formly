@@ -23,7 +23,7 @@ const ImageUploadBlock: React.FC<Props> = ({ block, form, setSelectElementId }) 
             control={form.control}
             name={block.id}
             render={({ field }) => (
-                <FormItem className="w-[60vw] lg:w-[30vw] m-auto">
+                <FormItem className="w-[60vw] lg:w-[30vw] m-auto" onClick={() => setSelectElementId(block.id)}>
                     <FormLabel className="text-sm lg:text-xl font-semibold text-green-800">
                         {block.props?.label || "Upload Image"}
                     </FormLabel>
@@ -42,11 +42,11 @@ const ImageUploadBlock: React.FC<Props> = ({ block, form, setSelectElementId }) 
                                         }
                                     }}
                                     className="block w-[59vw] lg:w-[29vw] bg-white p-2 text-sm lg:text-xl text-green-800 rounded-md shadow-md placeholder:text-sm lg:placeholder:text-xl file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-green-800 file:text-white hover:file:bg-green-700 cursor-pointer"
-                                    onClick={() => setSelectElementId(block.id)}
+
                                 />
                             </div>
                             <div>
-                                <Icons.delete className="text-red-800 font-semibold h-5 w-5 sm:h-8 sm:w-8" onClick={() => removeBlock(block.id)} />
+                                <Icons.delete className="text-red-800 font-semibold h-5 w-5 sm:h-7 sm:w-7" onClick={() => removeBlock(block.id)} />
                             </div>
                         </div>
                     </FormControl>

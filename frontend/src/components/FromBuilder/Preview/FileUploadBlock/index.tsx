@@ -23,7 +23,7 @@ const FileUploadBlock: React.FC<Props> = ({ block, form, setSelectElementId }) =
             control={form.control}
             name={block.id}
             render={({ field }) => (
-                <FormItem className="w-[60vw] lg:w-[30vw] m-auto">
+                <FormItem className="w-[60vw] lg:w-[30vw] m-auto" onClick={() => setSelectElementId(block.id)}>
                     <FormLabel className="md:text-xl text-sm text-green-800">
 
                         {block.props?.label || "Upload File"}
@@ -38,10 +38,10 @@ const FileUploadBlock: React.FC<Props> = ({ block, form, setSelectElementId }) =
                                         field.onChange(file.name);
                                     }
                                 }}
-                                onClick={() => setSelectElementId(block.id)}
+
                                 className="block w-full bg-white px-3 py-2 text-sm text-green-800 rounded-md border-2 border-gray-100 shadow-md file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-green-800 file:text-white hover:file:bg-green-700 cursor-pointer"
                             />
-                            <Icons.delete className="text-red-800 w-5 h-5 sm:w-6 sm:h-6" onClick={() => removeBlock(block.id)} />
+                            <Icons.delete className="text-red-800 w-5 h-5 sm:w-8 sm:h-8" onClick={() => removeBlock(block.id)} />
                         </div>
 
                     </FormControl>
