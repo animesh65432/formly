@@ -21,7 +21,7 @@ const DateBlock: React.FC<Props> = ({ block, form, setSelectElementId }) => {
             control={form.control}
             name={block.id}
             render={({ field }) => (
-                <FormItem className="w-[30vw] m-auto">
+                <FormItem className="w-[60vw] lg:w-[30vw] m-auto">
                     <div className="flex justify-between items-center mb-3 md:mb-2">
                         <FormLabel className="md:text-lg text-base lg:text-xl text-green-800 font-medium">
                             {block.props?.label}
