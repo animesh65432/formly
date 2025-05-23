@@ -23,14 +23,13 @@ const RenderField: React.FC<Props> = ({ block, form, setSelectElementId }) => {
             control={form.control}
             name={block.id}
             render={({ field }) => (
-                <FormItem className='w-[60vw] lg:w-[30vw] m-auto'>
+                <FormItem className='w-[60vw] lg:w-[30vw] m-auto' onClick={() => handleClick(block.id)}>
                     <FormLabel className="text-green-800 font-semibold md:text-xl text-sm">
                         {block.props?.label}
                     </FormLabel>
                     <FormControl>
                         <div className='flex gap-2 items-center'>
                             <Input
-                                onClick={() => handleClick(block.id)}
                                 placeholder={block.props?.placeholder || ""}
                                 {...field}
                                 className="bg-white text-green-800 p-2 placeholder:text-green-800 placeholder:text-sm lg:placeholder:text-xl"
