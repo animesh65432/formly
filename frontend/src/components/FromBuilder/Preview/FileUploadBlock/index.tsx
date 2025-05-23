@@ -23,7 +23,7 @@ const FileUploadBlock: React.FC<Props> = ({ block, form, setSelectElementId }) =
             control={form.control}
             name={block.id}
             render={({ field }) => (
-                <FormItem className="w-[30vw] m-auto">
+                <FormItem className="w-[60vw] lg:w-[30vw] m-auto">
                     <FormLabel className="md:text-xl text-sm text-green-800">
 
                         {block.props?.label || "Upload File"}

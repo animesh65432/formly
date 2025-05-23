@@ -23,7 +23,7 @@ const RenderField: React.FC<Props> = ({ block, form, setSelectElementId }) => {
             control={form.control}
             name={block.id}
             render={({ field }) => (
-                <FormItem className='w-[30vw] m-auto'>
+                <FormItem className='w-[60vw] lg:w-[30vw] m-auto'>
                     <FormLabel className="text-green-800 font-semibold md:text-xl text-sm">
                         {block.props?.label}
                     </FormLabel>
