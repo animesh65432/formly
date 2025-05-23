@@ -2,16 +2,22 @@ import React from "react"
 import { Calendar } from "../../../ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "../../../ui/popover"
 import { format } from "date-fns"
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "../../../ui/form"
+import {
+    FormField,
+    FormItem,
+    FormLabel,
+    FormControl,
+    FormMessage,
+} from "../../../ui/form"
 import type { FormBlock } from "../../../../types"
 import Icons from "../../../Icons"
 import { useFormBuilderStore } from "../../../../store/frombuilder"
 
 type Props = {
-    block: FormBlock;
-    setSelectElementId: React.Dispatch<React.SetStateAction<string | null>>;
-    form: any;
-};
+    block: FormBlock
+    setSelectElementId: React.Dispatch<React.SetStateAction<string | null>>
+    form: any
+}
 
 const DateBlock: React.FC<Props> = ({ block, form, setSelectElementId }) => {
     const { removeBlock } = useFormBuilderStore()
@@ -22,39 +28,41 @@ const DateBlock: React.FC<Props> = ({ block, form, setSelectElementId }) => {
             name={block.id}
             render={({ field }) => (
                 <FormItem className="w-[60vw] lg:w-[30vw] m-auto">
-                    <div className="flex justify-between items-center mb-3 md:mb-2">
-                        <FormLabel className="md:text-lg text-base lg:text-xl text-green-800 font-medium">
+                    <div className="flex justify-between items-center mb-2">
+                        <FormLabel className="text-sm lg:text-xl text-green-800 font-semibold">
                             {block.props?.label}
                         </FormLabel>
-
                     </div>
+
                     <Popover>
                         <PopoverTrigger asChild>
                             <FormControl>
-                                <button
-                                    type="button"
+                                <div
                                     onClick={() => setSelectElementId(block.id)}
-                                    className="w-full flex items-center justify-between border-2 borde-black"
+                                    className="flex items-center justify-between gap-2  bg-white rounded-md shadow-sm p-2 cursor-pointer hover:border-green-700 transition-colors"
                                 >
-                                    <ul className="bg-white shadow-md rounded-md p-1 flex items-center justify-between w-[28vw]">
-                                        <span
-                                            className={`text-sm md:text-base lg:text-lg text-green-800 `}
-                                        >
-                                            {field.value ? format(field.value, 'PPP') : "Select a date."}
+                                    <div className="flex gap-4">
+                                        <span className="text-sm lg:text-xl text-green-800">
+                                            {field.value ? format(field.value, "PPP") : "Select a date"}
                                         </span>
                                         <Icons.calender className="w-5 h-5 md:w-6 md:h-6 text-green-600" />
-                                    </ul>
-                                    <Icons.delete
-                                        className="text-red-800 cursor-pointer hover:text-red-700 transition-colors "
-                                        onClick={() => removeBlock(block.id)}
-                                    />
-
-                                </button>
-
+                                    </div>
+                                    <div className="bg-slate-100 h-full">
+                                        <Icons.delete
+                                            className="text-red-800  w-5 h-5 sm:w-6 sm:h-6 hover:text-red-600"
+                                            onClick={(e) => {
+                                                e.stopPropagation()
+                                                removeBlock(block.id)
+                                            }}
+                                        />
+                                    </div>
+                                </div>
                             </FormControl>
                         </PopoverTrigger>
-                        <PopoverContent align="start"
-                            className="w-auto p-1 md:p-2 rounded-lg md:rounded-xl shadow-lg border border-gray-200 bg-white mx-2"
+
+                        <PopoverContent
+                            align="start"
+                            className="w-auto p-2 rounded-lg shadow-lg  bg-white"
                         >
                             <Calendar
                                 mode="single"
@@ -62,25 +70,26 @@ const DateBlock: React.FC<Props> = ({ block, form, setSelectElementId }) => {
                                 onSelect={field.onChange}
                                 className="rounded-lg"
                                 classNames={{
-                                    nav: "h-6 w-6 md:h-7 md:w-7 bg-transparent flex items-center justify-center",
-                                    button_previous: "absolute left-5 md:left-10 hover:bg-green-50",
-                                    button_next: "absolute right-5 md:right-10 hover:bg-green-50",
+                                    nav: "h-6 w-6 md:h-7 md:w-7",
+                                    button_previous: "absolute left-4 md:left-8 hover:bg-green-50",
+                                    button_next: "absolute right-4 md:right-8 hover:bg-green-50",
                                     week: "text-center",
-                                    weekday: "text-sm md:text-base text-black font-bold text-center",
-                                    month: "flex justify-center items-center flex-col mr-5",
+                                    weekday:
+                                        "text-sm lg:text-base text-black font-bold text-center",
+                                    month: "flex justify-center items-center flex-col",
                                     months: "flex justify-center",
                                     month_grid: "mt-1",
                                     day: "h-7 w-7 md:h-9 md:w-9 text-sm md:text-base font-normal aria-selected:bg-green-500 aria-selected:text-white aria-selected:rounded hover:bg-gray-200 hover:rounded",
-                                    caption_label: "text-base md:text-lg  font-semibold text-green-800 text-center",
-                                    month_caption: "flex justify-center relative pb-3 md:pb-5",
+                                    caption_label:
+                                        "text-sm lg:text-xl font-semibold text-green-800 text-center",
+                                    month_caption: "flex justify-center pb-3 md:pb-5",
                                 }}
                             />
-
                         </PopoverContent>
                     </Popover>
 
                     <FormMessage className="text-xs md:text-sm" />
-                </FormItem >
+                </FormItem>
             )}
         />
     )

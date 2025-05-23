@@ -38,14 +38,14 @@ const RatingBlock: React.FC<Props> = ({ block, form, setSelectElementId }) => {
                                             setSelectElementId(block.id);
                                             field.onChange(val);
                                         }}
-                                        className={`w-6 h-6 cursor-pointer transition ${field.value >= val
+                                        className={`sm:w-6 sm:h-6 w-5 h-5 cursor-pointer transition ${field.value >= val
                                             ? "fill-yellow-400 text-yellow-500"
                                             : "text-gray-400"
                                             }`}
                                     />
                                 ))}
                             </div>
-                            <Icons.delete className="text-red-800" onClick={() => removeBlock(block.id)} />
+                            <Icons.delete className="text-red-900 h-5 w-5 sm:h-8 sm:w-8" onClick={() => removeBlock(block.id)} />
                         </div>
                     </FormControl>
                     <FormMessage />
