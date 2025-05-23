@@ -1,14 +1,16 @@
 import React from 'react'
-import { useFormBuilderStore } from '../../../store/frombuilder'
-import EditTypes from './EditTypes'
+import { useFormBuilderStore } from '../../../../store/frombuilder'
+import EditTypes from '../EditTypes'
 type Props = {
     selectElementId: string | null
 }
 
-const FormEdit: React.FC<Props> = ({ selectElementId }) => {
+
+const ForSmallScreen: React.FC<Props> = ({ selectElementId }) => {
+    console.log("hello form small screen")
     if (!selectElementId) {
         return (
-            <div className=' flex flex-col items-center justify-center border-l-4 border-green-700 h-[90vh] p-3'>
+            <div className="fixed inset-0 bg-transparent bg-opacity-40 flex justify-center items-center z-50">
                 <p className="text-green-700 text-xl font-semibold">
                     No element selected
                 </p>
@@ -20,11 +22,12 @@ const FormEdit: React.FC<Props> = ({ selectElementId }) => {
         state.blocks.find((block) => block.id === selectElementId)
     );
 
+
     const updateBlock = useFormBuilderStore((state) => state.updateBlock);
 
     if (!block) {
         return (
-            <div className=' flex flex-col items-center justify-center border-l-4 border-green-700 h-[90vh] p-3'>
+            <div className=' flex flex-col items-center justify-center border-l-4 border-green-700 h-[30vh] lg:h-[90vh] p-3'>
                 <p className="text-green-700 text-xl font-semibold">
                     Element not found
                 </p>
@@ -41,16 +44,11 @@ const FormEdit: React.FC<Props> = ({ selectElementId }) => {
             }
         });
     };
-
     return (
-        <>
-            <div className=' h-[90vh] border-l-4 border-green-700 p-3 overflow-y-auto'>
-                <p className='text-green-700 text-xl font-semibold text-center mb-4'>Settings</p>
-                <EditTypes handleChange={handleChange} block={block} />
-            </div>
-
-        </>
+        <div className='bg-white shadow-md p-4 rounded-md' >
+            <EditTypes block={block} handleChange={handleChange} />
+        </div>
     )
 }
 
-export default FormEdit
+export default ForSmallScreen
