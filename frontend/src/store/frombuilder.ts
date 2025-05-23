@@ -8,9 +8,8 @@ export const useFormBuilderStore = create<FormBuilderState>((set) => ({
         const blockWithDefaults: FormBlock = {
             ...block,
             props: {
-                label: '',
-                placeholder: '',
                 required: false,
+                options: block.type === 'dropdown' ? ['Option 1'] : undefined,
                 ...block.props
             }
         };

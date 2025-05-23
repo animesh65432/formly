@@ -25,7 +25,7 @@ type Props = {
 
 const DropdownBlock: React.FC<Props> = ({ block, form, setSelectElementId }) => {
     const { removeBlock } = useFormBuilderStore();
-
+    console.log(block.props?.options)
     return (
         <div onClick={() => setSelectElementId(block.id)}>
             <FormField
@@ -49,10 +49,10 @@ const DropdownBlock: React.FC<Props> = ({ block, form, setSelectElementId }) => 
                                         {block.props?.options?.map((option: any, index: number) => (
                                             <SelectItem
                                                 key={index}
-                                                value={option.value}
+                                                value={option}
                                                 className="text-sm lg:text-xl"
                                             >
-                                                {option.label}
+                                                {option}
                                             </SelectItem>
                                         ))}
                                     </SelectContent>
