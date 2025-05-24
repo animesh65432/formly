@@ -26,8 +26,6 @@ const RenderField: React.FC<Props> = ({ block, form, setSelectElementId }) => {
         SetselectedIdforsmallscreen(blockId)
         setSelectElementId(blockId);
     };
-
-    console.log(isclickedSmallScreen)
     return (
         <>
             <FormField
@@ -60,14 +58,6 @@ const RenderField: React.FC<Props> = ({ block, form, setSelectElementId }) => {
                     </FormItem>
                 )}
             />
-            {/* <Popover open={isclickedSmallScreen} >
-                <PopoverTrigger asChild>
-                    <Pencil className='hidden' />
-                </PopoverTrigger>
-                <PopoverContent className='fixed'>
-                    <ForSmallScreen selectElementId={selectedIdforsmallscreen} />
-                </PopoverContent>
-            </Popover> */}
         </>
 
 

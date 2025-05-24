@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     FormControl,
     FormField,
@@ -15,6 +15,13 @@ import {
     SelectValue,
 } from "../../../ui/select";
 import Icons from "../../../Icons";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "../../../ui/popover"
+import { Pencil } from "lucide-react";
+import ForSmallScreen from "../../Edit/ForSmallScreen";
 import { useFormBuilderStore } from "../../../../store/frombuilder";
 
 type Props = {
@@ -25,14 +32,20 @@ type Props = {
 
 const DropdownBlock: React.FC<Props> = ({ block, form, setSelectElementId }) => {
     const { removeBlock } = useFormBuilderStore();
-    console.log(block.props?.options)
+    const [selectedIdforsmallscreen, SetselectedIdforsmallscreen] = useState<string | null>(null)
+    const [isclickedSmallScreen, SetisClickedSmallScreen] = useState<boolean>(false)
+
+    const handleClick = (id: string) => {
+        setSelectElementId(id);
+        SetselectedIdforsmallscreen(id)
+    };
     return (
-        <div onClick={() => setSelectElementId(block.id)}>
+        <div >
             <FormField
                 control={form.control}
                 name={block.id}
                 render={({ field }) => (
-                    <FormItem className="w-[60vw] lg:w-[30vw] m-auto">
+                    <FormItem className="w-[60vw] lg:w-[30vw] m-auto" onClick={() => handleClick(block.id)}>
                         <FormLabel className="text-green-800 font-semibold text-sm lg:text-xl">
                             {block.props?.label}
                         </FormLabel>
@@ -57,10 +70,20 @@ const DropdownBlock: React.FC<Props> = ({ block, form, setSelectElementId }) => 
                                         ))}
                                     </SelectContent>
                                 </Select>
-                                <Icons.delete
-                                    className="text-red-800 h-5 w-5 sm:h-8 sm:w-8 ml-2"
-                                    onClick={() => removeBlock(block.id)}
-                                />
+                                <div className="flex gap-2">
+                                    <Icons.delete
+                                        className="text-red-800 h-5 w-5 sm:h-8 sm:w-8 ml-2"
+                                        onClick={() => removeBlock(block.id)}
+                                    />
+                                    <Popover open={isclickedSmallScreen} >
+                                        <PopoverTrigger asChild>
+                                            <Pencil className='lg:hidden block' onClick={() => SetisClickedSmallScreen((prev) => !prev)} />
+                                        </PopoverTrigger>
+                                        <PopoverContent className='lg:hidden block mt-6 sm:mr-[26vw] md:mr-[30vw] mr-[25vw]'>
+                                            <ForSmallScreen selectElementId={selectedIdforsmallscreen} />
+                                        </PopoverContent>
+                                    </Popover>
+                                </div>
                             </div>
                         </FormControl>
                         <div className="text-sm lg:text-xl">

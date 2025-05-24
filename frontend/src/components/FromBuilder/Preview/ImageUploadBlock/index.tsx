@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     FormControl,
     FormField,
@@ -9,6 +9,14 @@ import {
 import type { FormBlock } from "../../../../types";
 import Icons from "../../../Icons";
 import { useFormBuilderStore } from "../../../../store/frombuilder";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "../../../ui/popover"
+import { Pencil } from "lucide-react";
+import ForSmallScreen from "../../Edit/ForSmallScreen";
+
 
 type Props = {
     block: FormBlock;
@@ -17,13 +25,20 @@ type Props = {
 };
 
 const ImageUploadBlock: React.FC<Props> = ({ block, form, setSelectElementId }) => {
+    const [selectedIdforsmallscreen, SetselectedIdforsmallscreen] = useState<string | null>(null)
+    const [isclickedSmallScreen, SetisClickedSmallScreen] = useState<boolean>(false)
     const { removeBlock } = useFormBuilderStore();
+
+    const handleClick = (blockId: string) => {
+        SetselectedIdforsmallscreen(blockId)
+        setSelectElementId(blockId);
+    };
     return (
         <FormField
             control={form.control}
             name={block.id}
             render={({ field }) => (
-                <FormItem className="w-[60vw] lg:w-[30vw] m-auto" onClick={() => setSelectElementId(block.id)}>
+                <FormItem className="w-[60vw] lg:w-[30vw] m-auto" onClick={() => handleClick(block.id)}>
                     <FormLabel className="text-sm lg:text-xl font-semibold text-green-800">
                         {block.props?.label || "Upload Image"}
                     </FormLabel>
@@ -41,12 +56,20 @@ const ImageUploadBlock: React.FC<Props> = ({ block, form, setSelectElementId }) 
                                             reader.readAsDataURL(file);
                                         }
                                     }}
-                                    className="block w-[59vw] lg:w-[29vw] bg-white p-2 text-sm lg:text-xl text-green-800 rounded-md shadow-md placeholder:text-sm lg:placeholder:text-xl file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-green-800 file:text-white hover:file:bg-green-700 cursor-pointer"
+                                    className="block w-[53vw] lg:w-[29vw] bg-white p-2 text-sm lg:text-xl text-green-800 rounded-md shadow-md placeholder:text-sm lg:placeholder:text-xl file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-green-800 file:text-white hover:file:bg-green-700 cursor-pointer"
 
                                 />
                             </div>
-                            <div>
+                            <div className="flex">
                                 <Icons.delete className="text-red-800 font-semibold h-5 w-5 sm:h-7 sm:w-7" onClick={() => removeBlock(block.id)} />
+                                <Popover open={isclickedSmallScreen} >
+                                    <PopoverTrigger asChild>
+                                        <Pencil className='lg:hidden block' onClick={() => SetisClickedSmallScreen((prev) => !prev)} />
+                                    </PopoverTrigger>
+                                    <PopoverContent className='lg:hidden block mt-6 sm:mr-[26vw] md:mr-[30vw] mr-[25vw]'>
+                                        <ForSmallScreen selectElementId={selectedIdforsmallscreen} />
+                                    </PopoverContent>
+                                </Popover>
                             </div>
                         </div>
                     </FormControl>
