@@ -1,18 +1,21 @@
 import { useFormBuilderStore } from "../store/frombuilder";
 import * as z from "zod";
+
 export const generateSchema = () => {
     const { blocks } = useFormBuilderStore.getState();
     const shape: any = {};
 
     blocks.forEach((block) => {
-        const name = `block-${block.id}`;
+        const name = block.id;
+
+        if (block.type === "button") {
+            return;
+        }
+
         if (block.type === "email") {
             shape[name] = block.props?.required
                 ? z.string().email("Invalid email").min(1, "Required")
                 : z.string().email("Invalid email").optional();
-        }
-        else if (block.type === "button") {
-            shape[name] = z.string()
         }
         else if (block.type === "phone") {
             shape[name] = block.props?.required
@@ -41,7 +44,7 @@ export const generateSchema = () => {
                 ? z.string().url("Invalid URL").min(1, "Required")
                 : z.string().url("Invalid URL").optional();
         }
-        else if (block.type === "input") {
+        else if (block.type === "text") {
             shape[name] = block.props?.required
                 ? z.string().min(1, "Required")
                 : z.string().optional();
@@ -61,7 +64,7 @@ export const generateSchema = () => {
                 : z.string().optional();
         }
         else if (block.type === "date") {
-            shape[name] = block.props?.required 
+            shape[name] = block.props?.required
                 ? z.coerce.date({
                     invalid_type_error: "Invalid date",
                     required_error: "Required"
