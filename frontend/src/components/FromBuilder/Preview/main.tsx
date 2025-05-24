@@ -10,6 +10,7 @@ import { InputTypes } from "./index"
 import { BLOCK_COMPONENT_MAP } from "../../../lib"
 import FromMobileElements from "../Elements/Mobile"
 
+
 type Props = {
     setSelectElementId: React.Dispatch<React.SetStateAction<string | null>>;
 };
@@ -23,8 +24,7 @@ const Preview: React.FC<Props> = ({ setSelectElementId }) => {
     const schema = useMemo(() => generateSchema(), [blocks]);
 
     const form = useForm({
-        resolver: zodResolver(schema),
-        defaultValues: {},
+        resolver: zodResolver(schema)
     });
 
     useEffect(() => {
@@ -39,7 +39,7 @@ const Preview: React.FC<Props> = ({ setSelectElementId }) => {
     }, [blocks]);
 
     const onSubmit = (data: any) => {
-        console.log("Form submitted with data:", data);
+        console.log("Form submitted with label keys:", data);
     };
 
     const renderBlock = (block: FormBlock) => {
@@ -58,7 +58,6 @@ const Preview: React.FC<Props> = ({ setSelectElementId }) => {
             </AnimateWrapper>
         );
     };
-
     return (
 
         <div className='h-[90vh] scrollbar-custom-x'>
