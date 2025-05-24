@@ -20,7 +20,6 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "../../../ui/popover"
-import { Pencil } from "lucide-react";
 import ForSmallScreen from "../../Edit/ForSmallScreen";
 import { useFormBuilderStore } from "../../../../store/frombuilder";
 
@@ -77,7 +76,7 @@ const DropdownBlock: React.FC<Props> = ({ block, form, setSelectElementId }) => 
                                     />
                                     <Popover open={isclickedSmallScreen} >
                                         <PopoverTrigger asChild>
-                                            <Pencil className='lg:hidden block' onClick={() => SetisClickedSmallScreen((prev) => !prev)} />
+                                            {!isclickedSmallScreen ? <Icons.edit className='lg:hidden block  h-5 w-5 sm:h-8 sm:w-8 text-green-800' onClick={() => SetisClickedSmallScreen(true)} /> : <Icons.close className='lg:hidden block text-red-800  h-5 w-5 sm:h-8 sm:w-8' onClick={() => SetisClickedSmallScreen(false)} />}
                                         </PopoverTrigger>
                                         <PopoverContent className='lg:hidden block mt-6 sm:mr-[26vw] md:mr-[30vw] mr-[25vw]'>
                                             <ForSmallScreen selectElementId={selectedIdforsmallscreen} />
