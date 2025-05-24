@@ -4,7 +4,6 @@ import { Button } from '../../../ui/button'
 import { useFormBuilderStore } from '../../../../store/frombuilder'
 import type { FormBlock } from "../../../../types"
 import { Popover, PopoverContent, PopoverTrigger } from "../../../ui/popover"
-import { Pencil } from "lucide-react";
 import ForSmallScreen from "../../Edit/ForSmallScreen";
 
 type Props = {
@@ -20,7 +19,7 @@ const ButtonBlock: React.FC<Props> = ({ block, setSelectElementId }) => {
     const handleClick = (id: string) => {
         setSelectElementId(id);
         SetselectedIdforsmallscreen(id)
-        SetisClickedSmallScreen((prev) => !prev)
+        SetisClickedSmallScreen(true)
     };
     return (
         <div className='w-[100%] flex justify-center items-center gap-2'>
@@ -30,7 +29,7 @@ const ButtonBlock: React.FC<Props> = ({ block, setSelectElementId }) => {
             <Icons.delete className='text-red-800' onClick={() => removeBlock(block.id)} />
             <Popover open={isclickedSmallScreen} >
                 <PopoverTrigger asChild>
-                    <Pencil className='lg:hidden block' onClick={() => handleClick(block.id)} />
+                    {!isclickedSmallScreen ? <Icons.edit className='lg:hidden block  h-5 w-5 sm:h-8 sm:w-8 text-green-800' onClick={() => handleClick(block.id)} /> : <Icons.close className='lg:hidden block text-red-800  h-5 w-5 sm:h-8 sm:w-8' onClick={() => SetisClickedSmallScreen(false)} />}
                 </PopoverTrigger>
                 <PopoverContent className='lg:hidden block mt-6 sm:mr-[26vw] md:mr-[30vw] mr-[25vw]'>
                     <ForSmallScreen selectElementId={selectedIdforsmallscreen} />
