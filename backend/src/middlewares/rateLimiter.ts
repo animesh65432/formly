@@ -1,53 +1,28 @@
 import { Request, Response, NextFunction } from "express";
-import db from "../db";
+import { redisClient } from "../service";
+
 const RateLimiter = (limit: number, windowMs: number) => {
     return async (req: Request, res: Response, next: NextFunction) => {
         const ip = req.ip;
-        const now = Date.now();
-
-        let entry
+        const key = `rate-limit:${ip}`;
 
         try {
+            const count = await redisClient.get(key);
 
-            entry = await db.rateLimit.findUnique({ where: { ip } });
-
-            if (!entry && ip) {
-                entry = await db.rateLimit.create({
-                    data: { ip, count: 1, lastRequest: now },
-                });
-
+            if (count && parseInt(count) >= limit) {
+                return res.status(429).json({ message: "Too many requests, please try again later." });
             }
 
-            const elapsed = entry ? now - Number(entry.lastRequest) : Infinity;
-
-            if (elapsed > windowMs) {
-                await db.rateLimit.update({
-                    where: { ip },
-                    data: { count: 1, lastRequest: now },
-                });
-                next();
-                return
+            if (count) {
+                await redisClient.incr(key);
+            } else {
+                await redisClient.set(key, "1", { EX: Math.floor(windowMs / 1000) });
             }
 
-            if (entry && entry.count < limit) {
-                await db.rateLimit.update({
-                    where: { ip },
-                    data: {
-                        count: { increment: 1 },
-                        lastRequest: now,
-                    },
-                });
-                next();
-                return
-            }
-
-
-            res.status(429).json({ message: "Too many requests. please try again later" });
-            return
-        } catch (err) {
-            console.error("Rate limiter error:", err);
             next();
-            return
+        } catch (error) {
+            console.error("Redis rate limiter error:", error);
+            next();
         }
     };
 };

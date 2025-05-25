@@ -14,8 +14,3 @@ model User {
   password  String?
 }
 
-model RateLimit {
-  ip          String   @id
-  count       Int      @default(0)
-  lastRequest BigInt   @default(0)
-}
