@@ -9,6 +9,8 @@ import type { FormBlock } from "../../../types"
 import { InputTypes } from "./index"
 import { BLOCK_COMPONENT_MAP } from "../../../lib"
 import FromMobileElements from "../Elements/Mobile"
+import { toast } from "react-toastify"
+import NotSelect from './NotSelect';
 
 
 type Props = {
@@ -40,6 +42,7 @@ const Preview: React.FC<Props> = ({ setSelectElementId }) => {
 
     const onSubmit = (data: any) => {
         console.log("Form submitted with label keys:", data);
+        toast.success("Form submitted  sucessfully")
     };
 
     const renderBlock = (block: FormBlock) => {
@@ -58,17 +61,21 @@ const Preview: React.FC<Props> = ({ setSelectElementId }) => {
             </AnimateWrapper>
         );
     };
+
+
     return (
 
         <div className='h-[90vh] scrollbar-custom-x'>
             <div className='lg:hidden block mb-4'>
                 <FromMobileElements />
             </div>
-            <Form {...form} >
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 border-green-800">
-                    {blocks.map(renderBlock)}
-                </form>
-            </Form>
+            {
+                blocks.length > 0 ? <Form {...form} >
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 border-green-800">
+                        {blocks.map(renderBlock)}
+                    </form>
+                </Form> : <NotSelect />
+            }
         </div>
 
     );

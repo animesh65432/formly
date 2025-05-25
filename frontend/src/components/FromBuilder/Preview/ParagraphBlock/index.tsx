@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FormItem, FormLabel, FormField, FormControl } from '../../../ui/form';
+import { FormItem, FormLabel, FormField, FormControl, FormMessage } from '../../../ui/form';
 import type { FormBlock } from "../../../../types";
 import Icons from '../../../Icons';
 import { useFormBuilderStore } from '../../../../store/frombuilder';
@@ -56,6 +56,7 @@ const ParagraphBlock: React.FC<Props> = ({ block, setSelectElementId, form }) =>
                             </Popover>
                         </div>
                     </FormControl>
+                    <FormMessage />
                 </FormItem>
             )}
         />

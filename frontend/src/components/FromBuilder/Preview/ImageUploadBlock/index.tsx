@@ -15,8 +15,6 @@ import {
     PopoverTrigger,
 } from "../../../ui/popover"
 import ForSmallScreen from "../../Edit/ForSmallScreen";
-
-
 type Props = {
     block: FormBlock;
     setSelectElementId: React.Dispatch<React.SetStateAction<string | null>>;
@@ -32,6 +30,8 @@ const ImageUploadBlock: React.FC<Props> = ({ block, form, setSelectElementId }) 
         SetselectedIdforsmallscreen(blockId)
         setSelectElementId(blockId);
     };
+
+
     return (
         <FormField
             control={form.control}

@@ -78,9 +78,34 @@ export const generateSchema = () => {
                 ? z.string().min(1, "Required")
                 : z.string().optional();
         }
-        else {
-            shape[name] = z.any();
+        else if (block.type === "rating") {
+            shape[name] = block.props?.required
+                ? z.number().min(1, "Required")
+                : z.number().optional();
         }
+        else if (block.type === "image") {
+            shape[name] = block.props?.required
+                ? z
+                    .instanceof(File, { message: "Image is required" })
+                    .refine(file => file.size > 0, "Image is required")
+                : z
+                    .instanceof(File)
+                    .optional()
+                    .refine(file => !file || file.size > 0, "Invalid file");
+        }
+        else if (block.type === "file") {
+            shape[name] = block.props?.required
+                ? z
+                    .string()
+                    .min(1, "File is required")
+                    .refine(name => /\.[a-z0-9]+$/i.test(name), "Invalid file name")
+                : z
+                    .string()
+                    .optional()
+                    .refine(name => !name || /\.[a-z0-9]+$/i.test(name), "Invalid file name");
+        }
+
+
     });
 
     return z.object(shape);
