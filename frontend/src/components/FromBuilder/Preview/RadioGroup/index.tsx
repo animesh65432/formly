@@ -10,7 +10,7 @@ type Props = {
 };
 
 const RadioGroupBlock: React.FC<Props> = ({ block, form, setSelectElementId }) => {
-    const options = block.props?.options || [];
+    const options = block?.options || [];
 
     return (
         <FormField
@@ -18,7 +18,7 @@ const RadioGroupBlock: React.FC<Props> = ({ block, form, setSelectElementId }) =
             name={block.id}
             render={({ field }) => (
                 <FormItem onClick={() => setSelectElementId(block.id)}>
-                    <FormLabel>{block.props?.label}</FormLabel>
+                    <FormLabel>{block?.label}</FormLabel>
                     <FormControl>
                         <RadioGroup
                             value={field.value}

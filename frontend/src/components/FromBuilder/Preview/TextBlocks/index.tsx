@@ -33,12 +33,12 @@ const TextBolck: React.FC<Props> = ({ setSelectElementId, block, form }) => {
             render={({ field }) => (
                 <FormItem className='w-[60vw] lg:w-[30vw]  m-auto' onClick={() => handleClick(block.id)}>
                     <FormLabel className="text-green-800 font-semibold md:text-xl text-sm">
-                        {block.props?.label}
+                        {block?.label}
                     </FormLabel>
                     <FormControl>
                         <div className='flex gap-2 items-center'>
                             <Textarea
-                                placeholder={block.props?.placeholder || ""}
+                                placeholder={block?.placeholder || ""}
                                 {...field}
                                 className="bg-white text-green-800 placeholder:text-green-800 placeholder:text-sm lg:placeholder:text-xl "
                             />

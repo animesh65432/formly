@@ -8,9 +8,31 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
+  id        Int   @id @default(autoincrement())
   name      String?
   email     String   @unique
   password  String?
+  Froms Form[]
 }
+
+model Form {
+  id     String      @id @default(cuid())
+  blocks FormBlock[]
+  userId Int
+  user  User  @relation(fields: [userId],references: [id],onDelete: Cascade)
+  @@map("forms")
+}
+
+model FormBlock {
+  id          String      @id @default(cuid())
+  formId      String
+  type        String
+  label       String?   
+  options      Json?
+  placeholder String?     
+  required    Boolean     @default(false)
+  form        Form        @relation(fields: [formId], references: [id], onDelete: Cascade)
+  @@map("form_blocks")
+}
+
 

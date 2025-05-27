@@ -40,7 +40,7 @@ const FileUploadBlock: React.FC<Props> = ({ block, form, setSelectElementId }) =
                 <FormItem className="w-[60vw] lg:w-[30vw] m-auto" onClick={() => handleClick(block.id)}>
                     <FormLabel className="md:text-xl text-sm text-green-800">
 
-                        {block.props?.label || "Upload File"}
+                        {block?.label || "Upload File"}
                     </FormLabel>
                     <FormControl className="flex items-center justify-between">
                         <div className="relative w-[100%] flex gap-2">

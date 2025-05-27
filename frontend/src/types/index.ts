@@ -9,12 +9,11 @@ export interface FormElement {
 export type FormBlock = {
     id: string;
     type: string;
-    props?: {
-        label?: string;
-        placeholder?: string;
-        required?: boolean;
-        options?: string[];
-    };
+    label?: string;
+    placeholder?: string;
+    required?: boolean;
+    options?: string[];
+
 };
 
 export type FormBuilderState = {

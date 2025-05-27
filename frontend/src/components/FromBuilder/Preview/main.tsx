@@ -62,6 +62,7 @@ const Preview: React.FC<Props> = ({ setSelectElementId }) => {
         );
     };
 
+    console.log(blocks)
 
     return (
 

@@ -40,7 +40,7 @@ const DateBlock: React.FC<Props> = ({ block, form, setSelectElementId }) => {
                     <FormItem className="w-[58vw] lg:w-[28vw] m-auto" onClick={() => handleClick(block.id)} >
                         <div className="flex justify-between items-center mb-2">
                             <FormLabel className="text-sm lg:text-xl text-green-800 font-semibold">
-                                {block.props?.label}
+                                {block?.label}
                             </FormLabel>
                         </div>
 
@@ -52,7 +52,7 @@ const DateBlock: React.FC<Props> = ({ block, form, setSelectElementId }) => {
                                     >
                                         <div className="flex gap-4">
                                             <span className="text-sm lg:text-xl text-green-800">
-                                                {field.value ? format(field.value, "PPP") : `${block.props?.placeholder}`}
+                                                {field.value ? format(field.value, "PPP") : `${block?.placeholder}`}
                                             </span>
                                             <Icons.calender className="w-5 h-5 md:w-6 md:h-6 text-green-600" />
                                         </div>

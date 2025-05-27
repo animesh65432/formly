@@ -33,7 +33,7 @@ const HeadingBlock: React.FC<Props> = ({ block, setSelectElementId, form }) => {
             render={() => (
                 <FormItem className="w-[60vw] lg:w-[30vw] m-auto flex justify-around" onClick={() => handleClick(block.id)} >
                     <FormLabel className="text-green-800 font-semibold mb-1 md:text-3xl text-xl lg:text-3xl">
-                        {block.props?.label || "Heading"}
+                        {block?.label || "Heading"}
                     </FormLabel>
                     <div className='flex gap-2'>
                         <Icons.delete className="text-red-800 w-5 h-5 sm:w-6 sm:h-6" onClick={() => removeBlock(block.id)} />

@@ -38,10 +38,8 @@ const ForSmallScreen: React.FC<Props> = ({ selectElementId }) => {
     const handleChange = (field: string, value: string | boolean | string[]) => {
         updateBlock(block.id, {
             ...block,
-            props: {
-                ...block.props,
-                [field]: value
-            }
+            [field]: value
+
         });
     };
     return (

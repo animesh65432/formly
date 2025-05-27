@@ -6,12 +6,9 @@ export const useFormBuilderStore = create<FormBuilderState>((set) => ({
 
     addBlock: (block) => {
         const blockWithDefaults: FormBlock = {
-            ...block,
-            props: {
-                required: false,
-                options: block.type === 'dropdown' ? ['Option 1'] : undefined,
-                ...block.props
-            }
+            required: false,
+            options: block.type === 'dropdown' ? ['Option 1'] : undefined,
+            ...block
         };
 
         set((state) => ({
