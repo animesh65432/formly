@@ -2,16 +2,15 @@ import { Request, Response } from "express"
 import db from "../../db"
 import { asyncerrorhandler } from "../../middlewares"
 import { v4 } from 'uuid';
-const createfrom = asyncerrorhandler(async (req: Request, res: Response) => {
+import { redisClient } from "../../service"
+const create = asyncerrorhandler(async (req: Request, res: Response) => {
     const { blocks } = req.body
     const userId = Number(req.user?.id)
-
-    console.log(blocks, "blocks")
     if (blocks.length === 0) {
         res.status(400).json({ message: "please create some fromfileds" })
         return
     }
-    await db.form.create({
+    const createFormPromise = db.form.create({
         data: {
             blocks: {
                 create: blocks
@@ -20,13 +19,29 @@ const createfrom = asyncerrorhandler(async (req: Request, res: Response) => {
         }
     });
 
+    const deleteUserFormsCache = redisClient.del(`users-forms:${userId}`);
+    const deleteAllFormsCache = redisClient.del(`forms:${req.user?.id}`)
+
+    await Promise.all([createFormPromise, deleteAllFormsCache, deleteUserFormsCache])
+
     res.status(200).json({
         message: "done it"
     })
     return
 })
 
-const GetFroms = asyncerrorhandler(async (req: Request, res: Response) => {
+const Get = asyncerrorhandler(async (req: Request, res: Response) => {
+    const redisKey = `forms:${req.user?.id}`;
+    const cachedData = await redisClient.get(redisKey);
+
+    if (cachedData) {
+        res.status(200).json({
+            message: "Get the forms",
+            blocks: JSON.parse(cachedData),
+        });
+        return
+    }
+
     const blocks = await db.form.findMany({
         include: {
             blocks: {
@@ -48,6 +63,8 @@ const GetFroms = asyncerrorhandler(async (req: Request, res: Response) => {
         },
     })
 
+    await redisClient.set(redisKey, JSON.stringify(blocks), { EX: 300 });
+
     res.status(200).json({
         message: "Get the froms",
         blocks
@@ -57,6 +74,16 @@ const GetFroms = asyncerrorhandler(async (req: Request, res: Response) => {
 
 const GetUserFroms = asyncerrorhandler(async (req: Request, res: Response) => {
     const userId = Number(req.user?.id)
+    const redisKey = `users-forms:${req.user?.id}`;
+    const cachedData = await redisClient.get(redisKey);
+
+    if (cachedData) {
+        res.status(200).json({
+            message: "Get the forms ",
+            blocks: JSON.parse(cachedData),
+        });
+        return
+    }
     const blocks = await db.form.findMany({
         include: {
             blocks: {
@@ -74,6 +101,8 @@ const GetUserFroms = asyncerrorhandler(async (req: Request, res: Response) => {
         where: { userId }
     })
 
+    await redisClient.set(redisKey, JSON.stringify(blocks), { EX: 300 });
+
     res.status(200).json({
         message: "Get the froms",
         blocks
@@ -82,7 +111,7 @@ const GetUserFroms = asyncerrorhandler(async (req: Request, res: Response) => {
 
 })
 
-const deletefrom = asyncerrorhandler(async (req: Request, res: Response) => {
+const Delete = asyncerrorhandler(async (req: Request, res: Response) => {
     const userId = Number(req.user?.id)
     const fromId = req.params.id
 
@@ -92,19 +121,23 @@ const deletefrom = asyncerrorhandler(async (req: Request, res: Response) => {
         })
         return
     }
-    await db.form.delete({
+    const deleteAllForm = db.form.delete({
         where: {
             userId,
             id: fromId
         }
     })
+    const deleteUserFormsCache = redisClient.del(`users-forms:${userId}`);
+    const deleteAllFormsCache = redisClient.del(`forms:${req.user?.id}`)
+
+    await Promise.all([deleteAllForm, deleteAllFormsCache, deleteUserFormsCache])
     res.status(200).json({
         message: "delete the froms",
     })
     return
 })
 
-const updatefrom = asyncerrorhandler(async (req: Request, res: Response) => {
+const update = asyncerrorhandler(async (req: Request, res: Response) => {
     const userId = Number(req.user?.id)
     const fromId = req.params.id
 
@@ -117,14 +150,14 @@ const updatefrom = asyncerrorhandler(async (req: Request, res: Response) => {
         return
     }
 
-    await db.form.delete({
+    const deletedForm = await db.form.delete({
         where: {
             userId,
             id: fromId
         }
     })
 
-    await db.form.create({
+    const createFrom = await db.form.create({
         data: {
             id: v4(),
             blocks: {
@@ -133,9 +166,15 @@ const updatefrom = asyncerrorhandler(async (req: Request, res: Response) => {
             userId
         }
     })
+
+    const deleteUserFormsCache = redisClient.del(`users-forms:${userId}`);
+    const deleteAllFormsCache = redisClient.del(`forms:${req.user?.id}`)
+
+    await Promise.all([deletedForm, createFrom, deleteAllFormsCache, deleteUserFormsCache])
+
     res.status(200).json({
         message: "update the froms",
     })
     return
 })
-export { createfrom, GetFroms, GetUserFroms, deletefrom, updatefrom }
+export { create, Get, GetUserFroms, Delete, update }
