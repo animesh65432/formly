@@ -13,7 +13,7 @@ const Element: React.FC<Props> = ({ element }) => {
 
     const add = (element: FormElement) => {
         if (element) {
-            addBlock({ id: uuidv4(), type: element.id, props: { label: element.id, placeholder: element.name, required: false } })
+            addBlock({ id: uuidv4(), type: element.id, label: element.id, placeholder: element.name, required: false })
         }
 
     }

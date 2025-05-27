@@ -39,7 +39,7 @@ const ImageUploadBlock: React.FC<Props> = ({ block, form, setSelectElementId }) 
             render={({ field }) => (
                 <FormItem className="w-[60vw] lg:w-[30vw] m-auto" onClick={() => handleClick(block.id)}>
                     <FormLabel className="text-sm lg:text-xl font-semibold text-green-800">
-                        {block.props?.label || "Upload Image"}
+                        {block?.label || "Upload Image"}
                     </FormLabel>
                     <FormControl>
                         <div className="flex justify-between items-center">

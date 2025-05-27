@@ -9,21 +9,21 @@ type Props = {
 
 const DropDown: React.FC<Props> = ({ block, handleChange }) => {
     const addOption = () => {
-        const currentOptions = block.props?.options || [];
+        const currentOptions = block?.options || [];
         const newOptions = [...currentOptions, `Option ${currentOptions.length + 1}`];
         handleChange('options', newOptions);
     };
 
 
     const removeOption = (index: number) => {
-        const currentOptions = block.props?.options || [];
+        const currentOptions = block?.options || [];
         const newOptions = currentOptions.filter((_, i) => i !== index);
         handleChange('options', newOptions);
     };
 
 
     const updateOption = (index: number, value: string) => {
-        const currentOptions = block.props?.options || [];
+        const currentOptions = block?.options || [];
         const newOptions = [...currentOptions];
         newOptions[index] = value;
         handleChange('options', newOptions);
@@ -33,7 +33,7 @@ const DropDown: React.FC<Props> = ({ block, handleChange }) => {
         <div>
             <label className=' text-sm md:text-base text-green-700 font-semibold block mb-2 md:mb-1'>Options</label>
             <div className="flex flex-col gap-2">
-                {(block.props?.options || []).map((option: string, index: number) => (
+                {(block?.options || []).map((option: string, index: number) => (
                     <div key={index} className="flex items-center gap-2">
                         <input
                             type="text"

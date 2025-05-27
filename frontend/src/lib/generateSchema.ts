@@ -13,12 +13,12 @@ export const generateSchema = () => {
         }
 
         if (block.type === "email") {
-            shape[name] = block.props?.required
+            shape[name] = block?.required
                 ? z.string().email("Invalid email").min(1, "Required")
                 : z.string().email("Invalid email").optional();
         }
         else if (block.type === "phone") {
-            shape[name] = block.props?.required
+            shape[name] = block?.required
                 ? z
                     .string()
                     .min(10, "Phone number must be at least 10 digits")
@@ -30,27 +30,27 @@ export const generateSchema = () => {
                     .optional();
         }
         else if (block.type === "number") {
-            shape[name] = block.props?.required
+            shape[name] = block?.required
                 ? z.number().min(1, "Required")
                 : z.number().optional();
         }
         else if (block.type === "password") {
-            shape[name] = block.props?.required
+            shape[name] = block?.required
                 ? z.string().min(8, "Password must be at least 8 characters")
                 : z.string().optional();
         }
         else if (block.type === "url") {
-            shape[name] = block.props?.required
+            shape[name] = block?.required
                 ? z.string().url("Invalid URL").min(1, "Required")
                 : z.string().url("Invalid URL").optional();
         }
         else if (block.type === "text") {
-            shape[name] = block.props?.required
+            shape[name] = block?.required
                 ? z.string().min(1, "Required")
                 : z.string().optional();
         }
         else if (block.type === "paragraph") {
-            shape[name] = block.props?.required
+            shape[name] = block?.required
                 ? z.string().min(1, "Required")
                 : z.string().optional();
         }
@@ -58,13 +58,13 @@ export const generateSchema = () => {
             shape[name] = z.string().optional();
         }
         else if (block.type === "dropdown") {
-            const options: string[] = block.props?.options || [];
-            shape[name] = block.props?.required
+            const options: string[] = block?.options || [];
+            shape[name] = block?.required
                 ? z.string().refine((val: string) => options.includes(val), "Invalid selection")
                 : z.string().optional();
         }
         else if (block.type === "date") {
-            shape[name] = block.props?.required
+            shape[name] = block?.required
                 ? z.coerce.date({
                     invalid_type_error: "Invalid date",
                     required_error: "Required"
@@ -74,17 +74,17 @@ export const generateSchema = () => {
                 });
         }
         else if (block.type === "textarea") {
-            shape[name] = block.props?.required
+            shape[name] = block?.required
                 ? z.string().min(1, "Required")
                 : z.string().optional();
         }
         else if (block.type === "rating") {
-            shape[name] = block.props?.required
+            shape[name] = block?.required
                 ? z.number().min(1, "Required")
                 : z.number().optional();
         }
         else if (block.type === "image") {
-            shape[name] = block.props?.required
+            shape[name] = block?.required
                 ? z
                     .instanceof(File, { message: "Image is required" })
                     .refine(file => file.size > 0, "Image is required")
@@ -94,7 +94,7 @@ export const generateSchema = () => {
                     .refine(file => !file || file.size > 0, "Invalid file");
         }
         else if (block.type === "file") {
-            shape[name] = block.props?.required
+            shape[name] = block?.required
                 ? z
                     .string()
                     .min(1, "File is required")

@@ -39,7 +39,7 @@ const RatingBlock: React.FC<Props> = ({ block, form, setSelectElementId }) => {
                 render={({ field }) => (
                     <FormItem className="m-auto w-[60vw] lg:w-[30vw]" onClick={() => handleClick(block.id)}>
                         <FormLabel className="text-green-800 font-semibold md:text-xl text-sm">
-                            {block.props?.label || "Rating"}
+                            {block?.label || "Rating"}
                         </FormLabel>
                         <FormControl>
                             <div className="flex items-center gap-2 w-[100%]  justify-between">

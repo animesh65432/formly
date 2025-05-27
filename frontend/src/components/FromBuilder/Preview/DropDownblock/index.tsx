@@ -38,6 +38,8 @@ const DropdownBlock: React.FC<Props> = ({ block, form, setSelectElementId }) => 
         setSelectElementId(id);
         SetselectedIdforsmallscreen(id)
     };
+
+    const options = block?.options || []
     return (
         <div >
             <FormField
@@ -46,19 +48,19 @@ const DropdownBlock: React.FC<Props> = ({ block, form, setSelectElementId }) => 
                 render={({ field }) => (
                     <FormItem className="w-[60vw] lg:w-[30vw] m-auto" onClick={() => handleClick(block.id)}>
                         <FormLabel className="text-green-800 font-semibold text-sm lg:text-xl">
-                            {block.props?.label}
+                            {block?.label}
                         </FormLabel>
                         <FormControl>
                             <div className="flex justify-between items-center">
                                 <Select onValueChange={field.onChange} value={field.value}>
                                     <SelectTrigger className="border-2 border-grey-100 text-green-800 bg-white w-full rounded-md">
                                         <SelectValue
-                                            placeholder={block.props?.placeholder}
+                                            placeholder={block?.placeholder}
                                             className="text-sm lg:text-xl"
                                         />
                                     </SelectTrigger>
                                     <SelectContent className="border border-green-800 bg-white text-green-800 z-50">
-                                        {block.props?.options?.map((option: any, index: number) => (
+                                        {options.map((option: any, index: number) => (
                                             <SelectItem
                                                 key={index}
                                                 value={option}

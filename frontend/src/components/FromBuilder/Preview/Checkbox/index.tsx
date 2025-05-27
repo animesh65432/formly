@@ -11,11 +11,11 @@ type Props = {
 };
 
 const CheckboxGroupBlock: React.FC<Props> = ({ block, form, setSelectElementId }) => {
-    const options = block.props?.options || [];
+    const options = block?.options || [];
 
     return (
         <FormItem onClick={() => setSelectElementId(block.id)}>
-            <FormLabel>{block.props?.label}</FormLabel>
+            <FormLabel>{block?.label}</FormLabel>
             <div className="flex flex-col gap-2">
                 {options.map((opt: string) => (
                     <FormField
