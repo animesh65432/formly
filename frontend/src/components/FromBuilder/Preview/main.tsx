@@ -62,8 +62,6 @@ const Preview: React.FC<Props> = ({ setSelectElementId }) => {
         );
     };
 
-    console.log(block)
-
     return (
 
         <div className='h-[90vh] scrollbar-custom-x'>

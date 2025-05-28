@@ -5,7 +5,7 @@ const Sidebar: React.FC = () => {
     const [activeItem, setActiveItem] = useState<string>("templates");
 
     return (
-        <div className="h-full flex flex-col bg-white shadow-lg rounded-r-xl p-6 justify-start items-stretch text-green-800">
+        <div className="h-full flex flex-col bg-white shadow-lg rounded-r-xl lg:p-6 p-3 justify-start items-stretch text-green-800">
 
             <nav className="flex-grow">
                 <ul className="space-y-6">
