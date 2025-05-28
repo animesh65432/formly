@@ -1,12 +1,15 @@
 import { Call } from "../service/call"
-import type { FormBlock } from "../types"
-export const Get = (token: string) => Call({
-    headers: {
-        Authorization: token
-    },
-    path: "/form/Get",
-    method: "GET"
-})
+import type { FormBlock, Blocks } from "../types"
+
+export const Get = (token: string) =>
+    Call<undefined, Blocks>({
+        headers: {
+            Authorization: token,
+        },
+        path: "/form/Get",
+        method: "GET",
+    });
+
 
 export const create = (token: string, block: FormBlock[]) => Call({
     headers: {

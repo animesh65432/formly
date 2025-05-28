@@ -13,11 +13,10 @@ import {
 type Props = {
     block: FormBlock;
     form: any;
-    setSelectElementId: React.Dispatch<React.SetStateAction<string | null>>
 }
 
-const RenderField: React.FC<Props> = ({ block, form, setSelectElementId }) => {
-    const { removeBlock } = useFormBuilderStore()
+const RenderField: React.FC<Props> = ({ block, form }) => {
+    const { removeBlock, setSelectElementId } = useFormBuilderStore()
     const [selectedIdforsmallscreen, SetselectedIdforsmallscreen] = useState<string | null>(null)
     const [isclickedSmallScreen, SetisClickedSmallScreen] = useState<boolean>(false)
     const handleClick = (blockId: string) => {

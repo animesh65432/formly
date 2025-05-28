@@ -14,15 +14,14 @@ import NotSelect from './NotSelect';
 
 
 type Props = {
-    setSelectElementId: React.Dispatch<React.SetStateAction<string | null>>;
+    block: FormBlock[]
 };
 
 
-const Preview: React.FC<Props> = ({ setSelectElementId }) => {
-    const { block } = useFormBuilderStore();
+const Preview: React.FC<Props> = ({ block }) => {
     const [lastAddedId, setLastAddedId] = useState<string | null>(null);
     const [prevblockLength, setPrevblockLength] = useState(0);
-
+    const { setSelectElementId } = useFormBuilderStore()
     const schema = useMemo(() => generateSchema(), [block]);
 
     const form = useForm({

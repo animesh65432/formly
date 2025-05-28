@@ -1,11 +1,10 @@
 import React from 'react'
 import { useFormBuilderStore } from '../../../store/frombuilder'
 import EditTypes from './EditTypes'
-type Props = {
-    selectElementId: string | null
-}
 
-const FormEdit: React.FC<Props> = ({ selectElementId }) => {
+
+const FormEdit: React.FC = () => {
+    const { selectElementId } = useFormBuilderStore()
     if (!selectElementId) {
         return (
             <div className=' flex flex-col items-center justify-center border-l-4 border-green-700 h-[90vh] p-3'>
@@ -15,6 +14,8 @@ const FormEdit: React.FC<Props> = ({ selectElementId }) => {
             </div>
         )
     }
+
+    console.log(selectElementId)
 
     const block = useFormBuilderStore((state) =>
         state.block.find((block) => block.id === selectElementId)
