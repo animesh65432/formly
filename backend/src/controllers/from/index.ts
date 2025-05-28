@@ -24,7 +24,8 @@ const create = asyncerrorhandler(async (req: Request, res: Response) => {
 
     await Promise.all([createFormPromise, deleteAllFormsCache, deleteUserFormsCache])
     res.status(200).json({
-        message: "done it"
+        message: "done it",
+        fromid: (await createFormPromise).id
     })
     return
 })

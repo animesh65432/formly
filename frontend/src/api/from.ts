@@ -1,14 +1,51 @@
 import { Call } from "../service/call"
-
-
-export const Get = () => Call({
-    headers: {},
+import type { FormBlock } from "../types"
+export const Get = (token: string) => Call({
+    headers: {
+        Authorization: token
+    },
     path: "/form/Get",
     method: "GET"
 })
 
-export const create = () => Call({
-    headers: {},
-    path: "/form",
-    method: "POST"
+export const create = (token: string, block: FormBlock[]) => Call({
+    headers: {
+        Authorization: token
+    },
+    path: "/form/create",
+    method: "POST",
+    request: { block }
+})
+
+export const GetUserfroms = (token: string) => Call({
+    headers: {
+        Authorization: token
+    },
+    path: "/form/GetUser",
+    method: "GET"
+})
+
+export const Delete = (token: string, id: string) => Call({
+    headers: {
+        Authorization: token
+    },
+    path: `/form/delete/${id}`,
+    method: "DELETE"
+})
+
+export const update = (token: string, block: FormBlock[], id: string) => Call({
+    headers: { Authorization: token },
+    path: `/form/update/${id}`,
+    method: "PUT",
+    request: {
+        block
+    }
+})
+
+export const GetfrombyId = (token: string, id: string) => Call({
+    headers: {
+        Authorization: token
+    },
+    path: `/form/GetfrombyId/${id}`,
+    method: "GET"
 })
