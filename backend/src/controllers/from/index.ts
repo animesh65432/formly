@@ -1,29 +1,28 @@
 import { Request, Response } from "express"
 import db from "../../db"
 import { asyncerrorhandler } from "../../middlewares"
-import { v4 } from 'uuid';
 import { redisClient } from "../../service"
 const create = asyncerrorhandler(async (req: Request, res: Response) => {
-    const { blocks } = req.body
+    const { block } = req.body
     const userId = Number(req.user?.id)
-    if (blocks.length === 0) {
+    if (block.length === 0) {
         res.status(400).json({ message: "please create some fromfileds" })
         return
     }
+
+    console.log(block, "block")
     const createFormPromise = db.form.create({
         data: {
-            blocks: {
-                create: blocks
+            block: {
+                create: block
             },
             userId
         }
     });
-
     const deleteUserFormsCache = redisClient.del(`users-forms:${userId}`);
     const deleteAllFormsCache = redisClient.del(`forms:${req.user?.id}`)
 
     await Promise.all([createFormPromise, deleteAllFormsCache, deleteUserFormsCache])
-
     res.status(200).json({
         message: "done it"
     })
@@ -37,14 +36,14 @@ const Get = asyncerrorhandler(async (req: Request, res: Response) => {
     if (cachedData) {
         res.status(200).json({
             message: "Get the forms",
-            blocks: JSON.parse(cachedData),
+            block: JSON.parse(cachedData),
         });
         return
     }
 
-    const blocks = await db.form.findMany({
+    const block = await db.form.findMany({
         include: {
-            blocks: {
+            block: {
                 select: {
                     id: true,
                     type: true,
@@ -63,11 +62,11 @@ const Get = asyncerrorhandler(async (req: Request, res: Response) => {
         },
     })
 
-    await redisClient.set(redisKey, JSON.stringify(blocks), { EX: 300 });
+    await redisClient.set(redisKey, JSON.stringify(block), { EX: 300 });
 
     res.status(200).json({
         message: "Get the froms",
-        blocks
+        block
     })
     return
 })
@@ -80,13 +79,13 @@ const GetUserFroms = asyncerrorhandler(async (req: Request, res: Response) => {
     if (cachedData) {
         res.status(200).json({
             message: "Get the forms ",
-            blocks: JSON.parse(cachedData),
+            block: JSON.parse(cachedData),
         });
         return
     }
-    const blocks = await db.form.findMany({
+    const block = await db.form.findMany({
         include: {
-            blocks: {
+            block: {
                 select: {
                     id: true,
                     type: true,
@@ -101,11 +100,11 @@ const GetUserFroms = asyncerrorhandler(async (req: Request, res: Response) => {
         where: { userId }
     })
 
-    await redisClient.set(redisKey, JSON.stringify(blocks), { EX: 300 });
+    await redisClient.set(redisKey, JSON.stringify(block), { EX: 300 });
 
     res.status(200).json({
         message: "Get the froms",
-        blocks
+        block
     })
     return
 
@@ -141,9 +140,9 @@ const update = asyncerrorhandler(async (req: Request, res: Response) => {
     const userId = Number(req.user?.id)
     const fromId = req.params.id
 
-    const { blocks } = req.body
+    const { block } = req.body
 
-    if (!userId || !fromId || blocks.length === 0) {
+    if (!userId || !fromId || block.length === 0) {
         res.status(400).json({
             message: "userId and fromId and empty block's  are required"
         })
@@ -159,9 +158,8 @@ const update = asyncerrorhandler(async (req: Request, res: Response) => {
 
     const createFrom = await db.form.create({
         data: {
-            id: v4(),
-            blocks: {
-                create: blocks
+            block: {
+                create: block
             },
             userId
         }
@@ -177,4 +175,46 @@ const update = asyncerrorhandler(async (req: Request, res: Response) => {
     })
     return
 })
-export { create, Get, GetUserFroms, Delete, update }
+
+const GetfrombyId = asyncerrorhandler(async (req: Request, res: Response) => {
+    const { id } = req.params
+
+    const redisKey = `form:${id}`;
+    const cachedData = await redisClient.get(redisKey);
+
+    if (cachedData) {
+        res.status(200).json({
+            message: "Get the forms ",
+            block: JSON.parse(cachedData),
+        });
+        return
+    }
+
+    const block = await db.form.findUnique({
+        where: {
+            id
+        },
+        include: {
+            block: {
+                select: {
+                    id: true,
+                    type: true,
+                    label: true,
+                    placeholder: true,
+                    required: true,
+                    options: true
+                }
+            }
+        }
+    })
+
+
+    await redisClient.set(redisKey, JSON.stringify(block), { EX: 300 });
+
+    res.status(200).json({
+        message: "Get the froms",
+        block
+    })
+    return
+})
+export { create, Get, GetUserFroms, Delete, update, GetfrombyId }

@@ -15,10 +15,14 @@ import {
     // Check,
     Calendar,
     ImageIcon,
-    Square
+    Square,
+    LayoutTemplate,
+    Pen,
+    Workflow,
+    Brain,
+    Settings
 } from "lucide-react"
 import type { FormElement } from "../types"
-
 
 
 export const blurIn = {
@@ -75,7 +79,7 @@ export const sideward = {
 export const whyfromly = [
     {
         title: "Notion-Style Form Editing",
-        description: "Design forms the way you write in Notion — using slash commands and intuitive drag-and-drop blocks. No confusing UI. Just pure, focused form-building."
+        description: "Design forms the way you write in Notion — using slash commands and intuitive drag-and-drop block. No confusing UI. Just pure, focused form-building."
 
     }, {
         title: "Instant Integrations",
@@ -146,3 +150,10 @@ export const formElements: FormElement[] = [
     { id: "url", name: "URL Input", icon: Link },
 ]
 
+export const menuItems = [
+    { id: "templates", icon: LayoutTemplate, label: "Templates" },
+    { id: "forms", icon: Pen, label: "My Forms" },
+    { id: "integrations", icon: Workflow, label: "Integrations" },
+    { id: "settings", icon: Settings, label: "Settings" },
+    { id: "Ai", icon: Brain, label: "AI" }
+];

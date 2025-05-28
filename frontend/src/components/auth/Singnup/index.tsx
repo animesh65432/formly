@@ -17,15 +17,17 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import type { z } from "zod"
 import { useNavigate } from "react-router-dom"
-import { createUser, longinUser } from "../../../api/Users"
+import { createUser, googleLogin } from "../../../api/Users"
 import Hi from "../../Hi"
 import { toast } from "react-toastify"
+import { useAuth } from "../../../store/auth"
 
 type SigninSchemaType = z.infer<typeof SingupSchema>
 
 const Signup: React.FC = () => {
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
+    const { addtoken } = useAuth()
 
     const {
         register,
@@ -50,7 +52,8 @@ const Signup: React.FC = () => {
     const handleLoginSuccess = async (credentialResponse: CredentialResponse) => {
         setLoading(true)
         try {
-            await longinUser(credentialResponse.credential as string, credentialResponse.clientId as string)
+            const response = await googleLogin(credentialResponse.credential as string, credentialResponse.clientId as string) as { token: string }
+            addtoken(response?.token)
             toast.success("Login successful")
         } catch (error) {
             console.error("Google login failed", error)

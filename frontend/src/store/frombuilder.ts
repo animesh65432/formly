@@ -2,8 +2,7 @@ import { create } from "zustand";
 import type { FormBlock, FormBuilderState } from "../types"
 
 export const useFormBuilderStore = create<FormBuilderState>((set) => ({
-    blocks: [],
-
+    block: [],
     addBlock: (block) => {
         const blockWithDefaults: FormBlock = {
             required: false,
@@ -12,19 +11,19 @@ export const useFormBuilderStore = create<FormBuilderState>((set) => ({
         };
 
         set((state) => ({
-            blocks: [...state.blocks, blockWithDefaults],
+            block: [...state.block, blockWithDefaults],
         }));
     },
 
     removeBlock: (id) => {
         set((state) => ({
-            blocks: state.blocks.filter((block) => block.id !== id),
+            block: state.block.filter((block) => block.id !== id),
         }));
     },
 
     updateBlock: (id, updatedBlock) => {
         set((state) => ({
-            blocks: state.blocks.map((block) =>
+            block: state.block.map((block) =>
                 block.id === id ? updatedBlock : block
             ),
         }));

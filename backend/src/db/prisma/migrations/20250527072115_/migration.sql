@@ -1,2 +1,2 @@
 -- AlterTable
-ALTER TABLE `form_blocks` ADD COLUMN `options` JSON NULL;
+ALTER TABLE `form_block` ADD COLUMN `options` JSON NULL;

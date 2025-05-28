@@ -34,6 +34,7 @@ import {
     User,
     Trash2,
     Pencil,
+    Brain,
     type Icon as LucideIcon,
 } from "lucide-react"
 import type { LucideProps } from "lucide-react"
@@ -93,7 +94,8 @@ const Icons = {
     phone: Phone,
     calender: Calendar,
     delete: Trash2,
-    edit: Pencil
+    edit: Pencil,
+    ai: Brain
 }
 
 export default Icons

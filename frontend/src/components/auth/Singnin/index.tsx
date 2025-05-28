@@ -20,12 +20,14 @@ import { useNavigate } from "react-router-dom"
 import Hi from "../../Hi"
 import { longinUser, googleLogin } from "../../../api/Users"
 import { toast } from "react-toastify"
+import { useAuth } from "../../../store/auth"
 
 type SigninSchemaType = z.infer<typeof SinginSchema>
 
 const SignIn: React.FC = () => {
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
+    const { addtoken } = useAuth()
 
     const {
         register,
@@ -38,7 +40,8 @@ const SignIn: React.FC = () => {
     const onSubmit = async (data: SigninSchemaType) => {
         setLoading(true)
         try {
-            await longinUser(data.email, data.password)
+            const response = await longinUser(data.email, data.password) as { token: string }
+            addtoken(response?.token)
             toast.success("Login successful")
         } catch (error) {
             console.error("Login failed", error)
@@ -50,7 +53,8 @@ const SignIn: React.FC = () => {
     const handleLoginSuccess = async (credentialResponse: CredentialResponse) => {
         setLoading(true)
         try {
-            await googleLogin(credentialResponse.credential as string, credentialResponse.clientId as string)
+            const response = await googleLogin(credentialResponse.credential as string, credentialResponse.clientId as string) as { token: string }
+            addtoken(response?.token)
             toast.success("Login successful")
         } catch (error) {
             console.error("Google login failed", error)

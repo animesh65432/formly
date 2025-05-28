@@ -17,7 +17,7 @@ const FormEdit: React.FC<Props> = ({ selectElementId }) => {
     }
 
     const block = useFormBuilderStore((state) =>
-        state.blocks.find((block) => block.id === selectElementId)
+        state.block.find((block) => block.id === selectElementId)
     );
 
     const updateBlock = useFormBuilderStore((state) => state.updateBlock);

@@ -18,7 +18,7 @@ CREATE TABLE `forms` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `form_blocks` (
+CREATE TABLE `form_block` (
     `id` VARCHAR(191) NOT NULL,
     `formId` VARCHAR(191) NOT NULL,
     `type` VARCHAR(191) NOT NULL,
@@ -30,4 +30,4 @@ CREATE TABLE `form_blocks` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `form_blocks` ADD CONSTRAINT `form_blocks_formId_fkey` FOREIGN KEY (`formId`) REFERENCES `forms`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `form_block` ADD CONSTRAINT `form_block_formId_fkey` FOREIGN KEY (`formId`) REFERENCES `forms`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

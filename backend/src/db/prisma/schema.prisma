@@ -17,14 +17,14 @@ model User {
 
 model Form {
   id     String      @id @default(cuid())
-  blocks FormBlock[]
+  block FormBlock[]
   userId Int
   user  User  @relation(fields: [userId],references: [id],onDelete: Cascade)
   @@map("forms")
 }
 
 model FormBlock {
-  id          String      @id @default(cuid())
+  id          String      @id 
   formId      String
   type        String
   label       String?   
@@ -32,7 +32,5 @@ model FormBlock {
   placeholder String?     
   required    Boolean     @default(false)
   form        Form        @relation(fields: [formId], references: [id], onDelete: Cascade)
-  @@map("form_blocks")
+  @@map("form_block")
 }
-
-

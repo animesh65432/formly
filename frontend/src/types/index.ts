@@ -17,8 +17,14 @@ export type FormBlock = {
 };
 
 export type FormBuilderState = {
-    blocks: FormBlock[];
+    block: FormBlock[];
     addBlock: (block: FormBlock) => void;
     removeBlock: (id: string) => void;
     updateBlock: (id: string, updatedBlock: FormBlock) => void;
 };
+
+export type auth = {
+    token: string
+    addtoken: (token: string) => void
+    removetoken: () => void
+}

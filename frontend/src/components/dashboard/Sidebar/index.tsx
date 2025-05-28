@@ -1,14 +1,8 @@
 import React, { useState } from "react";
-import Icons from "../../Icons";
+import { menuItems } from "../../../lib/constant"
 
 const Sidebar: React.FC = () => {
     const [activeItem, setActiveItem] = useState<string>("templates");
-    const menuItems = [
-        { id: "templates", icon: <Icons.Template />, label: "Templates" },
-        { id: "forms", icon: <Icons.create />, label: "My Forms" },
-        { id: "integrations", icon: <Icons.Integrations />, label: "Integrations" },
-        { id: "settings", icon: <Icons.settings />, label: "Settings" }
-    ];
 
     return (
         <div className="h-full flex flex-col bg-white shadow-lg rounded-r-xl p-6 justify-start items-stretch text-green-800">
@@ -25,7 +19,7 @@ const Sidebar: React.FC = () => {
                                     }`}
                             >
                                 <div className={`text-xl ${activeItem === item.id ? "text-green-600" : ""}`}>
-                                    {item.icon}
+                                    <item.icon />
                                 </div>
                                 <span>{item.label}</span>
 

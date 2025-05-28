@@ -2,10 +2,10 @@ import { useFormBuilderStore } from "../store/frombuilder";
 import * as z from "zod";
 
 export const generateSchema = () => {
-    const { blocks } = useFormBuilderStore.getState();
+    const { block } = useFormBuilderStore.getState();
     const shape: any = {};
 
-    blocks.forEach((block) => {
+    block.forEach((block) => {
         const name = block.id;
 
         if (block.type === "button") {

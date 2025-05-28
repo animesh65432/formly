@@ -19,26 +19,26 @@ type Props = {
 
 
 const Preview: React.FC<Props> = ({ setSelectElementId }) => {
-    const { blocks } = useFormBuilderStore();
+    const { block } = useFormBuilderStore();
     const [lastAddedId, setLastAddedId] = useState<string | null>(null);
-    const [prevBlocksLength, setPrevBlocksLength] = useState(0);
+    const [prevblockLength, setPrevblockLength] = useState(0);
 
-    const schema = useMemo(() => generateSchema(), [blocks]);
+    const schema = useMemo(() => generateSchema(), [block]);
 
     const form = useForm({
         resolver: zodResolver(schema)
     });
 
     useEffect(() => {
-        if (blocks.length > prevBlocksLength) {
-            const lastBlock = blocks[blocks.length - 1];
+        if (block.length > prevblockLength) {
+            const lastBlock = block[block.length - 1];
             if (lastBlock) {
                 setLastAddedId(lastBlock.id);
                 setTimeout(() => setLastAddedId(null), 600);
             }
         }
-        setPrevBlocksLength(blocks.length);
-    }, [blocks]);
+        setPrevblockLength(block.length);
+    }, [block]);
 
     const onSubmit = (data: any) => {
         console.log("Form submitted with label keys:", data);
@@ -62,7 +62,7 @@ const Preview: React.FC<Props> = ({ setSelectElementId }) => {
         );
     };
 
-    console.log(blocks)
+    console.log(block)
 
     return (
 
@@ -71,9 +71,9 @@ const Preview: React.FC<Props> = ({ setSelectElementId }) => {
                 <FromMobileElements />
             </div>
             {
-                blocks.length > 0 ? <Form {...form} >
+                block.length > 0 ? <Form {...form} >
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 border-green-800">
-                        {blocks.map(renderBlock)}
+                        {block.map(renderBlock)}
                     </form>
                 </Form> : <NotSelect />
             }
