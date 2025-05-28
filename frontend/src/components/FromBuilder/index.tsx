@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
 import FormElements from './Elements'
 import FromEdit from './Edit'
 import Preview from "./Preview/main"
 import Fromheader from './Fromheader'
+import { useFormBuilderStore } from "../../store/frombuilder"
 
 const Frombuilder: React.FC = () => {
-    const [selectElementId, setSelectElementId] = useState<string | null>("")
+    const { block } = useFormBuilderStore()
     return (
         <div className='h-[100vh] flex flex-col'>
             <div className='w-[100vw] flex justify-end p-3 h-[5vh]'>
@@ -16,10 +17,10 @@ const Frombuilder: React.FC = () => {
                     <FormElements />
                 </div>
                 <div className="col-span-7 lg:col-span-3">
-                    <Preview setSelectElementId={setSelectElementId} />
+                    <Preview block={block} />
                 </div>
                 <div className="lg:block hidden lg:col-span-1 h-[90vh]">
-                    <FromEdit selectElementId={selectElementId} />
+                    <FromEdit />
                 </div>
             </div>
         </div>

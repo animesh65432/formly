@@ -14,11 +14,10 @@ import ForSmallScreen from "../../Edit/ForSmallScreen";
 type Props = {
     block: FormBlock;
     form: any;
-    setSelectElementId: React.Dispatch<React.SetStateAction<string | null>>
 }
 
-const TextBolck: React.FC<Props> = ({ setSelectElementId, block, form }) => {
-    const { removeBlock } = useFormBuilderStore()
+const TextBolck: React.FC<Props> = ({ block, form }) => {
+    const { removeBlock, setSelectElementId } = useFormBuilderStore()
     const [selectedIdforsmallscreen, SetselectedIdforsmallscreen] = useState<string | null>(null)
     const [isclickedSmallScreen, SetisClickedSmallScreen] = useState<boolean>(false)
     const handleClick = (id: string) => {

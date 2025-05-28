@@ -1,8 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Get, create, update, GetUserfroms, GetfrombyId, Delete } from "../api/from";
-import type { FormBlock } from "../types";
+import type { FormBlock, Blocks } from "../types";
 
-export const useGetFroms = (token: string) => useQuery({
+export const useGetFroms = (token: string) => useQuery<Blocks>({
     queryKey: ["froms", token],
     queryFn: () => Get(token)
 })

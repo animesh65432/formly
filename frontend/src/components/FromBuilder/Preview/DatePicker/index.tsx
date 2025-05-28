@@ -16,12 +16,11 @@ import { useFormBuilderStore } from "../../../../store/frombuilder"
 
 type Props = {
     block: FormBlock
-    setSelectElementId: React.Dispatch<React.SetStateAction<string | null>>
     form: any
 }
 
-const DateBlock: React.FC<Props> = ({ block, form, setSelectElementId }) => {
-    const { removeBlock } = useFormBuilderStore()
+const DateBlock: React.FC<Props> = ({ block, form }) => {
+    const { removeBlock, setSelectElementId } = useFormBuilderStore()
     const [selectedIdforsmallscreen, SetselectedIdforsmallscreen] = useState<string | null>(null)
     const [isclickedSmallScreen, SetisClickedSmallScreen] = useState<boolean>(false)
 
