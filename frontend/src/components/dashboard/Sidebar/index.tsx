@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { menuItems } from "../../../lib/constant"
+import { useNavigate } from "react-router-dom"
 
 const Sidebar: React.FC = () => {
     const [activeItem, setActiveItem] = useState<string>("templates");
-
+    const naviagate = useNavigate()
     return (
         <div className="h-dvh flex flex-col bg-white shadow-lg rounded-r-xl lg:p-6 p-3 justify-start items-stretch text-green-800">
             <nav className="flex-grow">
                 <ul className="space-y-3 xl:space-y-6">
                     {menuItems.map((item) => (
-                        <li key={item.id}>
+                        <li key={item.id} onClick={() => naviagate(item.path)}>
                             <button
                                 onClick={() => setActiveItem(item.id)}
                                 className={`w-full flex items-center gap-3 py-1 px-1 xl:py-3 xl:px-4 rounded-lg transition-all duration-300 hover:bg-green-50 ${activeItem === item.id

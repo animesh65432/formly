@@ -19,8 +19,7 @@ import {
     LayoutTemplate,
     Pen,
     Workflow,
-    Brain,
-    Settings
+    Brain
 } from "lucide-react"
 import type { FormElement } from "../types"
 
@@ -151,9 +150,8 @@ export const formElements: FormElement[] = [
 ]
 
 export const menuItems = [
-    { id: "templates", icon: LayoutTemplate, label: "Templates" },
-    { id: "forms", icon: Pen, label: "My Forms" },
-    { id: "integrations", icon: Workflow, label: "Integrations" },
-    { id: "settings", icon: Settings, label: "Settings" },
-    { id: "Ai", icon: Brain, label: "AI" }
+    { id: "templates", icon: LayoutTemplate, label: "Templates", path: "/dashboard" },
+    { id: "forms", icon: Pen, label: "My Forms", path: "/myfrom" },
+    { id: "integrations", icon: Workflow, label: "Integrations", path: "/integrations" },
+    { id: "Ai", icon: Brain, label: "AI", path: "/ai" }
 ];

@@ -20,7 +20,7 @@ export const create = (token: string, block: FormBlock[]) => Call({
     request: { block }
 })
 
-export const GetUserfroms = (token: string) => Call({
+export const GetUserfroms = (token: string) => Call<undefined, Blocks>({
     headers: {
         Authorization: token
     },
