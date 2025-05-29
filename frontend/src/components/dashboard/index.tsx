@@ -11,7 +11,7 @@ const Dashboard: React.FC = () => {
             <div className="col-span-2">
                 <Sidebar />
             </div>
-            <div className="col-span-9">
+            <div className="col-span-9 grid grid-cols-2 gap-4 p-4">
                 {blocks?.map((block, index) => <Templates block={block} key={index} />)}
             </div>
         </div>

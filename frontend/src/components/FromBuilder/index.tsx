@@ -7,6 +7,7 @@ import { useFormBuilderStore } from "../../store/frombuilder"
 
 const Frombuilder: React.FC = () => {
     const { block } = useFormBuilderStore()
+
     return (
         <div className='h-[100vh] flex flex-col'>
             <div className='w-[100vw] flex justify-end p-3 h-[5vh]'>
@@ -17,7 +18,7 @@ const Frombuilder: React.FC = () => {
                     <FormElements />
                 </div>
                 <div className="col-span-7 lg:col-span-3">
-                    <Preview block={block} />
+                    <Preview block={block} isTemplates={false} />
                 </div>
                 <div className="lg:block hidden lg:col-span-1 h-[90vh]">
                     <FromEdit />

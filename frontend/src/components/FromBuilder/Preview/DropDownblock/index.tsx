@@ -26,9 +26,10 @@ import { useFormBuilderStore } from "../../../../store/frombuilder";
 type Props = {
     block: FormBlock;
     form: any;
+    isTemplates: boolean
 };
 
-const DropdownBlock: React.FC<Props> = ({ block, form }) => {
+const DropdownBlock: React.FC<Props> = ({ block, form, isTemplates }) => {
     const { removeBlock, setSelectElementId } = useFormBuilderStore();
     const [selectedIdforsmallscreen, SetselectedIdforsmallscreen] = useState<string | null>(null)
     const [isclickedSmallScreen, SetisClickedSmallScreen] = useState<boolean>(false)
@@ -70,20 +71,22 @@ const DropdownBlock: React.FC<Props> = ({ block, form }) => {
                                         ))}
                                     </SelectContent>
                                 </Select>
-                                <div className="flex gap-2">
-                                    <Icons.delete
-                                        className="text-red-800 h-5 w-5 sm:h-8 sm:w-8 ml-2"
-                                        onClick={() => removeBlock(block.id)}
-                                    />
-                                    <Popover open={isclickedSmallScreen} >
-                                        <PopoverTrigger asChild>
-                                            {!isclickedSmallScreen ? <Icons.edit className='lg:hidden block  h-5 w-5 sm:h-8 sm:w-8 text-green-800' onClick={() => SetisClickedSmallScreen(true)} /> : <Icons.close className='lg:hidden block text-red-800  h-5 w-5 sm:h-8 sm:w-8' onClick={() => SetisClickedSmallScreen(false)} />}
-                                        </PopoverTrigger>
-                                        <PopoverContent className='lg:hidden block mt-6 sm:mr-[26vw] md:mr-[30vw] mr-[25vw]'>
-                                            <ForSmallScreen selectElementId={selectedIdforsmallscreen} />
-                                        </PopoverContent>
-                                    </Popover>
-                                </div>
+                                {!isTemplates &&
+                                    <div className="flex gap-2">
+                                        <Icons.delete
+                                            className="text-red-800 h-5 w-5 sm:h-8 sm:w-8 ml-2"
+                                            onClick={() => removeBlock(block.id)}
+                                        />
+                                        <Popover open={isclickedSmallScreen} >
+                                            <PopoverTrigger asChild>
+                                                {!isclickedSmallScreen ? <Icons.edit className='lg:hidden block  h-5 w-5 sm:h-8 sm:w-8 text-green-800' onClick={() => SetisClickedSmallScreen(true)} /> : <Icons.close className='lg:hidden block text-red-800  h-5 w-5 sm:h-8 sm:w-8' onClick={() => SetisClickedSmallScreen(false)} />}
+                                            </PopoverTrigger>
+                                            <PopoverContent className='lg:hidden block mt-6 sm:mr-[26vw] md:mr-[30vw] mr-[25vw]'>
+                                                <ForSmallScreen selectElementId={selectedIdforsmallscreen} />
+                                            </PopoverContent>
+                                        </Popover>
+                                    </div>
+                                }
                             </div>
                         </FormControl>
                         <div className="text-sm lg:text-xl">
