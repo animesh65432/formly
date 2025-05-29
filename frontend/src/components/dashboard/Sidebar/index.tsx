@@ -5,14 +5,14 @@ const Sidebar: React.FC = () => {
     const [activeItem, setActiveItem] = useState<string>("templates");
 
     return (
-        <div className="h-full flex flex-col bg-white shadow-lg rounded-r-xl lg:p-6 p-3 justify-start items-stretch text-green-800">
+        <div className="h-dvh flex flex-col bg-white shadow-lg rounded-r-xl lg:p-6 p-3 justify-start items-stretch text-green-800">
             <nav className="flex-grow">
-                <ul className="space-y-3 lg:space-y-6">
+                <ul className="space-y-3 xl:space-y-6">
                     {menuItems.map((item) => (
                         <li key={item.id}>
                             <button
                                 onClick={() => setActiveItem(item.id)}
-                                className={`w-full flex items-center gap-3 py-3 px-4 rounded-lg transition-all duration-300 hover:bg-green-50 ${activeItem === item.id
+                                className={`w-full flex items-center gap-3 py-1 px-1 xl:py-3 xl:px-4 rounded-lg transition-all duration-300 hover:bg-green-50 ${activeItem === item.id
                                     ? "bg-green-100 text-green-700 font-medium shadow-sm transform scale-105"
                                     : "hover:text-green-700"
                                     }`}

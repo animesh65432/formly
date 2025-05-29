@@ -9,7 +9,7 @@ const Frombuilder: React.FC = () => {
     const { block } = useFormBuilderStore()
 
     return (
-        <div className='h-[100vh] flex flex-col'>
+        <div className='min-h-screen flex flex-col'>
             <div className='w-[100vw] flex justify-end p-3 h-[5vh]'>
                 <Fromheader />
             </div>
