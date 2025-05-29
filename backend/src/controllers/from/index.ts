@@ -9,11 +9,9 @@ const create = asyncerrorhandler(async (req: Request, res: Response) => {
         res.status(400).json({ message: "please create some fromfileds" })
         return
     }
-
-    console.log(block, "block")
     const createFormPromise = db.form.create({
         data: {
-            block: {
+            form_blocks: {
                 create: block
             },
             userId
@@ -41,7 +39,7 @@ const Get = asyncerrorhandler(async (req: Request, res: Response) => {
 
     const blocks = await db.form.findMany({
         include: {
-            block: {
+            form_blocks: {
                 select: {
                     id: true,
                     type: true,
@@ -49,15 +47,21 @@ const Get = asyncerrorhandler(async (req: Request, res: Response) => {
                     placeholder: true,
                     required: true,
                     options: true
+                },
+                orderBy: {
+                    position: "asc"
                 }
             },
             user: {
                 select: {
                     name: true
                 }
-            }
+            },
 
         },
+        orderBy: {
+            id: 'desc'
+        }
     })
 
     await redisClient.set(redisKey, JSON.stringify(blocks), { EX: 300 });
@@ -80,16 +84,20 @@ const GetUserFroms = asyncerrorhandler(async (req: Request, res: Response) => {
     }
     const block = await db.form.findMany({
         include: {
-            block: {
+            form_blocks: {
                 select: {
                     id: true,
                     type: true,
                     label: true,
                     placeholder: true,
                     required: true,
-                    options: true
+                    options: true,
+                },
+                orderBy: {
+                    position: "asc"
                 }
-            }
+            },
+
 
         },
         where: { userId }
@@ -153,7 +161,7 @@ const update = asyncerrorhandler(async (req: Request, res: Response) => {
 
     const createFrom = await db.form.create({
         data: {
-            block: {
+            form_blocks: {
                 create: block
             },
             userId
@@ -190,7 +198,7 @@ const GetfrombyId = asyncerrorhandler(async (req: Request, res: Response) => {
             id
         },
         include: {
-            block: {
+            form_blocks: {
                 select: {
                     id: true,
                     type: true,

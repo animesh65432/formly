@@ -65,7 +65,7 @@ const Preview: React.FC<Props> = ({ block, isTemplates }) => {
 
     return (
 
-        <div className={` ${isTemplates ? " bg-white p-4 rounded-md md:h-[50vh] h-[40vh] w-[70vw] md:w-fit scrollbar-custom-x " : "h-[90vh] scrollbar-custom-x"}`}>
+        <div className={` ${isTemplates ? " shadow-md bg-white p-4 rounded-md md:h-[50vh] h-[40vh] w-[70vw] md:w-fit scrollbar-custom-x " : "h-[90vh] scrollbar-custom-x"}`}>
             {!isTemplates &&
                 <div className='lg:hidden block mb-4'>
                     <FromMobileElements />

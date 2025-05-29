@@ -8,7 +8,7 @@ type Props = {
 const Templates: React.FC<Props> = ({ block }) => {
     return (
         <div>
-            <Preview block={block.block} isTemplates={true} />
+            <Preview block={block.form_blocks} isTemplates={true} />
         </div>
     )
 }

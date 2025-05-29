@@ -17,7 +17,7 @@ const Dashboard: React.FC = () => {
                     <MobileSidebar />
                 </div>
             </div>
-            <div className="col-span-10 lg:col-span-9 grid grid-cols-1 md:grid-cols-2 lg:gap-4 p-4">
+            <div className="min-h-screen overflow-y-scroll col-span-10 lg:col-span-9 grid grid-cols-1 md:grid-cols-2 gap-2 lg:gap-4 p-4">
                 {blocks?.map((block, index) => <Templates block={block} key={index} />)}
             </div>
         </div>

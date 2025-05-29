@@ -21,7 +21,7 @@ const ButtonBlock: React.FC<Props> = ({ block, isTemplates }) => {
         SetisClickedSmallScreen(true)
     };
     return (
-        <div className='w-[100%] flex justify-center items-center gap-2'>
+        <div className='w-[100%] flex justify-center items-center gap-2' onClick={() => handleClick(block.id)}>
             <Button type="submit" disabled={isTemplates} className="bg-green-800 lg:w-[7vw] sm:w-[15vw] w-[25vw]  hover:bg-green-700 rounded-2xl p-3 md:p-5">
                 {block?.label || 'Submit'}
             </Button>

@@ -9,9 +9,11 @@ export const useGetFroms = (token: string) => useQuery<Blocks>({
 
 export const useCreateFrom = () => {
     const queryClient = useQueryClient();
-
     return useMutation({
-        mutationFn: ({ token, block }: { token: string; block: FormBlock[] }) => create(token, block),
+        mutationFn: ({ token, block }: { token: string; block: FormBlock[] }) => {
+            const blocksWithPos = block.map((block, i) => ({ ...block, position: i }));
+            return create(token, blocksWithPos)
+        },
 
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['froms'] });
