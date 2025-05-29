@@ -31,8 +31,8 @@ const HeadingBlock: React.FC<Props> = ({ block, form, isTemplates }) => {
             control={form.control}
             name={block.id}
             render={() => (
-                <FormItem className={`w-[60vw] lg:w-[30vw] m-auto flex ${isTemplates ? "m-auto" : "justify-around"} `} onClick={() => handleClick(block.id)} >
-                    <FormLabel className="text-green-800 font-semibold mb-1 md:text-3xl text-xl lg:text-3xl">
+                <FormItem className={` m-auto flex ${isTemplates ? "m-auto w-[40vw] lg:w-[30vw]" : "justify-around w-[60vw] lg:w-[30vw]"} `} onClick={() => handleClick(block.id)} >
+                    <FormLabel className="text-green-800 font-semibold mb-1 md:text-3xl text-xl lg:text-3xl text-center">
                         {block?.label || "Heading"}
                     </FormLabel>
                     {!isTemplates &&
