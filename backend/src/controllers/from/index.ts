@@ -76,10 +76,7 @@ const GetUserFroms = asyncerrorhandler(async (req: Request, res: Response) => {
     const cachedData = await redisClient.get(redisKey);
 
     if (cachedData) {
-        res.status(200).json({
-            message: "Get the forms ",
-            block: JSON.parse(cachedData),
-        });
+        res.status(200).json(JSON.parse(cachedData));
         return
     }
     const block = await db.form.findMany({
@@ -105,10 +102,7 @@ const GetUserFroms = asyncerrorhandler(async (req: Request, res: Response) => {
 
     await redisClient.set(redisKey, JSON.stringify(block), { EX: 300 });
 
-    res.status(200).json({
-        message: "Get the froms",
-        block
-    })
+    res.status(200).json(block)
     return
 
 })

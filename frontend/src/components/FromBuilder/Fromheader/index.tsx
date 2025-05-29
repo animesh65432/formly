@@ -4,6 +4,7 @@ import { useCreateFrom } from "../../../actions/from"
 import { useAuth } from "../../../store/auth"
 import { useFormBuilderStore } from "../../../store/frombuilder"
 import Icons from '../../Icons'
+import { toast } from "react-toastify"
 
 const Fromheader: React.FC = () => {
     const { token } = useAuth()
@@ -12,6 +13,7 @@ const Fromheader: React.FC = () => {
 
     const createfrom = async () => {
         await create({ token, block })
+        toast.success("sucessfully create from")
     }
     return (
         <div>
