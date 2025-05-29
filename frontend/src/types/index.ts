@@ -32,7 +32,7 @@ export type auth = {
 }
 
 export type BlockItem = {
-    block: FormBlock[];
+    form_blocks: FormBlock[];
 };
 
 export type Blocks = BlockItem[];

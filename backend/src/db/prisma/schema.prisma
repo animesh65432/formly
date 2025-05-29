@@ -8,29 +8,32 @@ datasource db {
 }
 
 model User {
-  id        Int   @id @default(autoincrement())
-  name      String?
-  email     String   @unique
-  password  String?
-  Froms Form[]
+  id       Int     @id @default(autoincrement())
+  name     String?
+  email    String  @unique
+  password String?
+  Froms    Form[]
 }
 
 model Form {
-  id     String      @id @default(cuid())
-  block FormBlock[]
-  userId Int
-  user  User  @relation(fields: [userId],references: [id],onDelete: Cascade)
+  id          String        @id @default(cuid())
+  userId      Int
+  form_blocks FormBlock[]
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId], map: "forms_userId_fkey")
   @@map("forms")
 }
 
 model FormBlock {
-  id          String      @id 
+  id          String  @id
   formId      String
   type        String
-  label       String?   
-  options      Json?
-  placeholder String?     
-  required    Boolean     @default(false)
-  form        Form        @relation(fields: [formId], references: [id], onDelete: Cascade)
-  @@map("form_block")
+  label       String?
+  placeholder String?
+  required    Boolean @default(false)
+  options     Json?
+  forms       Form    @relation(fields: [formId], references: [id], onDelete: Cascade)
+  position    Int
+  @@index([formId], map: "form_blocks_formId_fkey")
 }
