@@ -14,11 +14,12 @@ import NotSelect from './NotSelect';
 
 
 type Props = {
-    block: FormBlock[]
+    block: FormBlock[],
+    isTemplates: boolean
 };
 
 
-const Preview: React.FC<Props> = ({ block }) => {
+const Preview: React.FC<Props> = ({ block, isTemplates }) => {
     const [lastAddedId, setLastAddedId] = useState<string | null>(null);
     const [prevblockLength, setPrevblockLength] = useState(0);
     const { setSelectElementId } = useFormBuilderStore()
@@ -51,7 +52,8 @@ const Preview: React.FC<Props> = ({ block }) => {
         const props = {
             block,
             form,
-            setSelectElementId: block.type === "checkbox" ? setLastAddedId : setSelectElementId
+            setSelectElementId: block.type === "checkbox" ? setLastAddedId : setSelectElementId,
+            isTemplates
         };
 
         return (
@@ -63,10 +65,12 @@ const Preview: React.FC<Props> = ({ block }) => {
 
     return (
 
-        <div className='h-[90vh] scrollbar-custom-x'>
-            <div className='lg:hidden block mb-4'>
-                <FromMobileElements />
-            </div>
+        <div className={` ${isTemplates ? " bg-white p-4 rounded-md h-[50vh] scrollbar-custom-x " : "h-[90vh] scrollbar-custom-x"}`}>
+            {!isTemplates &&
+                <div className='lg:hidden block mb-4'>
+                    <FromMobileElements />
+                </div>
+            }
             {
                 block.length > 0 ? <Form {...form} >
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 border-green-800">
