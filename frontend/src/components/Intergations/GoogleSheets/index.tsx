@@ -19,7 +19,7 @@ const GoogleSheets: React.FC = () => {
         if (!authUrl) return;
         console.log("clicked")
 
-        const popup = window.open(authUrl, "googleAuth", "width=500,height=600");
+        const popup = window.open(authUrl, "googleAuth", "width=700,height=600 ,margin=auto,left=500");
         if (!popup) {
             alert("Popup blocked! Please allow popups and try again.");
             return;
