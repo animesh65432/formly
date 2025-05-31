@@ -3,9 +3,11 @@ import { Sheet, SheetContent, SheetTrigger } from "../../../ui/sheet"
 import Icons from '../../../Icons'
 import { menuItems } from "../../../../lib/constant"
 import { useNavigate } from "react-router-dom"
+import { useAuth } from "../../../../store/auth"
 
 const Mobile: React.FC = () => {
     const [activeItem, setActiveItem] = useState<string>("templates");
+    const { removetoken } = useAuth()
     const naviagte = useNavigate()
 
     const handleclick = (id: string, path: string) => {
@@ -42,7 +44,7 @@ const Mobile: React.FC = () => {
                     </nav>
 
                     <div className="mt-auto pt-6 border-t border-green-100">
-                        <button className="w-full flex items-center gap-3 py-3 px-4 rounded-lg text-gray-500 hover:bg-red-50 hover:text-red-600 transition-all duration-300">
+                        <button onClick={() => removetoken()} className="w-full flex items-center gap-3 py-3 px-4 rounded-lg text-gray-500 hover:bg-red-50 hover:text-red-600 transition-all duration-300">
                             <div className="text-xl">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>

@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom"
-import { Dashboard, LandingPage, SinginPage, BuilderPage, SignupPage, MyfromPage } from "./pages"
+import { Dashboard, LandingPage, SinginPage, BuilderPage, SignupPage, MyfromPage, IntergationsPage } from "./pages"
 import { useAuth } from "./store/auth"
 
 
@@ -16,6 +16,7 @@ export default function App() {
         <Route path="/dashboard" element={isLogin ? <Dashboard /> : <Navigate to="/singin" />} />
         <Route path="/build" element={isLogin ? <BuilderPage /> : <Navigate to="/singin" />} />
         <Route path="/myfrom" element={isLogin ? <MyfromPage /> : <Navigate to="/singin" />}></Route>
+        <Route path="/intergations" element={isLogin ? <IntergationsPage /> : <Navigate to="/singin" />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </BrowserRouter>

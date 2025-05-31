@@ -18,7 +18,7 @@ const Fromheader: React.FC = () => {
         toast.success("sucessfully create from")
     }
     const goBack = () => {
-        navigate(-1) // ✅ 
+        navigate(-1)
     }
 
     return (
