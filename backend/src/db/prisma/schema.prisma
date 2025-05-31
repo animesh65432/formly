@@ -7,12 +7,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum IntegrationType {
+  GOOGLE_SHEETS
+  NOTION
+}
+
+
 model User {
   id       Int     @id @default(autoincrement())
   name     String?
   email    String  @unique
   password String?
   Froms    Form[]
+  Integrations Integration[]
 }
 
 model Form {
@@ -20,7 +27,6 @@ model Form {
   userId      Int
   form_blocks FormBlock[]
   user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-
   @@index([userId], map: "forms_userId_fkey")
   @@map("forms")
 }
@@ -36,4 +42,15 @@ model FormBlock {
   forms       Form    @relation(fields: [formId], references: [id], onDelete: Cascade)
   position    Int
   @@index([formId], map: "form_blocks_formId_fkey")
+}
+model Integration {
+  id         Int     @id @default(autoincrement())
+  type       IntegrationType 
+  enabled    Boolean  @default(false)
+  config     Json?   
+  userId     Int
+  GoogleSheetId String?
+  NotionId String?
+  user    User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map("integrations")
 }

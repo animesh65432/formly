@@ -32,7 +32,6 @@ const GoogleSheets: React.FC = () => {
         }, 1000);
     };
 
-    console.log(authUrl)
     return (
         <Button onClick={handleGoogleAuth} className='bg-green-800 hover:bg-green-600 rounded-md'>Google sheets</Button>
     )
