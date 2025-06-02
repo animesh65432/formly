@@ -26,10 +26,11 @@ import { useFormBuilderStore } from "../../../../store/frombuilder";
 type Props = {
     block: FormBlock;
     form: any;
-    isTemplates: boolean
+    isTemplates: boolean;
+    isSharefrom: boolean
 };
 
-const DropdownBlock: React.FC<Props> = ({ block, form, isTemplates }) => {
+const DropdownBlock: React.FC<Props> = ({ block, form, isTemplates, isSharefrom }) => {
     const { removeBlock, setSelectElementId } = useFormBuilderStore();
     const [selectedIdforsmallscreen, SetselectedIdforsmallscreen] = useState<string | null>(null)
     const [isclickedSmallScreen, SetisClickedSmallScreen] = useState<boolean>(false)
@@ -46,7 +47,12 @@ const DropdownBlock: React.FC<Props> = ({ block, form, isTemplates }) => {
                 control={form.control}
                 name={block.id}
                 render={({ field }) => (
-                    <FormItem className="w-[60vw] lg:w-[30vw] m-auto" onClick={() => handleClick(block.id)}>
+                    <FormItem className={`${isSharefrom
+                        ? "w-[80vw] md:w-[30vw] m-auto"
+                        : isTemplates
+                            ? "w-[30vw] lg:w-[30vw] m-auto"
+                            : "w-[60vw] lg:w-[30vw] m-auto"
+                        }`} onClick={() => handleClick(block.id)}>
                         <FormLabel className="text-green-800 font-semibold text-sm lg:text-xl">
                             {block?.label}
                         </FormLabel>
