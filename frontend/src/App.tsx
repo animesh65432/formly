@@ -1,8 +1,6 @@
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom"
-import { Dashboard, LandingPage, SinginPage, BuilderPage, SignupPage, MyfromPage, IntergationsPage } from "./pages"
+import { Dashboard, LandingPage, SinginPage, BuilderPage, SignupPage, MyfromPage, IntergationsPage, SharefromPage } from "./pages"
 import { useAuth } from "./store/auth"
-
-
 export default function App() {
   const { token } = useAuth()
   const isLogin = !!token
@@ -17,7 +15,7 @@ export default function App() {
         <Route path="/build" element={isLogin ? <BuilderPage /> : <Navigate to="/singin" />} />
         <Route path="/myfrom" element={isLogin ? <MyfromPage /> : <Navigate to="/singin" />}></Route>
         <Route path="/intergations" element={isLogin ? <IntergationsPage /> : <Navigate to="/singin" />} />
-        {/* <Route path="*" element={<Navigate to="/" />} /> */}
+        <Route path="/share/:fromid" element={<SharefromPage />}></Route>
       </Routes>
     </BrowserRouter>
   )

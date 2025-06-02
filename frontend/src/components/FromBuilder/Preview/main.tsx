@@ -15,11 +15,12 @@ import NotSelect from './NotSelect';
 
 type Props = {
     block: FormBlock[],
-    isTemplates: boolean
+    isTemplates?: boolean,
+    isSharefrom?: boolean
 };
 
 
-const Preview: React.FC<Props> = ({ block, isTemplates }) => {
+const Preview: React.FC<Props> = ({ block, isTemplates = false, isSharefrom = false }) => {
     const [lastAddedId, setLastAddedId] = useState<string | null>(null);
     const [prevblockLength, setPrevblockLength] = useState(0);
     const { setSelectElementId } = useFormBuilderStore()
@@ -57,28 +58,52 @@ const Preview: React.FC<Props> = ({ block, isTemplates }) => {
         };
 
         return (
-            <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
-                <Component {...props} />
-            </AnimateWrapper>
+            <>
+                {!isSharefrom
+                    &&
+                    <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
+                        <Component {...props} />
+                    </AnimateWrapper>
+                }
+                {
+                    isSharefrom
+                    && <Component {...props} />
+                }
+            </>
         );
     };
 
     return (
-
-        <div className={` ${isTemplates ? " shadow-md bg-white p-4 rounded-md md:h-[50vh] h-[40vh] w-[70vw] md:w-fit scrollbar-custom-x " : "h-[90vh] scrollbar-custom-x"}`}>
-            {!isTemplates &&
-                <div className='lg:hidden block mb-4'>
-                    <FromMobileElements />
+        <>
+            {!isSharefrom &&
+                <div className={` ${isTemplates ? " shadow-md bg-white p-4 rounded-md md:h-[50vh] h-[40vh] w-[70vw] md:w-fit scrollbar-custom-x " : "h-[90vh] scrollbar-custom-x"}`}>
+                    {!isTemplates &&
+                        <div className='lg:hidden block mb-4'>
+                            <FromMobileElements />
+                        </div>
+                    }
+                    {
+                        block.length > 0 ? <Form {...form} >
+                            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 border-green-800">
+                                {block.map(renderBlock)}
+                            </form>
+                        </Form> : <NotSelect />
+                    }
                 </div>
             }
             {
-                block.length > 0 ? <Form {...form} >
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 border-green-800">
-                        {block.map(renderBlock)}
-                    </form>
-                </Form> : <NotSelect />
+                isSharefrom &&
+                <>
+                    {
+                        block.length > 0 ? <Form {...form}  >
+                            <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-5'>
+                                {block.map(renderBlock)}
+                            </form>
+                        </Form> : <NotSelect />
+                    }
+                </>
             }
-        </div>
+        </>
 
     );
 };

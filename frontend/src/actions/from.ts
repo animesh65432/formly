@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Get, create, update, GetUserfroms, GetfrombyId, Delete } from "../api/from";
-import type { FormBlock, Blocks } from "../types";
+import type { FormBlock, Blocks, GetFormResponse } from "../types";
 
 export const useGetFroms = (token: string) => useQuery<Blocks>({
     queryKey: ["froms", token],
@@ -9,18 +9,17 @@ export const useGetFroms = (token: string) => useQuery<Blocks>({
 
 export const useCreateFrom = () => {
     const queryClient = useQueryClient();
+
     return useMutation({
         mutationFn: ({ token, block }: { token: string; block: FormBlock[] }) => {
             const blocksWithPos = block.map((block, i) => ({ ...block, position: i }));
-            return create(token, blocksWithPos)
+            return create(token, blocksWithPos);
         },
-
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['froms'] });
-        }
+        },
     });
 };
-
 export const useUpateFrom = () => {
     const queryClient = useQueryClient();
     return useMutation({
@@ -47,7 +46,7 @@ export const useGetUserfroms = (token: string) => useQuery({
     queryFn: () => GetUserfroms(token)
 })
 
-export const useGetfrombyId = (token: string, id: string) => useQuery({
+export const useGetfrombyId = (token: string, id: string) => useQuery<GetFormResponse>({
     queryKey: ["from", token],
     queryFn: () => GetfrombyId(token, id)
 })

@@ -5,5 +5,5 @@ import BuilderPage from "./BuilderPage";
 import SignupPage from "./Singup";
 import MyfromPage from "./Myfrompage";
 import IntergationsPage from "./IntergationsPage";
-
-export { LandingPage, Dashboard, SinginPage, BuilderPage, SignupPage, MyfromPage, IntergationsPage }
+import SharefromPage from "./SharefromPage";
+export { LandingPage, Dashboard, SinginPage, BuilderPage, SignupPage, MyfromPage, IntergationsPage, SharefromPage }
