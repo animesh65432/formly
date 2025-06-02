@@ -19,9 +19,10 @@ type Props = {
     block: FormBlock;
     form: any;
     isTemplates: boolean
+    isSharefrom: boolean
 };
 
-const ImageUploadBlock: React.FC<Props> = ({ block, form, isTemplates }) => {
+const ImageUploadBlock: React.FC<Props> = ({ block, form, isTemplates, isSharefrom }) => {
     const [selectedIdforsmallscreen, SetselectedIdforsmallscreen] = useState<string | null>(null)
     const [isclickedSmallScreen, SetisClickedSmallScreen] = useState<boolean>(false)
     const { removeBlock, setSelectElementId } = useFormBuilderStore();
@@ -37,7 +38,12 @@ const ImageUploadBlock: React.FC<Props> = ({ block, form, isTemplates }) => {
             control={form.control}
             name={block.id}
             render={({ field }) => (
-                <FormItem className="w-[60vw] lg:w-[30vw] m-auto" onClick={() => handleClick(block.id)}>
+                <FormItem className={`${isSharefrom
+                    ? "w-[80vw] md:w-[30vw] m-auto"
+                    : isTemplates
+                        ? "w-[30vw] lg:w-[30vw] m-auto"
+                        : "w-[60vw] lg:w-[30vw] m-auto"
+                    }`} onClick={() => handleClick(block.id)}>
                     <FormLabel className="text-sm lg:text-xl font-semibold text-green-800">
                         {block?.label || "Upload Image"}
                     </FormLabel>
@@ -55,8 +61,12 @@ const ImageUploadBlock: React.FC<Props> = ({ block, form, isTemplates }) => {
                                             reader.readAsDataURL(file);
                                         }
                                     }}
-                                    className="block w-[53vw] lg:w-[29vw] bg-white p-2 text-sm lg:text-xl text-green-800 rounded-md shadow-md placeholder:text-sm lg:placeholder:text-xl file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-green-800 file:text-white hover:file:bg-green-700 cursor-pointer"
-
+                                    className={`${isSharefrom
+                                        ? "w-[80vw] md:w-[30vw] m-auto"
+                                        : isTemplates
+                                            ? "w-[30vw] lg:w-[30vw] m-auto"
+                                            : "w-[60vw] lg:w-[30vw] m-auto"
+                                        } border bg-white p-2 rounded-md`}
                                 />
                             </div>
                             {!isTemplates &&
