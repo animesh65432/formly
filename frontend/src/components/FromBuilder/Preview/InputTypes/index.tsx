@@ -24,6 +24,7 @@ const RenderField: React.FC<Props> = ({ block, form, isTemplates }) => {
         SetselectedIdforsmallscreen(blockId)
         setSelectElementId(blockId);
     };
+
     return (
         <>
             <FormField

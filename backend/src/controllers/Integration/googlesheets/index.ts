@@ -3,6 +3,7 @@ import axios from "axios";
 import { asyncerrorhandler } from "../../../middlewares";
 import config from "../../../config";
 import db from "../../../db";
+import { redisClient } from "../../../service"
 
 
 const redirect_uri = config.GOOGLE_SHEETS_REDIRECT_URI as string;
@@ -34,12 +35,12 @@ export const generateOAuthURL = asyncerrorhandler(async (req: Request, res: Resp
 export const handleGoogleOAuthCallback = async (req: Request, res: Response) => {
     const { code, state } = req.query;
     const codeString = Array.isArray(code) ? code[0] : typeof code === "string" ? code : undefined;
-    const userId = Number(state);
-    console.log("User ID:", userId);
+    const userId = Number(state)
     if (!codeString || !userId) {
         res.status(400).send("Missing authorization code or user ID");
         return
     }
+
 
     try {
         const tokenResponse = await axios.post(
@@ -72,8 +73,6 @@ export const handleGoogleOAuthCallback = async (req: Request, res: Response) => 
                 userId
             },
         });
-
-        console.log("OAuth Success ✅", { email: userEmail, tokens });
 
         res.send(`
       <div style="font-family: Arial; text-align: center; margin-top: 50px;">

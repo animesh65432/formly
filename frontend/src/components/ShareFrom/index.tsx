@@ -3,7 +3,6 @@ import Preview from '../FromBuilder/Preview/main'
 import { useGetfrombyId } from "../../actions/from"
 import { useAuth } from "../../store/auth"
 import Icons from '../Icons'
-
 type Props = {
     fromid: string
 }

@@ -8,9 +8,10 @@ import ForSmallScreen from "../../Edit/ForSmallScreen";
 
 type Props = {
     block: FormBlock;
-    isTemplates: boolean
+    isTemplates: boolean;
+    isSharefrom: boolean
 }
-const ButtonBlock: React.FC<Props> = ({ block, isTemplates }) => {
+const ButtonBlock: React.FC<Props> = ({ block, isTemplates, isSharefrom = false }) => {
     const { removeBlock, setSelectElementId } = useFormBuilderStore();
     const [selectedIdforsmallscreen, SetselectedIdforsmallscreen] = useState<string | null>(null)
     const [isclickedSmallScreen, SetisClickedSmallScreen] = useState<boolean>(false)
@@ -20,9 +21,12 @@ const ButtonBlock: React.FC<Props> = ({ block, isTemplates }) => {
         SetselectedIdforsmallscreen(id)
         SetisClickedSmallScreen(true)
     };
+
+    const flg = isTemplates && isSharefrom ? false : true
+    console.log(flg, isSharefrom, isTemplates)
     return (
         <div className='w-[100%] flex justify-center items-center gap-2' onClick={() => handleClick(block.id)}>
-            <Button type="submit" disabled={isTemplates} className="bg-green-800 lg:w-[7vw] sm:w-[15vw] w-[25vw]  hover:bg-green-700 rounded-2xl p-3 md:p-5">
+            <Button type="submit" onClick={() => console.log("clciked")} disabled={isTemplates && !isSharefrom} className="bg-green-800 lg:w-[7vw] sm:w-[15vw] w-[25vw]  hover:bg-green-700 rounded-2xl p-3 md:p-5">
                 {block?.label || 'Submit'}
             </Button>
             {!isTemplates &&
