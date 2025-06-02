@@ -17,7 +17,7 @@ export default function App() {
         <Route path="/build" element={isLogin ? <BuilderPage /> : <Navigate to="/singin" />} />
         <Route path="/myfrom" element={isLogin ? <MyfromPage /> : <Navigate to="/singin" />}></Route>
         <Route path="/intergations" element={isLogin ? <IntergationsPage /> : <Navigate to="/singin" />} />
-        <Route path="*" element={<Navigate to="/" />} />
+        {/* <Route path="*" element={<Navigate to="/" />} /> */}
       </Routes>
     </BrowserRouter>
   )

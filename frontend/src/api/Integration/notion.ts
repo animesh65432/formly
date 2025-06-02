@@ -4,7 +4,8 @@ export const generateOAuthURL = (token: string) => Call({
     headers: {
         Authorization: token
     },
-    path: "/integration/googlesheets/oauth",
+    path: "/integration/notion/oauth",
     method: "GET"
 })
+
 
