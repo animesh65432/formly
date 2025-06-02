@@ -9,7 +9,7 @@ const create = asyncerrorhandler(async (req: Request, res: Response) => {
         res.status(400).json({ message: "please create some fromfileds" })
         return
     }
-    const createFormPromise = db.form.create({
+    const Form = await db.form.create({
         data: {
             form_blocks: {
                 create: block
@@ -20,10 +20,10 @@ const create = asyncerrorhandler(async (req: Request, res: Response) => {
     const deleteUserFormsCache = redisClient.del(`users-forms:${userId}`);
     const deleteAllFormsCache = redisClient.del(`forms:${req.user?.id}`)
 
-    await Promise.all([createFormPromise, deleteAllFormsCache, deleteUserFormsCache])
+    await Promise.all([deleteAllFormsCache, deleteUserFormsCache])
     res.status(200).json({
         message: "done it",
-        fromid: (await createFormPromise).id
+        fromid: Form.id
     })
     return
 })

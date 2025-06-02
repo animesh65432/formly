@@ -31,5 +31,10 @@ export const useFormBuilderStore = create<FormBuilderState>((set) => ({
     selectElementId: null,
     setSelectElementId: (id: string) => set({
         selectElementId: id
+    }),
+    makeEmptyblock: () => set(() => {
+        return {
+            block: []
+        }
     })
 }));

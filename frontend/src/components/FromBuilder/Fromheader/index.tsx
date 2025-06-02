@@ -9,13 +9,15 @@ import { useNavigate } from "react-router-dom"
 
 const Fromheader: React.FC = () => {
     const { token } = useAuth()
-    const { block } = useFormBuilderStore()
-    const { mutate: create, isPending } = useCreateFrom()
+    const { block, makeEmptyblock } = useFormBuilderStore()
+    const { mutateAsync: create, isPending } = useCreateFrom()
     const navigate = useNavigate()
 
     const createfrom = async () => {
-        await create({ token, block })
+        const response = await create({ token, block }) as { fromid: string }
+        makeEmptyblock()
         toast.success("sucessfully create from")
+        navigate(`/share/${response.fromid}`)
     }
     const goBack = () => {
         navigate(-1)

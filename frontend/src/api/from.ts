@@ -1,5 +1,5 @@
 import { Call } from "../service/call"
-import type { FormBlock, Blocks } from "../types"
+import type { FormBlock, Blocks, GetFormResponse } from "../types"
 
 export const Get = (token: string) =>
     Call<undefined, Blocks>({
@@ -45,7 +45,7 @@ export const update = (token: string, block: FormBlock[], id: string) => Call({
     }
 })
 
-export const GetfrombyId = (token: string, id: string) => Call({
+export const GetfrombyId = (token: string, id: string) => Call<undefined, GetFormResponse>({
     headers: {
         Authorization: token
     },
