@@ -11,6 +11,20 @@ export const generateOAuthURL = asyncerrorhandler(async (req: Request, res: Resp
         res.status(400).json({ error: 'Missing userId parameter' });
         return;
     }
+
+    const checkalreadyintragtedwithnotion = await db.integration.findFirst({
+        where: {
+            type: "NOTION",
+            userId: Number(userId)
+        }
+    })
+
+    if (checkalreadyintragtedwithnotion) {
+        res.status(400).json({
+            message: "user already authenticated with notion"
+        })
+        return
+    }
     const key = v4()
     redisClient.set(key, userId)
     const notionAuthUrl = `https://api.notion.com/v1/oauth/authorize?client_id=${config.NOTION_CLIENT_ID}&response_type=code&owner=user&redirect_uri=${encodeURIComponent(config.NOTION_REDIRECT_URI as string)}&state=${key}`;
