@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useFormBuilderStore } from "../../../store/frombuilder";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,11 +24,13 @@ const Preview: React.FC<Props> = ({ block, isTemplates = false, isSharefrom = fa
     const [lastAddedId, setLastAddedId] = useState<string | null>(null);
     const [prevblockLength, setPrevblockLength] = useState(0);
     const { setSelectElementId } = useFormBuilderStore()
-    const schema = useMemo(() => generateSchema(), [block]);
+    const schema = useMemo(() => generateSchema(block), [block]);
 
     const form = useForm({
         resolver: zodResolver(schema)
     });
+
+
 
     useEffect(() => {
         if (block.length > prevblockLength) {
@@ -54,7 +56,8 @@ const Preview: React.FC<Props> = ({ block, isTemplates = false, isSharefrom = fa
             block,
             form,
             setSelectElementId: block.type === "checkbox" ? setLastAddedId : setSelectElementId,
-            isTemplates
+            isTemplates,
+            isSharefrom
         };
 
         return (

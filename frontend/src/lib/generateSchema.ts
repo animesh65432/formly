@@ -1,10 +1,8 @@
-import { useFormBuilderStore } from "../store/frombuilder";
 import * as z from "zod";
+import type { FormBlock } from "../types"
 
-export const generateSchema = () => {
-    const { block } = useFormBuilderStore.getState();
+export const generateSchema = (block: FormBlock[]) => {
     const shape: any = {};
-
     block.forEach((block) => {
         const name = block.id;
 

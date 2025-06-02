@@ -200,8 +200,12 @@ const GetfrombyId = asyncerrorhandler(async (req: Request, res: Response) => {
                     placeholder: true,
                     required: true,
                     options: true
+                },
+                orderBy: {
+                    position: "asc"
                 }
             }
+
         }
     })
 

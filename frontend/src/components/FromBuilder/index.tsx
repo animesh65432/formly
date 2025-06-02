@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import FormElements from './Elements'
 import FromEdit from './Edit'
 import Preview from "./Preview/main"
@@ -6,8 +6,11 @@ import Fromheader from './Fromheader'
 import { useFormBuilderStore } from "../../store/frombuilder"
 
 const Frombuilder: React.FC = () => {
-    const { block } = useFormBuilderStore()
+    const { block, makeEmptyblock } = useFormBuilderStore()
 
+    useEffect(() => {
+        makeEmptyblock()
+    }, [])
     return (
         <div className='min-h-screen flex flex-col'>
             <div className='w-[100vw] flex justify-end p-3 h-[5vh]'>
