@@ -3,12 +3,20 @@ import axios from "axios";
 import { asyncerrorhandler } from "../../../middlewares";
 import config from "../../../config";
 import db from "../../../db";
-import { redisClient } from "../../../service"
-
-
 const redirect_uri = config.GOOGLE_SHEETS_REDIRECT_URI as string;
 
 export const generateOAuthURL = asyncerrorhandler(async (req: Request, res: Response) => {
+    const checkalreadyintragtedwithgoogle = await db.integration.findFirst({
+        where: {
+            userId: Number(req.user?.id),
+            type: "GOOGLE_SHEETS"
+        }
+    })
+
+    if (checkalreadyintragtedwithgoogle) {
+        res.status(400).json({ message: "already authenticated with google" })
+        return
+    }
     const scope = [
         "https://www.googleapis.com/auth/userinfo.email",
         "https://www.googleapis.com/auth/userinfo.profile",
@@ -41,7 +49,6 @@ export const handleGoogleOAuthCallback = async (req: Request, res: Response) => 
         return
     }
 
-
     try {
         const tokenResponse = await axios.post(
             "https://oauth2.googleapis.com/token",
@@ -73,6 +80,8 @@ export const handleGoogleOAuthCallback = async (req: Request, res: Response) => 
                 userId
             },
         });
+
+
 
         res.send(`
       <div style="font-family: Arial; text-align: center; margin-top: 50px;">
