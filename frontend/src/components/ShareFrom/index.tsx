@@ -5,9 +5,10 @@ import { useAuth } from "../../store/auth"
 import Icons from '../Icons'
 
 type Props = {
-    fromid: string
+    fromid: string,
+    sheetId: string
 }
-const ShareFrom: React.FC<Props> = ({ fromid }) => {
+const ShareFrom: React.FC<Props> = ({ fromid, sheetId }) => {
     const { token } = useAuth()
     const { data, isLoading } = useGetfrombyId(token, fromid)
 
@@ -20,7 +21,7 @@ const ShareFrom: React.FC<Props> = ({ fromid }) => {
     }
     return (
         <div className='flex justify-center items-center min-h-screen w-[100vw] p-4'>
-            <Preview isSharefrom={true} isTemplates={true} block={data?.block.form_blocks} />
+            <Preview sheetId={sheetId} fromid={fromid} isSharefrom={true} isTemplates={true} block={data?.block.form_blocks} />
         </div >
     )
 }

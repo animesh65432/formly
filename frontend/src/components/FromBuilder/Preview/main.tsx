@@ -11,25 +11,30 @@ import { BLOCK_COMPONENT_MAP } from "../../../lib"
 import FromMobileElements from "../Elements/Mobile"
 import { toast } from "react-toastify"
 import NotSelect from './NotSelect';
+import { uploadGoogleSheet } from "../../../api/Integration/google"
+import { fixInputAndValue } from "../../../lib/fixinputandvalue"
+import { useAuth } from "../../../store/auth"
 
 
 type Props = {
     block: FormBlock[],
     isTemplates?: boolean,
-    isSharefrom?: boolean
+    isSharefrom?: boolean,
+    fromid?: string,
+    sheetId?: string
 };
 
 
-const Preview: React.FC<Props> = ({ block, isTemplates = false, isSharefrom = false }) => {
+const Preview: React.FC<Props> = ({ sheetId, fromid, block, isTemplates = false, isSharefrom = false }) => {
     const [lastAddedId, setLastAddedId] = useState<string | null>(null);
     const [prevblockLength, setPrevblockLength] = useState(0);
+    const { token } = useAuth()
     const { setSelectElementId } = useFormBuilderStore()
     const schema = useMemo(() => generateSchema(block), [block]);
 
     const form = useForm({
         resolver: zodResolver(schema)
     });
-
 
 
     useEffect(() => {
@@ -43,9 +48,17 @@ const Preview: React.FC<Props> = ({ block, isTemplates = false, isSharefrom = fa
         setPrevblockLength(block.length);
     }, [block]);
 
-    const onSubmit = (data: any) => {
-        console.log("Form submitted with label keys:", data);
-        toast.success("Form submitted  sucessfully")
+    const onSubmit = async (data: any) => {
+        try {
+            const res = fixInputAndValue(data, block)
+            if (sheetId && fromid) {
+                console.log(sheetId)
+                await uploadGoogleSheet(token, sheetId, res, fromid)
+            }
+        }
+        finally {
+            toast.success("Form submitted  sucessfully")
+        }
     };
 
     const renderBlock = (block: FormBlock) => {

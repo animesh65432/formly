@@ -21,15 +21,17 @@ model User {
   Froms    Form[]
   Integrations Integration[]
 }
-
 model Form {
-  id          String        @id @default(cuid())
-  userId      Int
-  form_blocks FormBlock[]
-  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id            String      @id @default(cuid())
+  userId        Int
+  form_blocks   FormBlock[]
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  googleSheetId String?   
+  notionId      String?     
   @@index([userId], map: "forms_userId_fkey")
   @@map("forms")
 }
+
 
 model FormBlock {
   id          String  @id
@@ -49,8 +51,6 @@ model Integration {
   enabled    Boolean  @default(false)
   config     Json?   
   userId     Int
-  GoogleSheetId String?
-  NotionId String?
   user    User @relation(fields: [userId], references: [id], onDelete: Cascade)
   @@map("integrations")
 }

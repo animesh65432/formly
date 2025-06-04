@@ -3,6 +3,7 @@ import axios from "axios";
 import { asyncerrorhandler } from "../../../middlewares";
 import config from "../../../config";
 import db from "../../../db";
+import { refreshGoogleAccessToken, makeA1Range } from "../../../utils"
 const redirect_uri = config.GOOGLE_SHEETS_REDIRECT_URI as string;
 
 export const generateOAuthURL = asyncerrorhandler(async (req: Request, res: Response) => {
@@ -102,40 +103,81 @@ export const handleGoogleOAuthCallback = async (req: Request, res: Response) => 
     }
 }
 
-export const createGoogleSheet = asyncerrorhandler(async (req: Request, res: Response) => {
-    const userId = Number(req.user?.id);
-    const { title = "New From Sheet" } = req.body;
 
+export const createGoogleSheet = asyncerrorhandler(async (req: Request, res: Response) => {
+    const fromId = req.query.fromId
+    const userId = req.user?.id
+
+    if (!fromId || typeof fromId !== "string") {
+        res.status(401).json({ error: "User not authenticated" });
+        return;
+    }
     const integration = await db.integration.findFirst({
-        where: { type: "GOOGLE_SHEETS", enabled: true, userId },
+        where: { userId }
     });
 
     if (!integration) {
         res.status(401).json({ error: "User not authenticated" });
-        return
+        return;
     }
 
-    const access_token = (integration.config as any).access_token;
+    let { access_token, refresh_token } = integration.config as any
+    try {
+        const response = await axios.post(
+            "https://sheets.googleapis.com/v4/spreadsheets",
+            { properties: { title: "New Form Sheet" } },
+            { headers: { Authorization: `Bearer ${access_token}` } }
+        );
 
-    const response = await axios.post(
-        "https://sheets.googleapis.com/v4/spreadsheets",
-        { properties: { title } },
-        { headers: { Authorization: `Bearer ${access_token}` } }
-    );
+        const sheetId = response.data.spreadsheetId;
+        const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/edit`;
 
-    const sheetId = response.data.spreadsheetId;
-    const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/edit`;
+        await db.form.update({
+            where: { id: fromId },
+            data: { googleSheetId: sheetId }
+        });
 
-    await db.integration.update({
-        where: { id: integration.id },
-        data: {
-            GoogleSheetId: sheetId,
+        res.json({ sheetId, sheetUrl });
+        return
+    } catch (error: any) {
+        if (error.response?.status === 401 && refresh_token) {
+            console.log("errors")
+            const newTokens = await refreshGoogleAccessToken(refresh_token);
+            access_token = newTokens.access_token;
+            await db.integration.update({
+                where: { id: integration.id },
+                data: {
+                    config: {
+                        access_token,
+                        expires_in: newTokens.expires_in,
+                    }
+                }
+            });
+
+
+            const retryResponse = await axios.post(
+                "https://sheets.googleapis.com/v4/spreadsheets",
+                { properties: { title: "New Form Sheet" } },
+                { headers: { Authorization: `Bearer ${access_token}` } }
+            );
+
+            const sheetId = retryResponse.data.spreadsheetId;
+            const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/edit`;
+
+            await db.form.update({
+                where: { id: fromId },
+                data: { googleSheetId: sheetId }
+            });
+
+            res.json({ sheetId, sheetUrl });
+            return
+        } else {
+            console.error("Google Sheets Error", error.response?.data || error.message);
+            res.status(500).json({ error: "Failed to create Google Sheet" });
+            return
         }
-    })
-    res.json({ sheetId, sheetUrl });
-    return
+    }
 });
-
 export const listGoogleSheets = asyncerrorhandler(async (req: Request, res: Response) => {
     const userId = Number(req.user?.id);
 
@@ -186,12 +228,33 @@ export const getSheetData = asyncerrorhandler(async (req: Request, res: Response
     return
 });
 
-export const updateSheetData = asyncerrorhandler(async (req: Request, res: Response) => {
-    const { range, values } = req.body;
-    const userId = Number(req.user?.id);
+export const uploadSheetData = asyncerrorhandler(async (req: Request, res: Response) => {
+    const { data } = req.body as { data: Record<string, string> };
+    const fromId = req.query.fromId;
 
-    if (!range || !values) {
-        res.status(400).json({ error: "Missing range or values" });
+    if (!fromId || typeof fromId !== "string") {
+        res.status(401).json({ error: "User not authenticated" });
+        return
+    }
+
+    const form = await db.form.findFirst({
+        where: { id: fromId },
+    });
+
+    if (!form) {
+        res.status(404).json({ error: "Form does not exist" });
+        return
+    }
+
+    const headerRow = Object.keys(data);      // e.g., ["name", "email"]
+    const dataRow = Object.values(data);      // e.g., ["Animesh", "kirandutta234@gmail.com"]
+    const values = [headerRow, dataRow];      // Two rows: one header, one data
+
+    const userId = Number(form.userId);
+    const sheetId = req.query.sheetId as string;
+
+    if (!values.length || !sheetId) {
+        res.status(400).json({ error: "Missing data or sheet ID" });
         return
     }
 
@@ -200,37 +263,56 @@ export const updateSheetData = asyncerrorhandler(async (req: Request, res: Respo
     });
 
     if (!integration) {
-        res.status(401).json({ error: "User not authenticated" });
+        res.status(401).json({ error: "Google Sheets integration not found" });
         return
     }
 
     const access_token = (integration.config as any).access_token;
 
-    const response = await axios.put(
-        `https://sheets.googleapis.com/v4/spreadsheets/${integration.GoogleSheetId}/values/${range}?valueInputOption=USER_ENTERED`,
+    // Append to Sheet1 (Google handles the next available row automatically)
+    const response = await axios.post(
+        `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Sheet1!A1:append?valueInputOption=USER_ENTERED`,
         { values },
         { headers: { Authorization: `Bearer ${access_token}` } }
     );
 
-    res.json({ updatedRange: response.data.updatedRange });
+    res.json({
+        message: "Data appended successfully",
+        updatedRange: response.data.updates.updatedRange,
+    });
     return
 });
 
 export const getSheetMetadata = asyncerrorhandler(async (req: Request, res: Response) => {
-    const { email } = req.params;
+    const { email, fromId } = req.query;
 
-    const integration = await db.integration.findFirst({
-        where: { type: "GOOGLE_SHEETS", enabled: true, user: { email } },
-    });
-    if (!integration) {
-        res.status(401).json({ error: "User not authenticated" });
-        return
+    if (typeof email !== "string" || typeof fromId !== "string") {
+        res.status(400).json({ message: "Invalid credentials" });
+        return;
     }
+
+    const [integration, form] = await Promise.all([
+        db.integration.findFirst({
+            where: { type: "GOOGLE_SHEETS", enabled: true, user: { email } },
+        }),
+        db.form.findFirst({
+            where: { id: fromId },
+        }),
+    ]);
+
+    if (!integration || !form) {
+        res.status(401).json({ error: "User not authenticated or form not found" });
+        return;
+    }
+
     const access_token = (integration.config as any).access_token;
 
-    const response = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${integration.GoogleSheetId}`, {
-        headers: { Authorization: `Bearer ${access_token}` },
-    });
+    const response = await axios.get(
+        `https://sheets.googleapis.com/v4/spreadsheets/${form.googleSheetId}`,
+        {
+            headers: { Authorization: `Bearer ${access_token}` },
+        }
+    );
 
     const { properties, sheets } = response.data;
 
@@ -242,5 +324,4 @@ export const getSheetMetadata = asyncerrorhandler(async (req: Request, res: Resp
             gridProperties: sheet.properties.gridProperties,
         })),
     });
-    return
 });

@@ -1,14 +1,17 @@
 import ShareFrom from "../components/ShareFrom";
 import React from 'react'
-import { useParams } from "react-router-dom"
+import { useParams, useLocation } from "react-router-dom"
 const SharefromPage: React.FC = () => {
     const { fromid } = useParams()
+    const location = useLocation();
 
-    if (!fromid) {
+    const queryParams = new URLSearchParams(location.search);
+    const sheetId = queryParams.get('sheetId');
+    if (!fromid || !sheetId) {
         return
     }
     return (
-        <ShareFrom fromid={fromid} />
+        <ShareFrom fromid={fromid} sheetId={sheetId} />
     )
 }
 
