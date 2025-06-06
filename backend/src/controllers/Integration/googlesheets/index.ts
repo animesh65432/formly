@@ -3,7 +3,7 @@ import axios from "axios";
 import { asyncerrorhandler } from "../../../middlewares";
 import config from "../../../config";
 import db from "../../../db";
-import { refreshGoogleAccessToken, makeA1Range } from "../../../utils"
+import { refreshGoogleAccessToken } from "../../../utils"
 const redirect_uri = config.GOOGLE_SHEETS_REDIRECT_URI as string;
 
 export const generateOAuthURL = asyncerrorhandler(async (req: Request, res: Response) => {
@@ -60,11 +60,7 @@ export const handleGoogleOAuthCallback = async (req: Request, res: Response) => 
         }),
         { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
     );
-
     const tokens = tokenResponse.data;
-
-    const userInfoResponse = await axios.get(`https://www.googleapis.com/oauth2/v2/userinfo?access_token=${tokens.access_token}`);
-
     await db.integration.create({
         data: {
             type: "GOOGLE_SHEETS",
@@ -165,55 +161,6 @@ export const createGoogleSheet = asyncerrorhandler(async (req: Request, res: Res
         }
     }
 });
-export const listGoogleSheets = asyncerrorhandler(async (req: Request, res: Response) => {
-    const userId = Number(req.user?.id);
-
-    const integration = await db.integration.findFirst({
-        where: { type: "GOOGLE_SHEETS", enabled: true, userId },
-    });
-
-    if (!integration) {
-        res.status(401).json({ error: "User not authenticated" });
-        return
-    }
-
-    const access_token = (integration.config as any).access_token;
-
-    const response = await axios.get("https://www.googleapis.com/drive/v3/files", {
-        headers: { Authorization: `Bearer ${access_token}` },
-        params: {
-            q: "mimeType='application/vnd.google-apps.spreadsheet'",
-            fields: "files(id,name,createdTime,modifiedTime)",
-        },
-    });
-
-    res.json({ sheets: response.data.files });
-    return
-});
-
-export const getSheetData = asyncerrorhandler(async (req: Request, res: Response) => {
-    const { range = "A1:Z1000" } = req.query;
-    const userId = Number(req.user?.id);
-
-    const integration = await db.integration.findFirst({
-        where: { type: "GOOGLE_SHEETS", enabled: true, userId },
-    });
-
-    if (!integration) {
-        res.status(401).json({ error: "User not authenticated" });
-        return
-    }
-
-    const access_token = (integration.config as any).access_token;
-
-    const response = await axios.get(
-        `https://sheets.googleapis.com/v4/spreadsheets/${integration.userId}/values/${range}`,
-        { headers: { Authorization: `Bearer ${access_token}` } }
-    );
-
-    res.json({ data: response.data.values, range: response.data.range });
-    return
-});
 
 export const uploadSheetData = asyncerrorhandler(async (req: Request, res: Response) => {
     const { data } = req.body as { data: Record<string, string> };
@@ -301,45 +248,3 @@ export const uploadSheetData = asyncerrorhandler(async (req: Request, res: Respo
 });
 
 
-export const getSheetMetadata = asyncerrorhandler(async (req: Request, res: Response) => {
-    const { email, fromId } = req.query;
-
-    if (typeof email !== "string" || typeof fromId !== "string") {
-        res.status(400).json({ message: "Invalid credentials" });
-        return;
-    }
-
-    const [integration, form] = await Promise.all([
-        db.integration.findFirst({
-            where: { type: "GOOGLE_SHEETS", enabled: true, user: { email } },
-        }),
-        db.form.findFirst({
-            where: { id: fromId },
-        }),
-    ]);
-
-    if (!integration || !form) {
-        res.status(401).json({ error: "User not authenticated or form not found" });
-        return;
-    }
-
-    const access_token = (integration.config as any).access_token;
-
-    const response = await axios.get(
-        `https://sheets.googleapis.com/v4/spreadsheets/${form.googleSheetId}`,
-        {
-            headers: { Authorization: `Bearer ${access_token}` },
-        }
-    );
-
-    const { properties, sheets } = response.data;
-
-    res.json({
-        title: properties.title,
-        sheets: sheets.map((sheet: any) => ({
-            title: sheet.properties.title,
-            sheetId: sheet.properties.sheetId,
-            gridProperties: sheet.properties.gridProperties,
-        })),
-    });
-});
