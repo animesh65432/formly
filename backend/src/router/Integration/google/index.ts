@@ -1,13 +1,13 @@
 import { Router } from "express"
-import { generateOAuthURL, handleGoogleOAuthCallback, createGoogleSheet, listGoogleSheets, getSheetData, uploadSheetData } from "../../../controllers/Integration/googlesheets"
-const googlesheets = Router()
+import { generateOAuthURL, handleGoogleOAuthCallback, createGoogleSheet, uploadSheetData } from "../../../controllers/Integration/googlesheets"
 import { auth } from "../../../middlewares"
+
+
+const googlesheets = Router()
 
 googlesheets.get("/oauth", auth, generateOAuthURL)
 googlesheets.get("/oauth/callback", handleGoogleOAuthCallback)
 googlesheets.post("/sheets", auth, createGoogleSheet)
-googlesheets.get("/sheets", auth, listGoogleSheets)
 googlesheets.put("/upload", uploadSheetData)
-googlesheets.get("/sheets/:sheetId", auth, getSheetData)
 
 export default googlesheets
