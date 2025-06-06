@@ -49,58 +49,44 @@ export const handleGoogleOAuthCallback = async (req: Request, res: Response) => 
         res.status(400).send("Missing authorization code or user ID");
         return
     }
+    const tokenResponse = await axios.post(
+        "https://oauth2.googleapis.com/token",
+        new URLSearchParams({
+            code: codeString as string,
+            client_id: config.GOOGLE_SHEETS_CLIENT_ID!,
+            client_secret: config.GOOGLE_SHEETS_CLIENT_SECRET!,
+            redirect_uri,
+            grant_type: "authorization_code",
+        }),
+        { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
+    );
 
-    try {
-        const tokenResponse = await axios.post(
-            "https://oauth2.googleapis.com/token",
-            new URLSearchParams({
-                code: codeString as string,
-                client_id: config.GOOGLE_SHEETS_CLIENT_ID!,
-                client_secret: config.GOOGLE_SHEETS_CLIENT_SECRET!,
-                redirect_uri,
-                grant_type: "authorization_code",
-            }),
-            { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
-        );
+    const tokens = tokenResponse.data;
 
-        const tokens = tokenResponse.data;
+    const userInfoResponse = await axios.get(`https://www.googleapis.com/oauth2/v2/userinfo?access_token=${tokens.access_token}`);
 
-        const userInfoResponse = await axios.get(`https://www.googleapis.com/oauth2/v2/userinfo?access_token=${tokens.access_token}`);
-        const userEmail = userInfoResponse.data.email;
-
-        await db.integration.create({
-            data: {
-                type: "GOOGLE_SHEETS",
-                enabled: true,
-                config: {
-                    access_token: tokens.access_token,
-                    refresh_token: tokens.refresh_token,
-                    expires_in: tokens.expires_in,
-                    scope: tokens.scope,
-                },
-                userId
+    await db.integration.create({
+        data: {
+            type: "GOOGLE_SHEETS",
+            enabled: true,
+            config: {
+                access_token: tokens.access_token,
+                refresh_token: tokens.refresh_token,
+                expires_in: tokens.expires_in,
+                scope: tokens.scope,
             },
-        });
+            userId
+        },
+    });
 
 
 
-        res.send(`
-      <div style="font-family: Arial; text-align: center; margin-top: 50px;">
-        <h2>✅ Successfully Connected!</h2>
-        <p>Email: ${userEmail}</p>
-        <p>You can now close this window and return to your app.</p>
-        <script> setTimeout(() => window.close(), 3000); </script>
-      </div>
-    `);
-    } catch (error: any) {
-        console.error("OAuth Error ❌", error.response?.data || error.message);
-        res.status(500).send(`
-      <div style="font-family: Arial; text-align: center; margin-top: 50px;">
-        <h2>❌ OAuth Failed</h2>
-        <p>Error: ${error.response?.data?.error_description || error.message}</p>
-      </div>
-    `);
-    }
+    res.status(200).json({
+        sucess: true,
+        message: "sucessfully logged in"
+    });
+    return
+
 }
 
 
@@ -150,6 +136,7 @@ export const createGoogleSheet = asyncerrorhandler(async (req: Request, res: Res
                     config: {
                         access_token,
                         expires_in: newTokens.expires_in,
+                        refresh_token: newTokens.refresh_token ? newTokens.refresh_token : refresh_token
                     }
                 }
             });
@@ -234,54 +221,85 @@ export const uploadSheetData = asyncerrorhandler(async (req: Request, res: Respo
 
     if (!fromId || typeof fromId !== "string") {
         res.status(401).json({ error: "User not authenticated" });
-        return
+        return;
     }
 
-    const form = await db.form.findFirst({
-        where: { id: fromId },
-    });
-
+    const form = await db.form.findFirst({ where: { id: fromId } });
     if (!form) {
         res.status(404).json({ error: "Form does not exist" });
-        return
+        return;
     }
-
-    const headerRow = Object.keys(data);      // e.g., ["name", "email"]
-    const dataRow = Object.values(data);      // e.g., ["Animesh", "kirandutta234@gmail.com"]
-    const values = [headerRow, dataRow];      // Two rows: one header, one data
 
     const userId = Number(form.userId);
     const sheetId = req.query.sheetId as string;
 
-    if (!values.length || !sheetId) {
-        res.status(400).json({ error: "Missing data or sheet ID" });
-        return
+    if (!sheetId) {
+        res.status(400).json({ error: "Missing sheet ID" });
+        return;
     }
 
     const integration = await db.integration.findFirst({
         where: { type: "GOOGLE_SHEETS", enabled: true, userId },
-    });
+    }) as any | undefined
 
     if (!integration) {
         res.status(401).json({ error: "Google Sheets integration not found" });
-        return
+        return;
     }
 
-    const access_token = (integration.config as any).access_token;
 
-    // Append to Sheet1 (Google handles the next available row automatically)
-    const response = await axios.post(
-        `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Sheet1!A1:append?valueInputOption=USER_ENTERED`,
-        { values },
-        { headers: { Authorization: `Bearer ${access_token}` } }
-    );
+    let access_token = integration.config.access_token
+    const expires_at = integration.config.expires_at || 0;
+
+    if (Date.now() > expires_at) {
+        const refreshed = await refreshGoogleAccessToken(integration.config.refresh_token);
+        access_token = refreshed.access_token;
+        await db.integration.update({
+            where: { id: integration.id },
+            data: {
+                config: {
+                    ...integration.config,
+                    access_token: refreshed.access_token,
+                    expires_at: Date.now() + (refreshed.expires_in * 1000),
+                }
+            }
+        });
+    }
+    let response
+    const dataValues = Object.values(data);
+    const dataKeys = Object.keys(data)
+    if (!form.isHeaderWritten) {
+        const values = [dataKeys, dataValues];
+        response = await axios.post(
+            `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Sheet1!A1:append?valueInputOption=USER_ENTERED`,
+            { values },
+            { headers: { Authorization: `Bearer ${access_token}` } }
+        );
+
+        await db.form.update({
+            where: {
+                id: fromId
+            },
+            data: {
+                isHeaderWritten: true
+            }
+        })
+    }
+    else {
+        const values = [dataValues];
+        response = await axios.post(
+            `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Sheet1!A1:append?valueInputOption=USER_ENTERED`,
+            { values },
+            { headers: { Authorization: `Bearer ${access_token}` } }
+        );
+    }
 
     res.json({
         message: "Data appended successfully",
         updatedRange: response.data.updates.updatedRange,
     });
-    return
 });
+
 
 export const getSheetMetadata = asyncerrorhandler(async (req: Request, res: Response) => {
     const { email, fromId } = req.query;

@@ -20,11 +20,11 @@ const Fromheader: React.FC = () => {
         try {
             const response = await create({ token, block }) as { fromid: string }
             const responseGoogleSheet = await createGoogleSheet(token, response.fromid) as { sheetId: string }
-            makeEmptyblock()
             toast.success("sucessfully create from")
             navigate(`/share/${response.fromid}?sheetId=${responseGoogleSheet.sheetId}`)
         }
         finally {
+            makeEmptyblock()
             setLoading(false)
         }
     }

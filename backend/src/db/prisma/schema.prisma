@@ -27,7 +27,8 @@ model Form {
   form_blocks   FormBlock[]
   user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   googleSheetId String?   
-  notionId      String?     
+  notionId      String?    
+  isHeaderWritten Boolean  @default(false) 
   @@index([userId], map: "forms_userId_fkey")
   @@map("forms")
 }
