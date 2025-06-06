@@ -1,6 +1,93 @@
 import jsonwebtoken from "jsonwebtoken"
 import config from "../config"
 import axios from "axios"
+function buildMultipartRequestBody(
+    fileBuffer: Buffer,
+    filename: string,
+    mimeType: string
+): string {
+    const boundary = "foo_bar_baz";
+
+    const metaData = JSON.stringify({
+        name: filename,
+        mimeType,
+    });
+
+    const body = [
+        `--${boundary}`,
+        'Content-Type: application/json; charset=UTF-8',
+        '',
+        metaData,
+        `--${boundary}`,
+        `Content-Type: ${mimeType}`,
+        '',
+        fileBuffer.toString("base64"),
+        `--${boundary}--`,
+    ].join("\r\n");
+
+    return body;
+}
+
+async function uploadToDrive(
+    base64Data: string,
+    filename: string,
+    mimeType: string,
+    accessToken: string
+): Promise<string> {
+    try {
+
+
+        const fileData = base64Data.split(",")[1];
+        const buffer = Buffer.from(fileData, "base64");
+        const uploadResponse = await axios.post(
+            "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
+            buildMultipartRequestBody(buffer, filename, mimeType),
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    "Content-Type": "multipart/related; boundary=foo_bar_baz",
+                },
+            }
+        );
+
+        const fileId = uploadResponse.data.id;
+
+        await axios.post(
+            `https://www.googleapis.com/drive/v3/files/${fileId}/permissions`,
+            {
+                role: "reader",
+                type: "anyone",
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+
+        return `https://drive.google.com/uc?id=${fileId}`;
+    }
+    catch (err: any) {
+        console.error("Upload failed:", err?.response?.data || err.message);
+        return ""
+    }
+}
+
+
+function isBase64Image(value: string): boolean {
+    return value.startsWith("data:image/");
+}
+
+function isBase64File(value: string): boolean {
+    return value.startsWith("data:application/") || value.startsWith("data:text/");
+}
+
+function getMimeType(base64String: string): string {
+    const match = base64String.match(/^data:([^;]+);base64,/);
+    return match ? match[1] : "application/octet-stream";
+}
+
 
 export const createToken = (email: string): string => {
     const token = jsonwebtoken.sign(
@@ -25,7 +112,8 @@ export const refreshGoogleAccessToken = async (refresh_token: string) => {
             { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
         );
 
-        return response.data; // contains new access_token, expires_in, etc.
+
+        return response.data;
     } catch (error: any) {
         console.error("Failed to refresh token", error.response?.data || error.message);
         throw new Error("Token refresh failed");
@@ -58,4 +146,28 @@ export function makeA1Range(
     const endCell = `${endColLetter}${startRow + numRows - 1}`;
 
     return `${sheetName}!${startCell}:${endCell}`;
+}
+
+export async function processFormData(
+    data: Record<string, string>,
+    accessToken: string
+): Promise<Record<string, string>> {
+    const result: Record<string, string> = {};
+
+    for (const [key, value] of Object.entries(data)) {
+        if (isBase64Image(value)) {
+            console.log("clicked")
+            const mime = getMimeType(value);
+            const ext = mime.split("/")[1];
+            result[key] = await uploadToDrive(value, `${key}_${Date.now()}.${ext}`, mime, accessToken);
+        } else if (isBase64File(value)) {
+            const mime = getMimeType(value);
+            const ext = mime.split("/")[1];
+            result[key] = await uploadToDrive(value, `${key}_${Date.now()}.${ext}`, mime, accessToken);
+        } else {
+            result[key] = value;
+        }
+    }
+
+    return result;
 }

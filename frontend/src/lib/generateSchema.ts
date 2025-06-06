@@ -81,16 +81,6 @@ export const generateSchema = (block: FormBlock[]) => {
                 ? z.number().min(1, "Required")
                 : z.number().optional();
         }
-        else if (block.type === "image") {
-            shape[name] = block?.required
-                ? z
-                    .instanceof(File, { message: "Image is required" })
-                    .refine(file => file.size > 0, "Image is required")
-                : z
-                    .instanceof(File)
-                    .optional()
-                    .refine(file => !file || file.size > 0, "Invalid file");
-        }
         else if (block.type === "file") {
             shape[name] = block?.required
                 ? z
@@ -102,6 +92,16 @@ export const generateSchema = (block: FormBlock[]) => {
                     .optional()
                     .refine(name => !name || /\.[a-z0-9]+$/i.test(name), "Invalid file name");
         }
+        else if (block.type === "image") {
+            shape[name] = block?.required
+                ? z.string()
+                    .min(1, "Image is required")
+                    .refine(value => /^data:image\/[a-z]+;base64,/.test(value), "Invalid image format")
+                : z.string()
+                    .optional()
+                    .refine(value => !value || /^data:image\/[a-z]+;base64,/.test(value), "Invalid image format");
+        }
+
 
 
     });
