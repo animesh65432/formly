@@ -1,21 +1,26 @@
 import type { FormBlock } from "../types";
-
+import { gethefileurl } from "../api/file"
 type InputAndValueTypes = {
     [key: string]: string | undefined;
 };
 
-export function fixInputAndValue(
+export async function fixInputAndValue(
     obj: InputAndValueTypes,
-    block: FormBlock[]
-): { [key: string]: string } {
+    block: FormBlock[],
+    token: string
+): Promise<{ [key: string]: string }> {
     const fixedValues: { [key: string]: string } = {};
-
-    block.forEach((input) => {
-        const value = obj[input.id];
-        if (input.id in obj && value) {
-            fixedValues[`${input.label}`] = value;
-        }
-    });
+    await Promise.all(
+        block.map(async (input) => {
+            const value = obj[input.id];
+            if ((input.type === "file" || input.type === "image") && value) {
+                const response = await gethefileurl(token, value) as { url: string }
+                fixedValues[input.label] = response.url;
+            } else if (value) {
+                fixedValues[input.label] = value;
+            }
+        })
+    );
 
     return fixedValues;
 }
