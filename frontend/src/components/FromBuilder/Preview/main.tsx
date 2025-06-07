@@ -12,6 +12,7 @@ import FromMobileElements from "../Elements/Mobile"
 import { toast } from "react-toastify"
 import NotSelect from './NotSelect';
 import { uploadGoogleSheet } from "../../../api/Integration/google"
+import { uploadDatanotiondatabase } from "../../../api/Integration/notion"
 import { fixInputAndValue } from "../../../lib/fixinputandvalue"
 import { useAuth } from "../../../store/auth"
 
@@ -52,8 +53,8 @@ const Preview: React.FC<Props> = ({ sheetId, fromid, block, isTemplates = false,
         try {
             const res = fixInputAndValue(data, block)
             if (sheetId && fromid) {
-                console.log(sheetId)
                 await uploadGoogleSheet(token, sheetId, res, fromid)
+                await uploadDatanotiondatabase(token, fromid, res)
             }
         }
         finally {
