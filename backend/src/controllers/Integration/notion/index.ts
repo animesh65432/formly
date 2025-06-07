@@ -1,10 +1,11 @@
 import { Request, Response } from 'express'
-import { Client } from '@notionhq/client'
 import db from "../../../db";
 import config from '../../../config';
 import { asyncerrorhandler } from "../../../middlewares"
 import { v4 } from "uuid"
 import { redisClient } from "../../../service"
+import { buildNotionProperties, notionRequestWithAutoRefresh } from '../../../utils/notionUtils';
+import { getNotionClient, getNotionDatabaseUrl } from '../../../service/notionService';
 export const generateOAuthURL = asyncerrorhandler(async (req: Request, res: Response) => {
     const userId = req.user?.id;
     if (!userId) {
@@ -117,7 +118,7 @@ export const setupDatabaseController = asyncerrorhandler(async (req: Request, re
     }
 
     const cfg = integration.config as Record<string, any>;
-    const notion = new Client({ auth: cfg.access_token });
+    const notion = getNotionClient(cfg.access_token)
 
 
     const pageSearch = await notion.search({
@@ -134,24 +135,30 @@ export const setupDatabaseController = asyncerrorhandler(async (req: Request, re
 
     let titleKey = "";
     for (const key of Object.keys(data)) {
-        if (!titleKey) {
+        if (key === "button") {
+            continue
+        }
+        else if (!titleKey) {
             titleKey = key;
             dbProperties[titleKey] = { title: {} };
-        } else {
+        }
+        else {
             dbProperties[key] = { rich_text: {} };
         }
     }
 
-    const newDb = await notion.databases.create({
-        parent: { page_id: (parentPage as any).id },
-        title: [
-            {
-                type: "text",
-                text: { content: `Form Database - ${form.id}` },
-            },
-        ],
-        properties: dbProperties,
-    }) as any
+    const newDb = await notionRequestWithAutoRefresh(userId, () =>
+        notion.databases.create({
+            parent: { page_id: (parentPage as any).id },
+            title: [
+                {
+                    type: "text",
+                    text: { content: `Form Database - ${form.id}` },
+                },
+            ],
+            properties: dbProperties,
+        })
+    );
 
 
     const updatefrom = db.form.update({
@@ -177,26 +184,18 @@ export const uploadNotionData = asyncerrorhandler(async (req: Request, res: Resp
     const data = req.body;
     const fromId = req.query.fromId as string;
 
-    if (!data || typeof data !== "object" || !data) {
+    if (!data || typeof data !== "object" || !data || !fromId) {
         res.status(400).json({ error: "Invalid request body: 'data' is missing or malformed" });
         return;
     }
-
-    if (!fromId) {
-        res.status(401).json({ error: "User not authenticated" });
-        return;
-    }
-
     const form = await db.form.findFirst({ where: { id: fromId } });
-    if (!form) {
+    if (!form || !form.notionId) {
         res.status(404).json({ error: "Form does not exist" });
         return;
     }
 
-    if (!form.notionId) {
-        res.status(400).json({ error: "Notion database for this form not set up yet" });
-        return;
-    }
+    console.log(form.userId, fromId)
+
 
     const integration = await db.integration.findFirst({
         where: {
@@ -206,10 +205,16 @@ export const uploadNotionData = asyncerrorhandler(async (req: Request, res: Resp
         },
     });
 
+    console.log(integration)
+
+
+
     if (!integration) {
         res.status(401).json({ error: "Notion integration not found" });
         return;
     }
+
+    console.log(integration)
 
     const cfg = integration.config as {
         access_token: string;
@@ -217,34 +222,22 @@ export const uploadNotionData = asyncerrorhandler(async (req: Request, res: Resp
         app_database_url?: string;
     };
 
-    const notion = new Client({ auth: cfg.access_token });
+    const notion = getNotionClient(cfg.access_token)
 
-    const properties: Record<string, any> = {};
-    for (const key of Object.keys(data)) {
-        properties[key] = {
-            title: [
-                {
-                    text: {
-                        content: String(data[key]),
-                    },
-                },
-            ],
-        };
+    console.log(notion)
+    const notionDb = await notionRequestWithAutoRefresh(form.userId, () =>
+        notion.databases.retrieve({ database_id: form.notionId! })
+    );
 
-    }
-
-    await notion.pages.create({
-        parent: { database_id: form.notionId },
-        properties,
-    });
-
-    const databaseUrl = form.notionId && cfg.workspace_id
-        ? `https://www.notion.so/${cfg.workspace_id.replace(/-/g, "")}/${form.notionId.replace(/-/g, "")}`
-        : cfg.app_database_url || "";
+    const dbProps = notionDb.properties;
+    const properties = buildNotionProperties(data, dbProps);
+    await notionRequestWithAutoRefresh(form.userId, () =>
+        notion.pages.create({ parent: { database_id: form.notionId! }, properties })
+    );
 
     res.json({
         message: "Data uploaded to Notion successfully",
-        databaseUrl,
+        databaseUrl: getNotionDatabaseUrl(cfg.workspace_id, form.notionId) || cfg.app_database_url || "",
     });
     return
 });

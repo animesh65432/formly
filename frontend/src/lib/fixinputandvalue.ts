@@ -19,3 +19,13 @@ export function fixInputAndValue(
 
     return fixedValues;
 }
+
+
+export const fixdata = (block: FormBlock[]) => {
+    const fixedValues: { [key: string]: string } = {};
+    block.forEach((input) => {
+        fixedValues[`${input.label}`] = "string"
+    });
+
+    return fixedValues;
+}

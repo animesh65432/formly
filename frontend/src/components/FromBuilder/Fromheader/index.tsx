@@ -7,6 +7,8 @@ import Icons from '../../Icons'
 import { toast } from "react-toastify"
 import { useNavigate } from "react-router-dom"
 import { createGoogleSheet } from "../../../api/Integration/google"
+import { setupThenotiondatabase } from "../../../api/Integration/notion"
+import { fixdata } from "../../../lib/fixinputandvalue"
 
 const Fromheader: React.FC = () => {
     const { token } = useAuth()
@@ -20,6 +22,8 @@ const Fromheader: React.FC = () => {
         try {
             const response = await create({ token, block }) as { fromid: string }
             const responseGoogleSheet = await createGoogleSheet(token, response.fromid) as { sheetId: string }
+            const data = fixdata(block)
+            await setupThenotiondatabase(token, response.fromid, data)
             toast.success("sucessfully create from")
             navigate(`/share/${response.fromid}?sheetId=${responseGoogleSheet.sheetId}`)
         }
