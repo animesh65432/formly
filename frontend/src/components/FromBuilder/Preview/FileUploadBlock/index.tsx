@@ -55,7 +55,11 @@ const FileUploadBlock: React.FC<Props> = ({ block, form, isTemplates, isSharefro
                                 onChange={(e) => {
                                     const file = e.target.files?.[0];
                                     if (file) {
-                                        field.onChange(file.name);
+                                        const reader = new FileReader();
+                                        reader.onloadend = () => {
+                                            field.onChange(reader.result);
+                                        };
+                                        reader.readAsDataURL(file);
                                     }
                                 }}
 

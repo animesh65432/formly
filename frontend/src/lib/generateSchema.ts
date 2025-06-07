@@ -83,14 +83,12 @@ export const generateSchema = (block: FormBlock[]) => {
         }
         else if (block.type === "file") {
             shape[name] = block?.required
-                ? z
-                    .string()
+                ? z.string()
                     .min(1, "File is required")
-                    .refine(name => /\.[a-z0-9]+$/i.test(name), "Invalid file name")
-                : z
-                    .string()
+                    .refine(value => /^data:.*\/[a-zA-Z0-9.+-]+;base64,/.test(value), "Invalid file format")
+                : z.string()
                     .optional()
-                    .refine(name => !name || /\.[a-z0-9]+$/i.test(name), "Invalid file name");
+                    .refine(value => !value || /^data:.*\/[a-zA-Z0-9.+-]+;base64,/.test(value), "Invalid file format");
         }
         else if (block.type === "image") {
             shape[name] = block?.required

@@ -51,7 +51,7 @@ const Preview: React.FC<Props> = ({ sheetId, fromid, block, isTemplates = false,
 
     const onSubmit = async (data: any) => {
         try {
-            const res = fixInputAndValue(data, block)
+            const res = await fixInputAndValue(data, block, token)
             if (sheetId && fromid) {
                 await uploadGoogleSheet(token, sheetId, res, fromid)
                 await uploadDatanotiondatabase(token, fromid, res)
