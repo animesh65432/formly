@@ -95,7 +95,10 @@ export const createGoogleSheet = asyncerrorhandler(async (req: Request, res: Res
         return;
     }
     const integration = await db.integration.findFirst({
-        where: { userId }
+        where: {
+            userId
+            , type: "GOOGLE_SHEETS"
+        },
     });
 
     if (!integration) {
@@ -122,6 +125,7 @@ export const createGoogleSheet = asyncerrorhandler(async (req: Request, res: Res
         res.json({ sheetId, sheetUrl });
         return
     } catch (error: any) {
+        console.log(error.response?.status, "status code", refresh_token)
         if (error.response?.status === 401 && refresh_token) {
             console.log("errors")
             const newTokens = await refreshGoogleAccessToken(refresh_token);

@@ -10,7 +10,6 @@ export const createToken = (email: string): string => {
 
 export const refreshGoogleAccessToken = async (refresh_token: string) => {
     try {
-        console.log(refresh_token, "token")
         const response = await axios.post(
             "https://oauth2.googleapis.com/token",
             new URLSearchParams({

@@ -58,6 +58,7 @@ export const handlenotionOAuthCallback = asyncerrorhandler(async (req: Request, 
     const tokenData = await response.json();
 
     if (tokenData.error) {
+        console.log(tokenData.error)
         throw new Error(tokenData.error_description || 'OAuth token exchange failed');
     }
 
@@ -80,316 +81,170 @@ export const handlenotionOAuthCallback = asyncerrorhandler(async (req: Request, 
 
 })
 
-
-export const getUserProfileController = asyncerrorhandler(async (req, res) => {
-    const { userId } = req.params;
-
-    const userintegration = await db.integration.findFirst({
-        where: {
-            userId: Number(userId),
-            type: "NOTION"
-        }
-    });
-
-    if (!userintegration) {
-        res.status(401).json({ error: 'User not authenticated' });
-        return
-    }
-
-    const userToken = userintegration.config as {
-        access_token: string,
-        workspace_name: string,
-        workspace_icon: string,
-        workspace_id: string,
-        bot_id: string
-    };
-
-    const notion = new Client({ auth: userToken.access_token });
-
-    const user = await notion.users.me({});
-
-
-    res.json({
-        user,
-        workspace: {
-            name: userToken.workspace_name,
-            icon: userToken.workspace_icon,
-            id: userToken.workspace_id
-        }
-    });
-    return
-});
-
-
-
-export const getUserDatabasesController = asyncerrorhandler(async (req: Request, res: Response) => {
-    const { userId } = req.params;
-
-    const userIntegration = await db.integration.findFirst({
-        where: {
-            userId: Number(userId),
-            type: "NOTION"
-        }
-    });
-
-    if (!userIntegration) {
-        res.status(401).json({ error: 'User not authenticated' });
-        return
-    }
-
-    const userToken = userIntegration.config as {
-        access_token: string,
-        workspace_name: string,
-        workspace_icon: string,
-        workspace_id: string,
-        bot_id: string
-    };
-
-    const notion = new Client({ auth: userToken.access_token });
-
-
-    const response = await notion.search({
-        filter: {
-            property: 'object',
-            value: 'database'
-        }
-    });
-
-    res.json({ databases: response.results });
-    return
-});
-
-export const getUserPagesController = asyncerrorhandler(async (req: Request, res: Response) => {
-    const { userId } = req.params;
-
-    const userIntegration = await db.integration.findFirst({
-        where: {
-            userId: Number(userId),
-            type: "NOTION"
-        }
-    });
-
-    if (!userIntegration) {
-        res.status(401).json({ error: 'User not authenticated' });
-        return
-    }
-
-    const userToken = userIntegration.config as {
-        access_token: string,
-        workspace_name: string,
-        workspace_icon: string,
-        workspace_id: string,
-        bot_id: string
-    };
-
-    const notion = new Client({ auth: userToken.access_token });
-
-
-    const response = await notion.search({
-        filter: {
-            property: 'object',
-            value: 'page'
-        }
-    });
-
-    res.json({ pages: response.results });
-    return
-
-});
-
-
-
 export const setupDatabaseController = asyncerrorhandler(async (req: Request, res: Response) => {
-    const { userId } = req.params;
+    const userId = req.user?.id;
+    const { formId } = req.query
+    const data = req.body
 
-    const userIntegration = await db.integration.findFirst({
-        where: {
-            userId: Number(userId),
-            type: "NOTION"
-        }
+    if (!userId || !formId || typeof formId !== "string" || !data) {
+        console.log(formId);
+        res.status(400).json({ error: "Missing credentials" });
+        return;
+    }
+
+    const form = await db.form.findFirst({
+        where: { id: formId, userId },
     });
-
-    if (!userIntegration) {
-        res.status(401).json({ error: 'User not authenticated' });
+    if (!form) {
+        res.status(404).json({ error: "Form not found or not owned by user" });
         return
     }
 
-    const userToken = userIntegration.config as {
-        access_token: string,
-        workspace_name: string,
-        workspace_icon: string,
-        workspace_id: string,
-        bot_id: string
-    };
-    const notion = new Client({ auth: userToken.access_token });
-
-    const dbSearch = await notion.search({
-        query: 'My App Database',
-        filter: { property: 'object', value: 'database' }
-    });
-
-    if (dbSearch.results.length > 0) {
-        const existingDb = dbSearch.results[0];
-
-        await db.integration.update({
-            where: { id: userIntegration.id },
-            data: {
-                config: {
-                    ...(userIntegration.config as Record<string, any>),
-                    app_database_id: existingDb.id,
-                    app_database_url: 'url' in existingDb ? existingDb.url : null
-                }
-            }
-        });
-
+    if (form.notionId) {
         res.json({
-            message: 'Found existing database',
-            database: existingDb,
-            databaseUrl: 'url' in existingDb ? existingDb.url : null
+            message: "Database already set up for this form",
+            databaseId: form.notionId,
         });
         return
     }
+
+    const integration = await db.integration.findFirst({
+        where: { userId, type: "NOTION" },
+    });
+    if (!integration) {
+        res.status(401).json({ error: "User not authenticated with Notion" });
+        return
+    }
+
+    const cfg = integration.config as Record<string, any>;
+    const notion = new Client({ auth: cfg.access_token });
 
 
     const pageSearch = await notion.search({
-        filter: { property: 'object', value: 'page' }
+        filter: { property: "object", value: "page" },
     });
-
     if (pageSearch.results.length === 0) {
-        res.status(400).json({
-            error: 'No pages found. Please create a page in your Notion workspace first.'
-        });
+        res.status(400).json({ error: "No pages found in Notion workspace" });
         return
     }
+    const parentPage = pageSearch.results[0];
 
-    let parentPage = pageSearch.results.find(page => {
+    const dbProperties: Record<string, any> = {};
 
-        const titleProperty = 'properties' in page ? page.properties?.title : undefined;
-        let title = '';
 
-        if (titleProperty && Array.isArray(titleProperty)) {
-            title = titleProperty[0]?.plain_text || '';
-        } else if ('properties' in page && page.properties?.title && Array.isArray(page.properties.title)) {
-            const titleProperty = 'properties' in page && page.properties?.title;
-            title = Array.isArray(titleProperty) ? titleProperty[0]?.plain_text || '' : '';
+    let titleKey = "";
+    for (const key of Object.keys(data)) {
+        if (!titleKey) {
+            titleKey = key;
+            dbProperties[titleKey] = { title: {} };
+        } else {
+            dbProperties[key] = { rich_text: {} };
         }
+    }
 
-        return ['Home', 'Workspace'].includes(title);
-    }) || pageSearch.results[0];
-
-
-    const database = await notion.databases.create({
-        parent: { page_id: parentPage.id },
+    const newDb = await notion.databases.create({
+        parent: { page_id: (parentPage as any).id },
         title: [
             {
-                type: 'text',
-                text: { content: 'My App Database' }
-            }
+                type: "text",
+                text: { content: `Form Database - ${form.id}` },
+            },
         ],
-        properties: {
-            'Title': { title: {} },
-            'Content': { rich_text: {} },
-            'Created At': { created_time: {} },
-            'Status': {
-                select: {
-                    options: [
-                        { name: 'Draft', color: 'yellow' },
-                        { name: 'Published', color: 'green' },
-                        { name: 'Archived', color: 'red' }
-                    ]
-                }
-            }
-        }
-    });
+        properties: dbProperties,
+    }) as any
 
-    await db.integration.update({
-        where: { id: userIntegration.id },
+
+    const updatefrom = db.form.update({
+        where: { id: form.id },
         data: {
-            config: {
-                ...(typeof userIntegration.config === 'object' && userIntegration.config !== null ? userIntegration.config : {}),
-                app_database_id: database.id,
-                app_database_url: 'url' in database ? (database.url as string) : null
-            }
-        }
+            notionId: newDb.id,
+
+        },
     });
 
+    const updatgeintegration = db.integration.update({ where: { id: integration.id }, data: { FromId: form.id } })
+
+    await Promise.all([updatefrom, updatgeintegration])
     res.json({
-        message: 'Database created successfully',
-        database,
-        databaseUrl: 'url' in database ? (database.url as string) : null
+        message: "Database created for form successfully",
+        databaseId: newDb.id,
+        databaseUrl: newDb.url,
     });
     return
 });
 
-export const getAppDatabaseController = asyncerrorhandler(async (req: Request, res: Response) => {
-    const { userId } = req.params;
+export const uploadNotionData = asyncerrorhandler(async (req: Request, res: Response) => {
+    const data = req.body;
+    const fromId = req.query.fromId as string;
+
+    if (!data || typeof data !== "object" || !data) {
+        res.status(400).json({ error: "Invalid request body: 'data' is missing or malformed" });
+        return;
+    }
+
+    if (!fromId) {
+        res.status(401).json({ error: "User not authenticated" });
+        return;
+    }
+
+    const form = await db.form.findFirst({ where: { id: fromId } });
+    if (!form) {
+        res.status(404).json({ error: "Form does not exist" });
+        return;
+    }
+
+    if (!form.notionId) {
+        res.status(400).json({ error: "Notion database for this form not set up yet" });
+        return;
+    }
+
     const integration = await db.integration.findFirst({
         where: {
-            userId: Number(userId),
-            type: "NOTION"
-        }
+            type: "NOTION",
+            userId: form.userId,
+            FromId: fromId,
+        },
     });
 
     if (!integration) {
-        res.status(401).json({ error: 'User not authenticated' });
-        return
+        res.status(401).json({ error: "Notion integration not found" });
+        return;
     }
 
-    const userToken = integration.config as {
-        access_token: string,
-        workspace_name: string,
-        workspace_icon: string,
-        workspace_id: string,
-        bot_id: string,
-        app_database_id: string
+    const cfg = integration.config as {
+        access_token: string;
+        workspace_id: string;
+        app_database_url?: string;
     };
 
+    const notion = new Client({ auth: cfg.access_token });
 
-    const notion = new Client({ auth: userToken.access_token });
+    const properties: Record<string, any> = {};
+    for (const key of Object.keys(data)) {
+        properties[key] = {
+            title: [
+                {
+                    text: {
+                        content: String(data[key]),
+                    },
+                },
+            ],
+        };
 
-    const database = await notion.databases.retrieve({
-        database_id: userToken.app_database_id,
+    }
+
+    await notion.pages.create({
+        parent: { database_id: form.notionId },
+        properties,
     });
+
+    const databaseUrl = form.notionId && cfg.workspace_id
+        ? `https://www.notion.so/${cfg.workspace_id.replace(/-/g, "")}/${form.notionId.replace(/-/g, "")}`
+        : cfg.app_database_url || "";
 
     res.json({
-        hasDatabase: true,
-        database,
-        databaseUrl: 'url' in database ? database.url : null,
+        message: "Data uploaded to Notion successfully",
+        databaseUrl,
     });
     return
-
 });
-
-
-export const getPageContentController = asyncerrorhandler(async (req: Request, res: Response) => {
-    const { userId, pageId } = req.params;
-    const integration = await db.integration.findFirst({
-        where: {
-            userId: Number(userId),
-            type: "NOTION"
-        }
-    });
-
-    if (!integration) {
-        res.status(401).json({ error: 'User not authenticated' });
-        return
-    }
-
-    const userToken = integration.config as {
-        access_token: string,
-        workspace_name: string,
-        workspace_icon: string,
-        workspace_id: string,
-        bot_id: string
-    };
-
-    const notion = new Client({ auth: userToken.access_token });
-
-    const page = await notion.pages.retrieve({ page_id: pageId });
-    const blocks = await notion.blocks.children.list({ block_id: pageId });
-
-    res.json({ page, blocks: blocks.results });
-    return
-});
-
-

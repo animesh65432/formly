@@ -52,6 +52,7 @@ model Integration {
   enabled    Boolean  @default(false)
   config     Json?   
   userId     Int
+  FromId    String?
   user    User @relation(fields: [userId], references: [id], onDelete: Cascade)
   @@map("integrations")
 }
