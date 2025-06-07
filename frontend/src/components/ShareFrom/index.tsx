@@ -11,7 +11,6 @@ type Props = {
 const ShareFrom: React.FC<Props> = ({ fromid, sheetId }) => {
     const { token } = useAuth()
     const { data, isLoading } = useGetfrombyId(token, fromid)
-
     if (isLoading || !data) {
         return <div className='h-[100vh] w-[100vw] flex justify-center items-center'>
             <div>
