@@ -2,31 +2,51 @@ import { Request, Response } from "express"
 import db from "../../db"
 import { asyncerrorhandler } from "../../middlewares"
 import { redisClient } from "../../service"
+import { v4 as uuidv4 } from 'uuid';
+
 const create = asyncerrorhandler(async (req: Request, res: Response) => {
-    const { block } = req.body
-    const userId = Number(req.user?.id)
-    if (block.length === 0) {
-        res.status(400).json({ message: "please create some fromfileds" })
+    const { block } = req.body;
+    const userId = Number(req.user?.id);
+
+    if (!block || block.length === 0) {
+        res.status(400).json({ message: "please create some form fields" });
         return
     }
+
+
+    const sortedBlocks = [...block].sort((a, b) => a.id.localeCompare(b.id));
+
+
+    const uniqueIds = new Set<string>();
+    const updatedBlocks = sortedBlocks.map((b, index) => {
+        let currentId = b.id;
+        if (!currentId || uniqueIds.has(currentId)) {
+            currentId = uuidv4();
+        }
+        uniqueIds.add(currentId);
+        return { ...b, id: currentId };
+    });
+
+
     const Form = await db.form.create({
         data: {
             form_blocks: {
-                create: block
+                create: updatedBlocks
             },
             userId
         }
     });
-    const deleteUserFormsCache = redisClient.del(`users-forms:${userId}`);
-    const deleteAllFormsCache = redisClient.del(`forms:${req.user?.id}`)
 
-    await Promise.all([deleteAllFormsCache, deleteUserFormsCache])
+    const deleteUserFormsCache = redisClient.del(`users-forms:${userId}`);
+    const deleteAllFormsCache = redisClient.del(`forms:${req.user?.id}`);
+    await Promise.all([deleteUserFormsCache, deleteAllFormsCache]);
+
     res.status(200).json({
         message: "done it",
         fromid: Form.id
-    })
+    });
     return
-})
+});
 
 const Get = asyncerrorhandler(async (req: Request, res: Response) => {
     const redisKey = `forms:${req.user?.id}`;

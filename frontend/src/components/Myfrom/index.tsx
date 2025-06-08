@@ -16,7 +16,7 @@ const MyFrom: React.FC = () => {
                 </div>
                 {isLoading
                     &&
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 lg:gap-4 p-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 mt-4 gap-2 lg:gap-4 p-4">
                         <SkeletonFrom />
                         <SkeletonFrom />
                         <SkeletonFrom />
@@ -24,7 +24,7 @@ const MyFrom: React.FC = () => {
                     </div>
                 }
                 {!isLoading &&
-                    <div className="grid  grid-cols-1 lg:grid-cols-2  gap-2 lg:gap-4 p-4">
+                    <div className="grid  grid-cols-1 mt-4 lg:grid-cols-2  gap-2 lg:gap-4 p-4">
                         {blocks?.map((block, index) => <Templates block={block} key={index} />)}
                     </div>
                 }

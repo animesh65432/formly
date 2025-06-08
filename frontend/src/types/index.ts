@@ -23,7 +23,8 @@ export type FormBuilderState = {
     updateBlock: (id: string, updatedBlock: FormBlock) => void;
     selectElementId: string | null,
     setSelectElementId: (id: string) => void;
-    makeEmptyblock: () => void
+    makeEmptyblock: () => void;
+    add: (blocks: FormBlock[]) => void
 };
 
 export type auth = {

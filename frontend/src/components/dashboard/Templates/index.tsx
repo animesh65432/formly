@@ -4,11 +4,12 @@ import Preview from '../../FromBuilder/Preview/main'
 
 type Props = {
     block: BlockItem
+    isDashboard?: boolean
 }
-const Templates: React.FC<Props> = ({ block }) => {
+const Templates: React.FC<Props> = ({ block, isDashboard = false }) => {
     return (
         <div>
-            <Preview block={block.form_blocks} isTemplates={true} />
+            <Preview block={block.form_blocks} isTemplates={true} isDashboard={isDashboard} />
         </div>
     )
 }
