@@ -13,11 +13,11 @@ const Mainlayout: React.FC<Props> = ({ children }) => {
                 <div className=" hidden lg:block">
                     <Sidebar />
                 </div>
-                <div className=" block lg:hidden">
+                <div className=" block lg:hidden col-span-3">
                     <MobileSidebar />
                 </div>
             </div>
-            <div className="min-h-screen overflow-y-scroll col-span-10 lg:col-span-9  w-full">
+            <div className="min-h-screen scrollbar-custom-x flex justify-center col-span-9  w-full">
                 {children}
             </div>
         </div>

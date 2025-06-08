@@ -50,7 +50,7 @@ const DropdownBlock: React.FC<Props> = ({ block, form, isTemplates, isSharefrom 
                     <FormItem className={`${isSharefrom
                         ? "w-[80vw] md:w-[30vw] m-auto"
                         : isTemplates
-                            ? "w-[30vw] lg:w-[30vw] m-auto"
+                            ? "w-[55vw] lg:w-[30vw] m-auto"
                             : "w-[60vw] lg:w-[30vw] m-auto"
                         }`} onClick={() => handleClick(block.id)}>
                         <FormLabel className="text-green-800 font-semibold text-sm lg:text-xl">
