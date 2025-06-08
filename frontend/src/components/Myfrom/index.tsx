@@ -10,8 +10,8 @@ const MyFrom: React.FC = () => {
     const { data: blocks, isLoading } = useGetUserfroms(token)
     return (
         <Mainlayout>
-            <div className='flex flex-col gap-14'>
-                <div className=' w-[80vw] md:w-[78vw]  flex justify-end'>
+            <div className='flex flex-col gap-14 '>
+                <div className='w-[80vw] md:w-[78vw]  flex justify-end'>
                     <Header />
                 </div>
                 {isLoading
@@ -24,9 +24,8 @@ const MyFrom: React.FC = () => {
                     </div>
                 }
                 {!isLoading &&
-
-                    <div className='grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-4  mt-10'>
-                        {blocks?.map((block) => <Templates block={block} />)}
+                    <div className="grid  grid-cols-1 lg:grid-cols-2  gap-2 lg:gap-4 p-4">
+                        {blocks?.map((block, index) => <Templates block={block} key={index} />)}
                     </div>
                 }
             </div>

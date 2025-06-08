@@ -5,7 +5,7 @@ import Notion from './Notion'
 const Intergations: React.FC = () => {
     return (
         <Mainlayout>
-            <div className='w-[75vw] ml-10 sm:ml-0 flex gap-1 sm:gap-4  mt-6 sm:mt-10  justify-end'>
+            <div className='w-[75vw] ml-10 sm:ml-0 flex gap-1 sm:gap-4  mt-6 sm:mt-10  justify-end '>
                 <GoogleSheets />
                 <Notion />
             </div>

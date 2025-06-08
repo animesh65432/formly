@@ -21,7 +21,7 @@ const Notion: React.FC = () => {
     }
 
     return (
-        <Button className='bg-green-800 hover:bg-green-600 rounded-md' onClick={fetchAuthUrl}>{isLoading ? <Icons.spinner className='animate-spin h-4 w-4' /> : "Notion"}</Button>
+        <Button className='bg-green-800 hover:bg-green-600 rounded-md p-2 sm:p-4 md:p-6' onClick={fetchAuthUrl}>{isLoading ? <Icons.spinner className='animate-spin h-4 w-4' /> : "Notion"}</Button>
     )
 }
 
