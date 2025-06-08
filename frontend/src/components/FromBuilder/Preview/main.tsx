@@ -15,23 +15,23 @@ import { uploadGoogleSheet } from "../../../api/Integration/google"
 import { uploadDatanotiondatabase } from "../../../api/Integration/notion"
 import { fixInputAndValue } from "../../../lib/fixinputandvalue"
 import { useAuth } from "../../../store/auth"
-
-
 type Props = {
     block: FormBlock[],
     isTemplates?: boolean,
     isSharefrom?: boolean,
     fromid?: string,
     sheetId?: string
+    isDashboard?: boolean
 };
 
 
-const Preview: React.FC<Props> = ({ sheetId, fromid, block, isTemplates = false, isSharefrom = false }) => {
+const Preview: React.FC<Props> = ({ sheetId, fromid, block, isTemplates = false, isSharefrom = false, isDashboard = false }) => {
     const [lastAddedId, setLastAddedId] = useState<string | null>(null);
     const [prevblockLength, setPrevblockLength] = useState(0);
     const { token } = useAuth()
     const { setSelectElementId } = useFormBuilderStore()
     const schema = useMemo(() => generateSchema(block), [block]);
+
 
     const form = useForm({
         resolver: zodResolver(schema)
@@ -74,13 +74,17 @@ const Preview: React.FC<Props> = ({ sheetId, fromid, block, isTemplates = false,
             isSharefrom
         };
 
+
+
         return (
             <>
                 {!isSharefrom
                     &&
-                    <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
-                        <Component {...props} />
-                    </AnimateWrapper>
+                    <div >
+                        <AnimateWrapper key={block.id} isAnimated={isNew} id={block.id}>
+                            <Component {...props} />
+                        </AnimateWrapper>
+                    </div>
                 }
                 {
                     isSharefrom

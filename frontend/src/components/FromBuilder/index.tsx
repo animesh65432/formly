@@ -4,12 +4,17 @@ import FromEdit from './Edit'
 import Preview from "./Preview/main"
 import Fromheader from './Fromheader'
 import { useFormBuilderStore } from "../../store/frombuilder"
+import { useLocation } from "react-router-dom"
 
 const Frombuilder: React.FC = () => {
-    const { block, makeEmptyblock } = useFormBuilderStore()
-
+    const { block, add } = useFormBuilderStore()
+    const location = useLocation();
+    const { templateblock } = location.state || []
+    function init() {
+        add(templateblock)
+    }
     useEffect(() => {
-        makeEmptyblock()
+        init()
     }, [])
     return (
         <div className='min-h-screen flex flex-col'>

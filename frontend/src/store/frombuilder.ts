@@ -36,5 +36,10 @@ export const useFormBuilderStore = create<FormBuilderState>((set) => ({
         return {
             block: []
         }
+    }),
+    add: (blocks) => set(() => {
+        return {
+            block: blocks
+        }
     })
 }));
