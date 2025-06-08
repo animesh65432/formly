@@ -1,6 +1,6 @@
 import React from 'react'
-import type { BlockItem } from "../../../types"
-import Preview from '../../FromBuilder/Preview/main'
+import type { BlockItem } from "../../types"
+import Preview from '../Preview/main'
 
 type Props = {
     block: BlockItem

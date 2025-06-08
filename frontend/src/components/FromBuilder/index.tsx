@@ -1,18 +1,25 @@
 import React, { useEffect } from 'react'
 import FormElements from './Elements'
 import FromEdit from './Edit'
-import Preview from "./Preview/main"
+import Preview from "../Preview/main"
 import Fromheader from './Fromheader'
 import { useFormBuilderStore } from "../../store/frombuilder"
 import { useLocation } from "react-router-dom"
 
 const Frombuilder: React.FC = () => {
-    const { block, add } = useFormBuilderStore()
+    const { block, add, makeEmptyblock } = useFormBuilderStore()
     const location = useLocation();
-    const { templateblock } = location.state || []
+    const templateblock = location.state?.templateblock;
+
     function init() {
-        add(templateblock)
+        if (templateblock) {
+            add(templateblock);
+        } else {
+            console.log("call")
+            makeEmptyblock();
+        }
     }
+
     useEffect(() => {
         init()
     }, [])

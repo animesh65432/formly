@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { FormItem, FormField, FormLabel } from '../../../ui/form';
-import type { FormBlock } from "../../../../types";
-import Icons from '../../../Icons';
-import { useFormBuilderStore } from "../../../../store/frombuilder";
+import { FormItem, FormField, FormLabel } from '../../ui/form';
+import type { FormBlock } from "../../../types";
+import Icons from '../../Icons';
+import { useFormBuilderStore } from "../../../store/frombuilder";
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
-} from "../../../ui/popover"
-import ForSmallScreen from "../../Edit/ForSmallScreen";
+} from "../../ui/popover"
+import ForSmallScreen from "../../FromBuilder/Edit/ForSmallScreen";
 
 type Props = {
     block: FormBlock;

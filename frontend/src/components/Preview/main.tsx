@@ -1,20 +1,20 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useFormBuilderStore } from "../../../store/frombuilder";
+import { useFormBuilderStore } from "../../store/frombuilder";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { generateSchema } from "../../../lib/generateSchema";
+import { generateSchema } from "../../lib/generateSchema";
 import AnimateWrapper from './AnimateWrapper';
-import { Form } from '../../ui/form';
-import type { FormBlock } from "../../../types"
+import { Form } from '../ui/form';
+import type { FormBlock } from "../../types"
 import { InputTypes } from "./index"
-import { BLOCK_COMPONENT_MAP } from "../../../lib"
-import FromMobileElements from "../Elements/Mobile"
+import { BLOCK_COMPONENT_MAP } from "../../lib"
+import FromMobileElements from "../FromBuilder/Elements/Mobile"
 import { toast } from "react-toastify"
 import NotSelect from './NotSelect';
-import { uploadGoogleSheet } from "../../../api/Integration/google"
-import { uploadDatanotiondatabase } from "../../../api/Integration/notion"
-import { fixInputAndValue } from "../../../lib/fixinputandvalue"
-import { useAuth } from "../../../store/auth"
+import { uploadGoogleSheet } from "../../api/Integration/google"
+import { uploadDatanotiondatabase } from "../../api/Integration/notion"
+import { fixInputAndValue } from "../../lib/fixinputandvalue"
+import { useAuth } from "../../store/auth"
 type Props = {
     block: FormBlock[],
     isTemplates?: boolean,
@@ -25,16 +25,16 @@ type Props = {
 };
 
 
-const Preview: React.FC<Props> = ({ sheetId, fromid, block, isTemplates = false, isSharefrom = false, isDashboard = false }) => {
+const Preview: React.FC<Props> = ({ sheetId, fromid, block, isTemplates = false, isSharefrom = false }) => {
     const [lastAddedId, setLastAddedId] = useState<string | null>(null);
     const [prevblockLength, setPrevblockLength] = useState(0);
     const { token } = useAuth()
     const { setSelectElementId } = useFormBuilderStore()
     const schema = useMemo(() => generateSchema(block), [block]);
 
-
+    console.log(block)
     const form = useForm({
-        resolver: zodResolver(schema)
+        resolver: zodResolver(schema!)
     });
 
 
