@@ -1,7 +1,7 @@
 import type React from "react";
-import type { FormBlock } from "../../../../types";
-import { Checkbox } from "../../../ui/checkbox";
-import { FormControl, FormField, FormItem, FormLabel } from "../../../ui/form";
+import type { FormBlock } from "../../../types";
+import { Checkbox } from "../../ui/checkbox";
+import { FormControl, FormField, FormItem, FormLabel } from "../../ui/form";
 
 
 type Props = {

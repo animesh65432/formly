@@ -11,7 +11,7 @@ import {
     ImageUploadBlock,
     RatingBlock,
     FileUploadBlock,
-} from "../components/FromBuilder/Preview";
+} from "../components/Preview";
 
 export const BLOCK_COMPONENT_MAP: Record<string, any> = {
     text: InputTypes,

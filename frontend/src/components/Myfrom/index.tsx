@@ -3,7 +3,7 @@ import Mainlayout from '../Mainlayout'
 import Header from './Header'
 import { useGetUserfroms } from "../../actions/from"
 import { useAuth } from '../../store/auth'
-import Templates from '../dashboard/Templates'
+import Templates from '../Templates'
 import SkeletonFrom from '../SkeletonFrom'
 const MyFrom: React.FC = () => {
     const { token } = useAuth()

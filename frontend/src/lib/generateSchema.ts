@@ -3,6 +3,7 @@ import type { FormBlock } from "../types"
 
 export const generateSchema = (block: FormBlock[]) => {
     const shape: any = {};
+    if (!block) return
     block.forEach((block) => {
         const name = block.id;
 

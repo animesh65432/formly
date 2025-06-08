@@ -1,5 +1,5 @@
 import React from 'react'
-import Preview from '../FromBuilder/Preview/main'
+import Preview from '../Preview/main'
 import { useGetfrombyId } from "../../actions/from"
 import { useAuth } from "../../store/auth"
 import Icons from '../Icons'

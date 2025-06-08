@@ -5,23 +5,23 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "../../../ui/form";
-import type { FormBlock } from "../../../../types";
+} from "../../ui/form";
+import type { FormBlock } from "../../../types";
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "../../../ui/select";
-import Icons from "../../../Icons";
+} from "../../ui/select";
+import Icons from "../../Icons";
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
-} from "../../../ui/popover"
-import ForSmallScreen from "../../Edit/ForSmallScreen";
-import { useFormBuilderStore } from "../../../../store/frombuilder";
+} from "../../ui/popover"
+import ForSmallScreen from "../../FromBuilder/Edit/ForSmallScreen";
+import { useFormBuilderStore } from "../../../store/frombuilder";
 
 type Props = {
     block: FormBlock;

@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import Icons from '../../../Icons'
-import { Button } from '../../../ui/button'
-import { useFormBuilderStore } from '../../../../store/frombuilder'
-import type { FormBlock } from "../../../../types"
-import { Popover, PopoverContent, PopoverTrigger } from "../../../ui/popover"
-import ForSmallScreen from "../../Edit/ForSmallScreen";
+import Icons from '../../Icons'
+import { Button } from '../../ui/button'
+import { useFormBuilderStore } from '../../../store/frombuilder'
+import type { FormBlock } from "../../../types"
+import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover"
+import ForSmallScreen from "../../FromBuilder/Edit/ForSmallScreen";
 
 type Props = {
     block: FormBlock;

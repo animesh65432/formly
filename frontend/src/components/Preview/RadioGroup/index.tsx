@@ -1,7 +1,7 @@
 import type React from "react";
-import type { FormBlock } from "../../../../types";
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "../../../ui/form";
-import { RadioGroup, RadioGroupItem } from "../../../ui/radio-group";
+import type { FormBlock } from "../../../types";
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "../../ui/form";
+import { RadioGroup, RadioGroupItem } from "../../ui/radio-group";
 
 type Props = {
     block: FormBlock;

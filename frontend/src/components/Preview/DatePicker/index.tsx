@@ -1,6 +1,6 @@
 import React, { useState } from "react"
-import { Calendar } from "../../../ui/calendar"
-import { Popover, PopoverContent, PopoverTrigger } from "../../../ui/popover"
+import { Calendar } from "../../ui/calendar"
+import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover"
 import { format } from "date-fns"
 import {
     FormField,
@@ -8,11 +8,11 @@ import {
     FormLabel,
     FormControl,
     FormMessage,
-} from "../../../ui/form"
-import type { FormBlock } from "../../../../types"
-import ForSmallScreen from "../../Edit/ForSmallScreen";
-import Icons from "../../../Icons"
-import { useFormBuilderStore } from "../../../../store/frombuilder"
+} from "../../ui/form"
+import type { FormBlock } from "../../../types"
+import ForSmallScreen from "../../FromBuilder/Edit/ForSmallScreen";
+import Icons from "../../Icons"
+import { useFormBuilderStore } from "../../../store/frombuilder"
 
 type Props = {
     block: FormBlock

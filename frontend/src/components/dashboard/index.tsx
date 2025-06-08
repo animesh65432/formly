@@ -1,7 +1,7 @@
 import React from "react"
 import { useGetFroms } from "../../actions/from"
 import { useAuth } from "../../store/auth"
-import Templates from "./Templates"
+import Templates from "../Templates"
 import Mainlayout from "../Mainlayout"
 import SkeletonFrom from "../SkeletonFrom"
 import { useNavigate } from "react-router-dom"
