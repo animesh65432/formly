@@ -37,15 +37,15 @@ const GoogleSheets: React.FC = () => {
     };
 
     return (
-        <div className="flex flex-col gap-2">
-            <Button
-                onClick={handleGoogleAuth}
-                disabled={isLoading}
-                className="bg-green-800 hover:bg-green-600 rounded-md text-sm sm:text-xl"
-            >
-                {isLoading ? <Icons.spinner className="animate-spin h-4 w-4" /> : "Connect Google Sheets"}
-            </Button>
-        </div>
+
+        <Button
+            onClick={handleGoogleAuth}
+            disabled={isLoading}
+            className="bg-green-800 p-2 sm:p-4 md:p-6 hover:bg-green-600 rounded-md text-sm sm:text-xl"
+        >
+            {isLoading ? <Icons.spinner className="animate-spin h-4 w-4" /> : "Connect Google Sheets"}
+        </Button>
+
     );
 };
 
