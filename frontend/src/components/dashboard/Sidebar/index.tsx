@@ -13,9 +13,9 @@ const Sidebar: React.FC = () => {
     };
 
     return (
-        <div className="h-dvh flex flex-col bg-white shadow-lg rounded-r-xl lg:p-6 p-3 justify-start items-stretch text-green-800">
+        <div className="h-dvh flex flex-col bg-white shadow-lg rounded-r-xl  p-2 justify-start items-stretch text-green-800">
             <nav className="flex-grow">
-                <ul className="space-y-3 xl:space-y-6">
+                <ul className="space-y-6">
                     {menuItems.map((item) => {
                         const isActive = location.pathname === item.path;
 
@@ -24,8 +24,8 @@ const Sidebar: React.FC = () => {
                                 <button
                                     onClick={() => handleClick(item.path)}
                                     className={`w-full flex items-center gap-3 py-1 px-1 xl:py-3 xl:px-4 rounded-lg transition-all duration-300 hover:bg-green-50 ${isActive
-                                            ? "bg-green-100 text-green-700 font-medium shadow-sm transform scale-105"
-                                            : "hover:text-green-700"
+                                        ? "bg-green-100 text-green-700 font-medium shadow-sm transform scale-105"
+                                        : "hover:text-green-700"
                                         }`}
                                 >
                                     <div className={`text-xl ${isActive ? "text-green-600" : ""}`}>
