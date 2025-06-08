@@ -33,18 +33,23 @@ const DateBlock: React.FC<Props> = ({ block, form, isTemplates, isSharefrom }) =
     }
 
     return (
-        <div >
+        <div className={`${isSharefrom
+            ? "w-[80vw] md:w-[30vw] m-auto flex"
+            : isTemplates
+                ? "w-[50vw] lg:w-[30vw] m-auto flex"
+                : "w-[60vw] lg:w-[30vw] m-auto flex"
+            }`} >
             <FormField
                 control={form.control}
                 name={block.id}
                 render={({ field }) => (
                     <FormItem className={`${isSharefrom
-                        ? "w-[80vw] md:w-[30vw] m-auto"
+                        ? "w-[75vw] md:w-[25vw] m-auto"
                         : isTemplates
-                            ? "w-[30vw] lg:w-[30vw] m-auto"
-                            : "w-[60vw] lg:w-[30vw] m-auto"
+                            ? "w-[55vw] lg:w-[25vw] m-auto"
+                            : "w-[55vw] lg:w-[25vw] m-auto"
                         }`} onClick={() => handleClick(block.id)} >
-                        <div className="flex justify-between items-center mb-2">
+                        <div className="flex justify-between items-center mb-2 ">
                             <FormLabel className="text-sm lg:text-xl text-green-800 font-semibold">
                                 {block?.label}
                             </FormLabel>

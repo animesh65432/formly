@@ -41,7 +41,7 @@ const FileUploadBlock: React.FC<Props> = ({ block, form, isTemplates, isSharefro
                 <FormItem className={`${isSharefrom
                     ? "w-[80vw] md:w-[30vw] m-auto"
                     : isTemplates
-                        ? "w-[30vw] lg:w-[30vw] m-auto"
+                        ? "w-[55vw] lg:w-[30vw] m-auto"
                         : "w-[60vw] lg:w-[30vw] m-auto"
                     }`} onClick={() => handleClick(block.id)}>
                     <FormLabel className="md:text-xl text-sm text-green-800">

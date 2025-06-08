@@ -38,7 +38,7 @@ const Fromheader: React.FC = () => {
 
     return (
         <div className='flex gap-4'>
-            <Button className='bg-green-800 rounded-md hover:bg-green-700' onClick={() => goBack()}>BACK</Button>
+            <Button className='bg-green-800 rounded-md hover:bg-green-700 ' onClick={() => goBack()}>BACK</Button>
             <Button className='bg-green-800 rounded-md hover:bg-green-700' onClick={createfrom}>{isLoading ? <Icons.spinner className='animate-spin w-5 h-5 md:w-6 md:h-6 ' /> : "SAVE"}</Button>
         </div>
     )
