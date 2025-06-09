@@ -6,9 +6,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 const create = asyncerrorhandler(async (req: Request, res: Response) => {
     const { block } = req.body;
-    const userId = Number(req.user?.id);
+    const userId = req.user?.id
 
-    if (!block || block.length === 0) {
+    if (!block || block.length === 0 || !userId) {
         res.status(400).json({ message: "please create some form fields" });
         return
     }
@@ -25,7 +25,7 @@ const create = asyncerrorhandler(async (req: Request, res: Response) => {
                 form_blocks: {
                     create: block
                 },
-                userId
+                userId: userId
             }
         });
     }
@@ -98,9 +98,15 @@ const Get = asyncerrorhandler(async (req: Request, res: Response) => {
 })
 
 const GetUserFroms = asyncerrorhandler(async (req: Request, res: Response) => {
-    const userId = Number(req.user?.id)
+    const userId = req.user?.id
     const redisKey = `users-forms:${req.user?.id}`;
     const cachedData = await redisClient.get(redisKey);
+
+    if (!userId) {
+        res.status(200).json({
+            message: "user not autheticatd"
+        })
+    }
 
     if (cachedData) {
         res.status(200).json(JSON.parse(cachedData));
@@ -135,7 +141,7 @@ const GetUserFroms = asyncerrorhandler(async (req: Request, res: Response) => {
 })
 
 const Delete = asyncerrorhandler(async (req: Request, res: Response) => {
-    const userId = Number(req.user?.id)
+    const userId = req.user?.id
     const fromId = req.params.id
 
     if (!userId || !fromId) {
@@ -161,7 +167,7 @@ const Delete = asyncerrorhandler(async (req: Request, res: Response) => {
 })
 
 const update = asyncerrorhandler(async (req: Request, res: Response) => {
-    const userId = Number(req.user?.id)
+    const userId = req.user?.id
     const fromId = req.params.id
 
     const { block } = req.body

@@ -52,7 +52,7 @@ export const buildNotionProperties = (
     return properties;
 };
 
-export const refreshNotionAccessToken = async (userId: number) => {
+export const refreshNotionAccessToken = async (userId: string) => {
     const integration = await db.integration.findFirst({
         where: { userId, type: "NOTION" },
     });
@@ -90,7 +90,7 @@ export const refreshNotionAccessToken = async (userId: number) => {
 
 
 export const notionRequestWithAutoRefresh = async (
-    userId: number,
+    userId: string,
     requestFn: (client: Client) => Promise<any>
 ) => {
     const integration = await db.integration.findFirst({

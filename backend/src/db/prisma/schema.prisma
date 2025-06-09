@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
@@ -12,47 +12,46 @@ enum IntegrationType {
   NOTION
 }
 
-
 model User {
-  id       Int     @id @default(autoincrement())
-  name     String?
-  email    String  @unique
-  password String?
-  Froms    Form[]
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  name         String?
+  email        String        @unique
+  password     String?
+  Froms        Form[]
   Integrations Integration[]
 }
+
 model Form {
-  id            String      @id @default(cuid())
-  userId        Int
-  form_blocks   FormBlock[]
-  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  googleSheetId String?   
-  notionId      String?    
-  isHeaderWritten Boolean  @default(false) 
-  @@index([userId], map: "forms_userId_fkey")
-  @@map("forms")
+  id              String      @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String      @db.ObjectId
+  form_blocks     FormBlock[]
+  googleSheetId   String?
+  notionId        String?
+  isHeaderWritten Boolean     @default(false)
+
+  user            User        @relation(fields: [userId], references: [id])
 }
 
-
 model FormBlock {
-  id          String  @id
-  formId      String
+  id          String   @id @default(uuid()) @map("_id") 
+  formId      String  @db.ObjectId
   type        String
   label       String?
   placeholder String?
   required    Boolean @default(false)
   options     Json?
-  forms       Form    @relation(fields: [formId], references: [id], onDelete: Cascade)
   position    Int
-  @@index([formId], map: "form_blocks_formId_fkey")
+
+  forms       Form    @relation(fields: [formId], references: [id])
 }
+
 model Integration {
-  id         Int     @id @default(autoincrement())
-  type       IntegrationType 
-  enabled    Boolean  @default(false)
-  config     Json?   
-  userId     Int
-  FromId    String?
-  user    User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  @@map("integrations")
+  id       String           @id @default(auto()) @map("_id") @db.ObjectId
+  type     IntegrationType
+  enabled  Boolean          @default(false)
+  config   Json?
+  userId   String           @db.ObjectId
+  FromId   String?
+
+  user     User             @relation(fields: [userId], references: [id])
 }

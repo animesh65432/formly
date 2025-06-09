@@ -8,9 +8,15 @@ import { EmailtoUser } from "../../../utils/EmailtoUser"
 const redirect_uri = config.GOOGLE_SHEETS_REDIRECT_URI as string;
 
 export const generateOAuthURL = asyncerrorhandler(async (req: Request, res: Response) => {
+    const userId = req.user?.id
+    if (!userId) {
+        res.status(200).json({
+            message: "user not autheticatd"
+        })
+    }
     const checkalreadyintragtedwithgoogle = await db.integration.findFirst({
         where: {
-            userId: Number(req.user?.id),
+            userId,
             type: "GOOGLE_SHEETS"
         }
     })
@@ -45,8 +51,8 @@ export const generateOAuthURL = asyncerrorhandler(async (req: Request, res: Resp
 export const handleGoogleOAuthCallback = async (req: Request, res: Response) => {
     const { code, state } = req.query;
     const codeString = Array.isArray(code) ? code[0] : typeof code === "string" ? code : undefined;
-    const userId = Number(state)
-    if (!codeString || !userId) {
+    const userId = state
+    if (!codeString || !userId || typeof userId !== "string") {
         res.status(400).send("Missing authorization code or user ID");
         return
     }
@@ -182,7 +188,7 @@ export const uploadSheetData = asyncerrorhandler(async (req: Request, res: Respo
         return;
     }
 
-    const userId = Number(form.userId);
+    const userId = form.userId
     const sheetId = req.query.sheetId as string;
 
     if (!sheetId) {

@@ -3,20 +3,14 @@ import db from "../db";
 import nodemailer from "../service/nodemailer";
 
 export const EmailtoUser = async (
-    userId: number,
+    userId: string,
     googleSheeturl: string | null,
     notionurl: string | null
 ) => {
     try {
-        const user = await db.user.findFirst({
+        const user = await db.user.findUnique({
             where: { id: userId },
         });
-
-        if (!user || !user.email) {
-            console.error("User not found or missing email.");
-            return;
-        }
-
         let message = "";
 
         if (googleSheeturl) {
@@ -30,7 +24,7 @@ export const EmailtoUser = async (
         if (message) {
             await nodemailer.sendMail({
                 from: config.NODEMAILER_EMAIL,
-                to: user.email,
+                to: user?.email,
                 subject: "Your Data Update Notification",
                 text: message,
             });

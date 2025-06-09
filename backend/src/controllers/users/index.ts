@@ -20,6 +20,8 @@ const createUser = asyncerrorhandler(async (req: Request, res: Response) => {
         }
     })
 
+    console.log(exsitingUser)
+
     if (exsitingUser) {
         res.status(400).json({ message: "User already exists" })
         return
