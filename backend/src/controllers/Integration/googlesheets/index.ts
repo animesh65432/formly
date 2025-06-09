@@ -48,7 +48,7 @@ export const generateOAuthURL = asyncerrorhandler(async (req: Request, res: Resp
     });
 });
 
-export const handleGoogleOAuthCallback = async (req: Request, res: Response) => {
+export const handleGoogleOAuthCallback = asyncerrorhandler(async (req: Request, res: Response) => {
     const { code, state } = req.query;
     const codeString = Array.isArray(code) ? code[0] : typeof code === "string" ? code : undefined;
     const userId = state
@@ -90,7 +90,7 @@ export const handleGoogleOAuthCallback = async (req: Request, res: Response) => 
     });
     return
 
-}
+})
 
 
 export const createGoogleSheet = asyncerrorhandler(async (req: Request, res: Response) => {
