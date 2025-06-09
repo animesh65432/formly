@@ -21,6 +21,7 @@ import Hi from "../../Hi"
 import { longinUser, googleLogin } from "../../../api/Users"
 import { toast } from "react-toastify"
 import { useAuth } from "../../../store/auth"
+import { ToastContainer } from 'react-toastify'
 
 type SigninSchemaType = z.infer<typeof SinginSchema>
 
@@ -122,6 +123,7 @@ const SignIn: React.FC = () => {
                     </CardFooter>
                 </Card>
             </div>
+            <ToastContainer />
         </div>
     )
 }

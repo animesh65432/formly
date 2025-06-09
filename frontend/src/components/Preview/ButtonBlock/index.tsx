@@ -6,12 +6,14 @@ import type { FormBlock } from "../../../types"
 import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover"
 import ForSmallScreen from "../../FromBuilder/Edit/ForSmallScreen";
 
+
 type Props = {
     block: FormBlock;
     isTemplates: boolean;
-    isSharefrom: boolean
+    isSharefrom: boolean;
+    isLoading: boolean
 }
-const ButtonBlock: React.FC<Props> = ({ block, isTemplates, isSharefrom = false }) => {
+const ButtonBlock: React.FC<Props> = ({ block, isTemplates, isSharefrom = false, isLoading }) => {
     const { removeBlock, setSelectElementId } = useFormBuilderStore();
     const [selectedIdforsmallscreen, SetselectedIdforsmallscreen] = useState<string | null>(null)
     const [isclickedSmallScreen, SetisClickedSmallScreen] = useState<boolean>(false)
@@ -24,7 +26,7 @@ const ButtonBlock: React.FC<Props> = ({ block, isTemplates, isSharefrom = false 
     return (
         <div className='w-[100%] flex justify-center items-center gap-2' >
             <Button type="submit" onClick={() => handleClick(block.id)} disabled={isTemplates && !isSharefrom} className="bg-green-800 lg:w-[7vw] sm:w-[15vw] w-[25vw]  hover:bg-green-700 rounded-2xl p-3 md:p-5">
-                {block?.label || 'Submit'}
+                {!isLoading ? block?.label || 'Submit' : <Icons.spinner className='animate-spin h-6 w-6' />}
             </Button>
             {!isTemplates &&
                 <>

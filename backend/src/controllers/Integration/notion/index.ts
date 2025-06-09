@@ -6,6 +6,7 @@ import { v4 } from "uuid"
 import { redisClient } from "../../../service"
 import { buildNotionProperties, notionRequestWithAutoRefresh } from '../../../utils/notionUtils';
 import { getNotionClient, getNotionDatabaseUrl } from '../../../service/notionService';
+import { EmailtoUser } from "../../../utils/EmailtoUser"
 export const generateOAuthURL = asyncerrorhandler(async (req: Request, res: Response) => {
     const userId = req.user?.id;
     if (!userId) {
@@ -194,28 +195,20 @@ export const uploadNotionData = asyncerrorhandler(async (req: Request, res: Resp
         return;
     }
 
-    console.log(form.userId, fromId)
-
+    const userId = form.userId
 
     const integration = await db.integration.findFirst({
         where: {
             type: "NOTION",
-            userId: form.userId,
+            userId,
             FromId: fromId,
         },
     });
-
-    console.log(integration)
-
-
 
     if (!integration) {
         res.status(401).json({ error: "Notion integration not found" });
         return;
     }
-
-    console.log(integration)
-
     const cfg = integration.config as {
         access_token: string;
         workspace_id: string;
@@ -223,8 +216,6 @@ export const uploadNotionData = asyncerrorhandler(async (req: Request, res: Resp
     };
 
     const notion = getNotionClient(cfg.access_token)
-
-    console.log(notion)
     const notionDb = await notionRequestWithAutoRefresh(form.userId, () =>
         notion.databases.retrieve({ database_id: form.notionId! })
     );
@@ -235,9 +226,11 @@ export const uploadNotionData = asyncerrorhandler(async (req: Request, res: Resp
         notion.pages.create({ parent: { database_id: form.notionId! }, properties })
     );
 
+    const databaseUrl = getNotionDatabaseUrl(cfg.workspace_id, form.notionId) || cfg.app_database_url || ""
+    await EmailtoUser(userId, null, databaseUrl)
     res.json({
         message: "Data uploaded to Notion successfully",
-        databaseUrl: getNotionDatabaseUrl(cfg.workspace_id, form.notionId) || cfg.app_database_url || "",
+        databaseUrl
     });
     return
 });

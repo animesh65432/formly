@@ -4,6 +4,7 @@ import { asyncerrorhandler } from "../../../middlewares";
 import config from "../../../config";
 import db from "../../../db";
 import { refreshGoogleAccessToken } from "../../../utils"
+import { EmailtoUser } from "../../../utils/EmailtoUser"
 const redirect_uri = config.GOOGLE_SHEETS_REDIRECT_URI as string;
 
 export const generateOAuthURL = asyncerrorhandler(async (req: Request, res: Response) => {
@@ -149,14 +150,14 @@ export const createGoogleSheet = asyncerrorhandler(async (req: Request, res: Res
             );
 
             const sheetId = retryResponse.data.spreadsheetId;
-            const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/edit`;
+
 
             await db.form.update({
                 where: { id: fromId },
                 data: { googleSheetId: sheetId }
             });
 
-            res.json({ sheetId, sheetUrl });
+            res.json({ sheetId });
             return
         } else {
             console.error("Google Sheets Error", error.response?.data || error.message);
@@ -244,6 +245,8 @@ export const uploadSheetData = asyncerrorhandler(async (req: Request, res: Respo
             { headers: { Authorization: `Bearer ${access_token}` } }
         );
     }
+    const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/edit`;
+    await EmailtoUser(userId, sheetUrl, null)
 
     res.json({
         message: "Data appended successfully",
