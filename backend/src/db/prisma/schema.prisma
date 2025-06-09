@@ -23,13 +23,12 @@ model User {
 
 model Form {
   id              String      @id @default(auto()) @map("_id") @db.ObjectId
-  userId          String      @db.ObjectId
+  userId          String?      @db.ObjectId
   form_blocks     FormBlock[]
   googleSheetId   String?
   notionId        String?
   isHeaderWritten Boolean     @default(false)
-
-  user            User        @relation(fields: [userId], references: [id])
+  user   User? @relation(fields: [userId], references: [id])
 }
 
 model FormBlock {

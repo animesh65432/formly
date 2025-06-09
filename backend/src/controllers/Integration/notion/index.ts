@@ -207,6 +207,7 @@ export const uploadNotionData = asyncerrorhandler(async (req: Request, res: Resp
         res.status(200).json({
             message: "user not autheticatd"
         })
+        return
     }
 
     const integration = await db.integration.findFirst({
@@ -218,7 +219,7 @@ export const uploadNotionData = asyncerrorhandler(async (req: Request, res: Resp
     });
 
     if (!integration) {
-        res.status(401).json({ error: "Notion integration not found" });
+        res.status(401).json({ error: "Notion integration not found " });
         return;
     }
     const cfg = integration.config as {
@@ -228,13 +229,13 @@ export const uploadNotionData = asyncerrorhandler(async (req: Request, res: Resp
     };
 
     const notion = getNotionClient(cfg.access_token)
-    const notionDb = await notionRequestWithAutoRefresh(form.userId, () =>
+    const notionDb = await notionRequestWithAutoRefresh(userId, () =>
         notion.databases.retrieve({ database_id: form.notionId! })
     );
 
     const dbProps = notionDb.properties;
     const properties = buildNotionProperties(data, dbProps);
-    await notionRequestWithAutoRefresh(form.userId, () =>
+    await notionRequestWithAutoRefresh(userId, () =>
         notion.pages.create({ parent: { database_id: form.notionId! }, properties })
     );
 
