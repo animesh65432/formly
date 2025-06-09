@@ -84,7 +84,7 @@ export const handlenotionOAuthCallback = asyncerrorhandler(async (req: Request, 
         }
     })
 
-    res.redirect(`http://localhost:5173/intergations`);
+    res.redirect(`https://fromly.vercel.app/intergations`);
     return
 
 })
