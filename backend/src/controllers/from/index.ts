@@ -13,29 +13,36 @@ const create = asyncerrorhandler(async (req: Request, res: Response) => {
         return
     }
 
-
-    const sortedBlocks = [...block].sort((a, b) => a.id.localeCompare(b.id));
-
-
-    const uniqueIds = new Set<string>();
-    const updatedBlocks = sortedBlocks.map((b, index) => {
-        let currentId = b.id;
-        if (!currentId || uniqueIds.has(currentId)) {
-            currentId = uuidv4();
+    const checkfromexsit = await db.formBlock.findFirst({
+        where: {
+            id: block[0].id
         }
-        uniqueIds.add(currentId);
-        return { ...b, id: currentId };
-    });
-
-
-    const Form = await db.form.create({
-        data: {
-            form_blocks: {
-                create: updatedBlocks
-            },
-            userId
-        }
-    });
+    })
+    let Form
+    if (!checkfromexsit) {
+        Form = await db.form.create({
+            data: {
+                form_blocks: {
+                    create: block
+                },
+                userId
+            }
+        });
+    }
+    else {
+        const blockWithNewIds = block.map((item: any) => ({
+            ...item,
+            id: uuidv4()
+        }));
+        Form = await db.form.create({
+            data: {
+                form_blocks: {
+                    create: blockWithNewIds
+                },
+                userId
+            }
+        });
+    }
 
     const deleteUserFormsCache = redisClient.del(`users-forms:${userId}`);
     const deleteAllFormsCache = redisClient.del(`forms:${req.user?.id}`);

@@ -28,11 +28,10 @@ type Props = {
 const Preview: React.FC<Props> = ({ sheetId, fromid, block, isTemplates = false, isSharefrom = false }) => {
     const [lastAddedId, setLastAddedId] = useState<string | null>(null);
     const [prevblockLength, setPrevblockLength] = useState(0);
+    const [isLoading, setLoading] = useState<boolean>(false)
     const { token } = useAuth()
     const { setSelectElementId } = useFormBuilderStore()
     const schema = useMemo(() => generateSchema(block), [block]);
-
-    console.log(block)
     const form = useForm({
         resolver: zodResolver(schema!)
     });
@@ -50,6 +49,7 @@ const Preview: React.FC<Props> = ({ sheetId, fromid, block, isTemplates = false,
     }, [block]);
 
     const onSubmit = async (data: any) => {
+        setLoading(true)
         try {
             const res = await fixInputAndValue(data, block, token)
             if (sheetId && fromid) {
@@ -58,6 +58,7 @@ const Preview: React.FC<Props> = ({ sheetId, fromid, block, isTemplates = false,
             }
         }
         finally {
+            setLoading(false)
             toast.success("Form submitted  sucessfully")
         }
     };
@@ -71,7 +72,8 @@ const Preview: React.FC<Props> = ({ sheetId, fromid, block, isTemplates = false,
             form,
             setSelectElementId: block.type === "checkbox" ? setLastAddedId : setSelectElementId,
             isTemplates,
-            isSharefrom
+            isSharefrom,
+            isLoading
         };
 
 
