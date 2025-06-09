@@ -1,14 +1,9 @@
-import { createClient } from "redis";
-import config from "../config";
+import { Redis } from '@upstash/redis'
+import config from '../config';
 
-const redisClient = createClient({
-    url: config.REDIS_URL
-});
+const redis = new Redis({
+    url: config.UPSTASH_REDIS_REST_URL,
+    token: config.UPSTASH_REDIS_REST_TOKEN,
+})
 
-redisClient.on("error", (err) => console.error("Redis Client Error", err));
-
-(async () => {
-    await redisClient.connect();
-})();
-
-export default redisClient;
+export default redis

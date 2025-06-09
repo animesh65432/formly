@@ -3,7 +3,7 @@ import db from "../../../db";
 import config from '../../../config';
 import { asyncerrorhandler } from "../../../middlewares"
 import { v4 } from "uuid"
-import { redisClient } from "../../../service"
+import { redis } from "../../../service"
 import { buildNotionProperties, notionRequestWithAutoRefresh } from '../../../utils/notionUtils';
 import { getNotionClient, getNotionDatabaseUrl } from '../../../service/notionService';
 import { EmailtoUser } from "../../../utils/EmailtoUser"
@@ -28,7 +28,7 @@ export const generateOAuthURL = asyncerrorhandler(async (req: Request, res: Resp
         return
     }
     const key = v4()
-    redisClient.set(key, userId)
+    redis.set(key, userId)
     const notionAuthUrl = `https://api.notion.com/v1/oauth/authorize?client_id=${config.NOTION_CLIENT_ID}&response_type=code&owner=user&redirect_uri=${encodeURIComponent(config.NOTION_REDIRECT_URI as string)}&state=${key}`;
     res.json({ authUrl: notionAuthUrl });
     return;
@@ -41,7 +41,7 @@ export const handlenotionOAuthCallback = asyncerrorhandler(async (req: Request, 
         return
     }
 
-    const userId = await redisClient.get(state) as string
+    const userId = await redis.get(state) as string
 
     if (!userId) {
         res.status(200).json({

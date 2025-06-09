@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import db from "../../db"
 import { asyncerrorhandler } from "../../middlewares"
-import { redisClient } from "../../service"
+import { redis } from "../../service"
 import { v4 as uuidv4 } from 'uuid';
 
 const create = asyncerrorhandler(async (req: Request, res: Response) => {
@@ -44,8 +44,8 @@ const create = asyncerrorhandler(async (req: Request, res: Response) => {
         });
     }
 
-    const deleteUserFormsCache = redisClient.del(`users-forms:${userId}`);
-    const deleteAllFormsCache = redisClient.del(`forms:${req.user?.id}`);
+    const deleteUserFormsCache = redis.del(`users-forms:${userId}`);
+    const deleteAllFormsCache = redis.del(`forms:${req.user?.id}`);
     await Promise.all([deleteUserFormsCache, deleteAllFormsCache]);
 
     res.status(200).json({
@@ -57,10 +57,10 @@ const create = asyncerrorhandler(async (req: Request, res: Response) => {
 
 const Get = asyncerrorhandler(async (req: Request, res: Response) => {
     const redisKey = `forms:${req.user?.id}`;
-    const cachedData = await redisClient.get(redisKey);
+    const cachedData = await redis.get<any>(redisKey);
 
     if (cachedData) {
-        res.status(200).json(JSON.parse(cachedData));
+        res.status(200).json(cachedData);
         return
     }
 
@@ -91,7 +91,7 @@ const Get = asyncerrorhandler(async (req: Request, res: Response) => {
         }
     })
 
-    await redisClient.set(redisKey, JSON.stringify(blocks), { EX: 300 });
+    await redis.set(redisKey, blocks, { ex: 300 });
 
     res.status(200).json(blocks)
     return
@@ -100,7 +100,7 @@ const Get = asyncerrorhandler(async (req: Request, res: Response) => {
 const GetUserFroms = asyncerrorhandler(async (req: Request, res: Response) => {
     const userId = req.user?.id
     const redisKey = `users-forms:${req.user?.id}`;
-    const cachedData = await redisClient.get(redisKey);
+    const cachedData = await redis.get<any>(redisKey);
 
     if (!userId) {
         res.status(200).json({
@@ -109,7 +109,7 @@ const GetUserFroms = asyncerrorhandler(async (req: Request, res: Response) => {
     }
 
     if (cachedData) {
-        res.status(200).json(JSON.parse(cachedData));
+        res.status(200).json(cachedData);
         return
     }
     const block = await db.form.findMany({
@@ -133,7 +133,7 @@ const GetUserFroms = asyncerrorhandler(async (req: Request, res: Response) => {
         where: { userId }
     })
 
-    await redisClient.set(redisKey, JSON.stringify(block), { EX: 300 });
+    await redis.set(redisKey, block, { ex: 300 });
 
     res.status(200).json(block)
     return
@@ -156,8 +156,8 @@ const Delete = asyncerrorhandler(async (req: Request, res: Response) => {
             id: fromId
         }
     })
-    const deleteUserFormsCache = redisClient.del(`users-forms:${userId}`);
-    const deleteAllFormsCache = redisClient.del(`forms:${req.user?.id}`)
+    const deleteUserFormsCache = redis.del(`users-forms:${userId}`);
+    const deleteAllFormsCache = redis.del(`forms:${req.user?.id}`)
 
     await Promise.all([deleteAllForm, deleteAllFormsCache, deleteUserFormsCache])
     res.status(200).json({
@@ -195,8 +195,8 @@ const update = asyncerrorhandler(async (req: Request, res: Response) => {
         }
     })
 
-    const deleteUserFormsCache = redisClient.del(`users-forms:${userId}`);
-    const deleteAllFormsCache = redisClient.del(`forms:${req.user?.id}`)
+    const deleteUserFormsCache = redis.del(`users-forms:${userId}`);
+    const deleteAllFormsCache = redis.del(`forms:${req.user?.id}`)
 
     await Promise.all([deletedForm, createFrom, deleteAllFormsCache, deleteUserFormsCache])
 
@@ -210,12 +210,13 @@ const GetfrombyId = asyncerrorhandler(async (req: Request, res: Response) => {
     const { id } = req.params
 
     const redisKey = `form:${id}`;
-    const cachedData = await redisClient.get(redisKey);
+    const cachedData = await redis.get<any>(redisKey);
+
 
     if (cachedData) {
         res.status(200).json({
             message: "Get the forms ",
-            block: JSON.parse(cachedData),
+            block: cachedData,
         });
         return
     }
@@ -243,7 +244,7 @@ const GetfrombyId = asyncerrorhandler(async (req: Request, res: Response) => {
     })
 
 
-    await redisClient.set(redisKey, JSON.stringify(block), { EX: 300 });
+    await redis.set(redisKey, block, { ex: 300 });
 
     res.status(200).json({
         message: "Get the froms",
