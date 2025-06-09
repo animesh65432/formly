@@ -191,8 +191,8 @@ export const uploadSheetData = asyncerrorhandler(async (req: Request, res: Respo
     const userId = form.userId
     const sheetId = req.query.sheetId as string;
 
-    if (!sheetId) {
-        res.status(400).json({ error: "Missing sheet ID" });
+    if (!sheetId || !userId) {
+        res.status(400).json({ error: "Missing sheet ID or userId is missing" });
         return;
     }
 
@@ -252,6 +252,7 @@ export const uploadSheetData = asyncerrorhandler(async (req: Request, res: Respo
         );
     }
     const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/edit`;
+
     await EmailtoUser(userId, sheetUrl, null)
 
     res.json({

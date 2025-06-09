@@ -59,6 +59,8 @@ const Get = asyncerrorhandler(async (req: Request, res: Response) => {
     const redisKey = `forms:${req.user?.id}`;
     const cachedData = await redis.get<any>(redisKey);
 
+    console.log(cachedData)
+
     if (cachedData) {
         res.status(200).json(cachedData);
         return
