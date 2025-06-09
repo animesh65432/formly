@@ -107,7 +107,7 @@ const Signup: React.FC = () => {
                         <span
                             className="text-green-800 dark:text-white"
                             onClick={() => navigate("/singin")}
-                        >Singin</span>
+                        >Singup</span>
                     </div>
                     <div className="md:text-xl text-sm text-black font-semibold dark:text-gray-500">or</div>
                 </CardContent>
