@@ -1,4 +1,4 @@
 import googleclient from "./google";
-import redisClient from "./redis";
+import redis from "./redis";
 
-export { googleclient, redisClient }
+export { googleclient, redis }

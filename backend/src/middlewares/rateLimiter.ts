@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { redisClient } from "../service";
+import { redis } from "../service";
 
 const RateLimiter = (limit: number, windowMs: number) => {
     return async (req: Request, res: Response, next: NextFunction) => {
@@ -7,16 +7,16 @@ const RateLimiter = (limit: number, windowMs: number) => {
         const key = `rate-limit:${ip}`;
 
         try {
-            const count = await redisClient.get(key);
+            const count = await redis.get<string>(key);
 
             if (count && parseInt(count) >= limit) {
                 return res.status(429).json({ message: "Too many requests, please try again later." });
             }
 
             if (count) {
-                await redisClient.incr(key);
+                await redis.incr(key);
             } else {
-                await redisClient.set(key, "1", { EX: Math.floor(windowMs / 1000) });
+                await redis.set(key, "1", { ex: Math.floor(windowMs / 1000) });
             }
 
             next();
