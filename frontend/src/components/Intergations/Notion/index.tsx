@@ -3,6 +3,7 @@ import { generateOAuthURL } from "../../../api/Integration/notion"
 import { Button } from "../../ui/button"
 import { useAuth } from '../../../store/auth'
 import Icons from '../../Icons'
+import { toast } from "react-toastify"
 const Notion: React.FC = () => {
     const { token } = useAuth()
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -14,6 +15,7 @@ const Notion: React.FC = () => {
                 : string
             }
             window.location.href = response.authUrl
+            toast.success("sucessfully authenticated with notion")
         }
         finally {
             setIsLoading(false)

@@ -3,6 +3,7 @@ import { Button } from "../../../components/ui/button";
 import { generateOAuthURL } from "../../../api/Integration/google";
 import { useAuth } from "../../../store/auth";
 import Icons from "../../Icons";
+import { toast } from "react-toastify"
 
 const GoogleSheets: React.FC = () => {
     const { token } = useAuth();
@@ -30,6 +31,8 @@ const GoogleSheets: React.FC = () => {
                     alert("Google Sheets integration complete.");
                 }
             }, 1000);
+
+            toast.success("sucessfully authenticated with google")
         }
         finally {
             setIsLoading(false);
