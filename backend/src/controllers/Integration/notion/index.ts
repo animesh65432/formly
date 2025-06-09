@@ -17,7 +17,7 @@ export const generateOAuthURL = asyncerrorhandler(async (req: Request, res: Resp
     const checkalreadyintragtedwithnotion = await db.integration.findFirst({
         where: {
             type: "NOTION",
-            userId: Number(userId)
+            userId: userId
         }
     })
 
@@ -41,7 +41,13 @@ export const handlenotionOAuthCallback = asyncerrorhandler(async (req: Request, 
         return
     }
 
-    const userId = await redisClient.get(state)
+    const userId = await redisClient.get(state) as string
+
+    if (!userId) {
+        res.status(200).json({
+            message: "user not autheticatd"
+        })
+    }
 
     const response = await fetch('https://api.notion.com/v1/oauth/token', {
         method: 'POST',
@@ -67,7 +73,7 @@ export const handlenotionOAuthCallback = asyncerrorhandler(async (req: Request, 
     await db.integration.create({
         data: {
             type: "NOTION",
-            userId: Number(userId),
+            userId: userId,
             config: {
                 access_token: tokenData.access_token,
                 workspace_name: tokenData.workspace_name,
@@ -197,6 +203,12 @@ export const uploadNotionData = asyncerrorhandler(async (req: Request, res: Resp
 
     const userId = form.userId
 
+    if (!userId) {
+        res.status(200).json({
+            message: "user not autheticatd"
+        })
+    }
+
     const integration = await db.integration.findFirst({
         where: {
             type: "NOTION",
@@ -227,7 +239,7 @@ export const uploadNotionData = asyncerrorhandler(async (req: Request, res: Resp
     );
 
     const databaseUrl = getNotionDatabaseUrl(cfg.workspace_id, form.notionId) || cfg.app_database_url || ""
-    await EmailtoUser(userId, null, databaseUrl)
+    EmailtoUser(userId, null, databaseUrl)
     res.json({
         message: "Data uploaded to Notion successfully",
         databaseUrl
