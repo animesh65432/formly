@@ -13,6 +13,24 @@ const create = asyncerrorhandler(async (req: Request, res: Response) => {
         return
     }
 
+    const userIntegrations = await db.integration.findMany({
+        where: {
+            userId,
+            type: {
+                in: ["GOOGLE_SHEETS", "NOTION"],
+            },
+        },
+        select: {
+            type: true,
+        },
+    });
+
+    if (userIntegrations.length < 2) {
+        res.status(400).json({ message: "please make integration first" })
+        return;
+    }
+
+
     const checkfromexsit = await db.formBlock.findFirst({
         where: {
             id: block[0].id
@@ -92,6 +110,8 @@ const Get = asyncerrorhandler(async (req: Request, res: Response) => {
             id: 'desc'
         }
     })
+
+
 
     await redis.set(redisKey, blocks, { ex: 300 });
 
