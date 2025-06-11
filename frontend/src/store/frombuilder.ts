@@ -22,11 +22,19 @@ export const useFormBuilderStore = create<FormBuilderState>((set) => ({
     },
 
     updateBlock: (id, updatedBlock) => {
-        set((state) => ({
-            block: state.block.map((block) =>
-                block.id === id ? updatedBlock : block
-            ),
-        }));
+
+        if (id === "dropdown") {
+            set((state) => ({
+                block: state.block
+            }))
+        }
+        else {
+            set((state) => ({
+                block: state.block.map((block) =>
+                    block.id === id ? updatedBlock : block
+                ),
+            }));
+        }
     },
     selectElementId: null,
     setSelectElementId: (id: string) => set({
