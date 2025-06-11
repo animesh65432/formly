@@ -25,7 +25,7 @@ const ButtonBlock: React.FC<Props> = ({ block, isTemplates, isSharefrom = false,
     };
     return (
         <div className='w-[100%] flex justify-center items-center gap-2' >
-            <Button type="submit" onClick={() => handleClick(block.id)} disabled={isTemplates && !isSharefrom} className="bg-green-800 lg:w-[7vw] sm:w-[15vw] w-[25vw]  hover:bg-green-700 rounded-2xl p-3 md:p-5">
+            <Button type="submit" onClick={() => handleClick(block.id)} disabled={isTemplates && !isSharefrom} className="bg-green-800  sm:w-[15vw] md:w-[25vw] lg:w-[10vw]  hover:bg-green-700 rounded-2xl p-3 md:p-5 ">
                 {!isLoading ? block?.label || 'Submit' : <Icons.spinner className='animate-spin h-6 w-6' />}
             </Button>
             {!isTemplates &&

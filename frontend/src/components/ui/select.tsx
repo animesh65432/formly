@@ -74,14 +74,17 @@ function SelectContent({
     </SelectPrimitive.Portal>
   );
 }
-
 function SelectItem({
   className,
   children,
+  value,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Item>) {
+  if (!value) return null;
+
   return (
     <SelectPrimitive.Item
+      value={value}
       className={cn(
         "relative flex w-full cursor-default items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm lg:text-xl select-none focus:bg-green-100 focus:text-green-800",
         "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
@@ -95,7 +98,7 @@ function SelectItem({
         </SelectPrimitive.ItemIndicator>
       </span>
       <SelectPrimitive.ItemText className="text-sm lg:text-xl">
-        {children}
+        {children || ""}
       </SelectPrimitive.ItemText>
     </SelectPrimitive.Item>
   );

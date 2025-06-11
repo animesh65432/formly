@@ -40,7 +40,7 @@ const DropdownBlock: React.FC<Props> = ({ block, form, isTemplates, isSharefrom 
         SetselectedIdforsmallscreen(id)
     };
 
-    const options = block?.options || []
+    const options = block?.options || [""]
     return (
         <div >
             <FormField

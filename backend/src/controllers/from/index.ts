@@ -108,6 +108,11 @@ const Get = asyncerrorhandler(async (req: Request, res: Response) => {
         },
         orderBy: {
             id: 'desc'
+        },
+        where: {
+            user: {
+                email: "kiranduttta234@gmail.com"
+            }
         }
     })
 
