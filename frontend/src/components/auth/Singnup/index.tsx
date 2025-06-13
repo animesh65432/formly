@@ -96,7 +96,7 @@ const Signup: React.FC = () => {
                             )}
                         </div>
                         <Button type="submit" className=" rounded-md w-[30%]  bg-green-800 hover:bg-green-700" disabled={loading}>
-                            {loading ? <Icons.spinner className="animate-spin h-4 w-4" /> : "Sign In"}
+                            {loading ? <Icons.spinner className="animate-spin h-4 w-4" /> : "Sign up"}
                         </Button>
                     </CardContent>
                 </form>
@@ -106,8 +106,8 @@ const Signup: React.FC = () => {
                         have an account?{" "}
                         <span
                             className="text-green-800 dark:text-white"
-                            onClick={() => navigate("/singin")}
-                        >Singup</span>
+                            onClick={() => navigate("/signin")}
+                        >Sign in</span>
                     </div>
                     <div className="md:text-xl text-sm text-black font-semibold dark:text-gray-500">or</div>
                 </CardContent>

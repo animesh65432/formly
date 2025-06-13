@@ -12,7 +12,7 @@ import { GoogleLogin } from "@react-oauth/google"
 import type { CredentialResponse } from "@react-oauth/google"
 import React, { useState } from "react"
 import Icons from "../../Icons"
-import { SinginSchema } from "../../../schema"
+import { singinSchema } from "../../../schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import type { z } from "zod"
@@ -21,9 +21,8 @@ import Hi from "../../Hi"
 import { longinUser, googleLogin } from "../../../api/Users"
 import { toast } from "react-toastify"
 import { useAuth } from "../../../store/auth"
-import { ToastContainer } from 'react-toastify'
 
-type SigninSchemaType = z.infer<typeof SinginSchema>
+type SigninSchemaType = z.infer<typeof singinSchema>
 
 const SignIn: React.FC = () => {
     const [loading, setLoading] = useState(false)
@@ -35,7 +34,7 @@ const SignIn: React.FC = () => {
         handleSubmit,
         formState: { errors },
     } = useForm<SigninSchemaType>({
-        resolver: zodResolver(SinginSchema),
+        resolver: zodResolver(singinSchema),
     })
 
     const onSubmit = async (data: SigninSchemaType) => {
@@ -123,7 +122,6 @@ const SignIn: React.FC = () => {
                     </CardFooter>
                 </Card>
             </div>
-            <ToastContainer />
         </div>
     )
 }

@@ -10,10 +10,10 @@ const Footer: React.FC = () => {
                 </div>
 
                 <div className="flex gap-6 items-center">
-                    <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="hover:text-black transition">
+                    <a href="https://github.com/animesh65432/formly" target="_blank" rel="noopener noreferrer" className="hover:text-black transition">
                         <Icons.gitHub className="w-5 h-5 text-green-800" />
                     </a>
-                    <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-black transition">
+                    <a href="https://x.com/animeshdut16137" target="_blank" rel="noopener noreferrer" className="hover:text-black transition">
                         <Icons.twitter className="w-5 h-5 text-green-800" />
                     </a>
                 </div>

@@ -1,4 +1,4 @@
-import SinginSchema from "./Singin"
+import singinSchema from "./Singin"
 import SingupSchema from "./Singup"
 
-export { SinginSchema, SingupSchema }
+export { singinSchema, SingupSchema }
