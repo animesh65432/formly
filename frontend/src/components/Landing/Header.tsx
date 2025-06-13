@@ -25,7 +25,7 @@ const Header: React.FC = () => {
                 </ul>
             </div>
             <div className='lg:block hidden'>
-                <Button onClick={() => navigate("/singin")} className='bg-green-900 hover:bg-green-700  text-white rounded-full p-5'>
+                <Button onClick={() => navigate("/signin")} className='bg-green-900 hover:bg-green-700  text-white rounded-full p-5'>
                     Get Started
                     <span className='bg-white text-black rounded-full font-bold p-1 ml-2'>
                         <Icons.arrowRight className='h-4 w-4' />
