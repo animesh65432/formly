@@ -151,7 +151,7 @@ export const setupDatabaseController = asyncerrorhandler(async (req: Request, re
 
     let titleKey = "";
     for (const key of Object.keys(data)) {
-        if (key === "button") {
+        if (key === "button" || key === "heading") {
             continue
         }
         else if (!titleKey) {

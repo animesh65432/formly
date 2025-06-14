@@ -13,11 +13,13 @@ export async function fixInputAndValue(
     await Promise.all(
         block.map(async (input) => {
             const value = obj[input.id];
+            const key = input.label?.length ? input.label : input.placeholder ?? "defaultKey";
             if ((input.type === "file" || input.type === "image") && value) {
                 const response = await gethefileurl(token, value) as { url: string }
-                fixedValues[input.label] = response.url;
+                fixedValues[key] = response.url;
             } else if (value) {
-                fixedValues[input.label] = value;
+
+                fixedValues[key] = value;
             }
         })
     );
