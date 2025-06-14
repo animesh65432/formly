@@ -86,11 +86,78 @@ export const handleGoogleOAuthCallback = async (req: Request, res: Response) => 
 
 
 
-        res.redirect(`${config.FRONTEND_URL}/intergations?google=success`)
+        res.send(`
+            <html>
+              <head>
+                <title>Login Success</title>
+                <style>
+                  body {
+                    font-family: Arial, sans-serif;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;
+                    background-color: #f0f0f0;
+                  }
+                  .message {
+                    background: white;
+                    padding: 2rem;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                  }
+                </style>
+              </head>
+              <body>
+                <div class="message">
+                  <h2>✅ Login Successful!</h2>
+                  <p>You may now close this tab or return to the main site.</p>
+                  <a href="${config.FRONTEND_URL}" style="color: #3366cc;">Go to Home</a>
+                </div>
+              </body>
+            </html>
+          `);
+
         return
     }
     catch {
-        res.redirect(`${config.FRONTEND_URL}/intergations?google=error`)
+        res.send(`
+            <html>
+              <head>
+                <title>Login Failed</title>
+                <style>
+                  body {
+                    font-family: Arial, sans-serif;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;
+                    background-color: #fdf2f2;
+                  }
+                  .message {
+                    background: #fff;
+                    padding: 2rem;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                    text-align: center;
+                    color: #b91c1c;
+                  }
+                  a {
+                    display: block;
+                    margin-top: 1rem;
+                    color: #991b1b;
+                    text-decoration: underline;
+                  }
+                </style>
+              </head>
+              <body>
+                <div class="message">
+                  <h2>❌ Login Failed!</h2>
+                  <p>Something went wrong during the login process.</p>
+                  <a href="${config.FRONTEND_URL}">Try Again</a>
+                </div>
+              </body>
+            </html>
+          `);
         return
 
     }
