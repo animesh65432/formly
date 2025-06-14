@@ -110,8 +110,7 @@ export const handleGoogleOAuthCallback = async (req: Request, res: Response) => 
               <body>
                 <div class="message">
                   <h2>✅ Login Successful!</h2>
-                  <p>You may now close this tab or return to the main site.</p>
-                  <a href="${config.FRONTEND_URL}" style="color: #3366cc;">Go to Home</a>
+                  <p>You may now close this tab.</p
                 </div>
               </body>
             </html>
