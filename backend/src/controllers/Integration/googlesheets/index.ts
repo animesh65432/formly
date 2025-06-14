@@ -48,49 +48,54 @@ export const generateOAuthURL = asyncerrorhandler(async (req: Request, res: Resp
     });
 });
 
-export const handleGoogleOAuthCallback = asyncerrorhandler(async (req: Request, res: Response) => {
-    const { code, state } = req.query;
-    const codeString = Array.isArray(code) ? code[0] : typeof code === "string" ? code : undefined;
-    const userId = state
-    if (!codeString || !userId || typeof userId !== "string") {
-        res.status(400).send("Missing authorization code or user ID");
+export const handleGoogleOAuthCallback = async (req: Request, res: Response) => {
+    try {
+
+        const { code, state } = req.query;
+        const codeString = Array.isArray(code) ? code[0] : typeof code === "string" ? code : undefined;
+        const userId = state
+        if (!codeString || !userId || typeof userId !== "string") {
+            res.status(400).send("Missing authorization code or user ID");
+            return
+        }
+        const tokenResponse = await axios.post(
+            "https://oauth2.googleapis.com/token",
+            new URLSearchParams({
+                code: codeString as string,
+                client_id: config.GOOGLE_SHEETS_CLIENT_ID!,
+                client_secret: config.GOOGLE_SHEETS_CLIENT_SECRET!,
+                redirect_uri,
+                grant_type: "authorization_code",
+            }),
+            { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
+        );
+        const tokens = tokenResponse.data;
+        await db.integration.create({
+            data: {
+                type: "GOOGLE_SHEETS",
+                enabled: true,
+                config: {
+                    access_token: tokens.access_token,
+                    refresh_token: tokens.refresh_token,
+                    expires_in: tokens.expires_in,
+                    scope: tokens.scope,
+                },
+                userId
+            },
+        });
+
+
+
+        res.redirect(`${config.FRONTEND_URL}/intergations?google=success`)
         return
     }
-    const tokenResponse = await axios.post(
-        "https://oauth2.googleapis.com/token",
-        new URLSearchParams({
-            code: codeString as string,
-            client_id: config.GOOGLE_SHEETS_CLIENT_ID!,
-            client_secret: config.GOOGLE_SHEETS_CLIENT_SECRET!,
-            redirect_uri,
-            grant_type: "authorization_code",
-        }),
-        { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
-    );
-    const tokens = tokenResponse.data;
-    await db.integration.create({
-        data: {
-            type: "GOOGLE_SHEETS",
-            enabled: true,
-            config: {
-                access_token: tokens.access_token,
-                refresh_token: tokens.refresh_token,
-                expires_in: tokens.expires_in,
-                scope: tokens.scope,
-            },
-            userId
-        },
-    });
+    catch {
+        res.redirect(`${config.FRONTEND_URL}/intergations?google=error`)
+        return
 
+    }
 
-
-    res.status(200).json({
-        sucess: true,
-        message: "sucessfully logged in"
-    });
-    return
-
-})
+}
 
 
 export const createGoogleSheet = asyncerrorhandler(async (req: Request, res: Response) => {
