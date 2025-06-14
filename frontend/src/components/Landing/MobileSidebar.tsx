@@ -16,7 +16,7 @@ const MobileSidebar: React.FC = () => {
                 <a href='#contact'>Contact
                 </a>
             </div>
-            <Button onClick={() => navigate('/singin')} className='bg-green-900 hover:bg-green-700  text-white rounded-full lg:p-6 p-4'>
+            <Button onClick={() => navigate('/signin')} className='bg-green-900 hover:bg-green-700  text-white rounded-full lg:p-6 p-4'>
                 Get Started
                 <span className='bg-white text-black rounded-full font-bold p-1 ml-2'>
                     <Icons.arrowRight className='h-10 w-10' />

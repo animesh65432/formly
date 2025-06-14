@@ -85,14 +85,15 @@ export const whyfromly = [
         description: "Automatically connect responses to Google Sheets, Notion, WhatsApp, and more. Fromly turns form fills into real-time workflows, lead alerts, and sales pipelines."
     },
     {
-        title: "AI Summaries of Responses",
-        description: "Get a quick overview of all your submissions. Fromly uses AI to summarize large response sets, helping you identify top leads or key insights instantly."
-    },
-    {
         title: "Ready-to-Use Templates",
         description: "Choose from beautiful pre-made templates to get started in seconds. Customize them to fit your brand, purpose, or campaign — no design skills needed."
 
+    },
+    {
+        title: "After Submit:Auto Email with Google Sheet and Notion URL",
+        description: "When a user submits a form, the creator gets an instant email with the user's responses, the linked Google Sheet ID, and the connected Notion page URL — automating your workflow with zero effort."
     }
+
 ]
 
 export const faq = [
@@ -111,10 +112,6 @@ export const faq = [
     {
         "question": "Can I integrate Fromly with other apps?",
         "answer": "Yes. Fromly supports integrations with tools like Google Sheets, Notion, WhatsApp, and others using APIs and tools like Zapier or Make.com."
-    },
-    {
-        "question": "How does the AI summary feature work?",
-        "answer": "Fromly uses GPT-based AI to automatically summarize your form responses, helping you identify key insights or top leads — especially useful for high-volume submissions."
     },
     {
         "question": "Can I create forms in different languages?",

@@ -17,7 +17,7 @@ const Herosection: React.FC = () => {
             <div className='w-[70vw] flex flex-col items-center justify-center gap-10'>
                 <div className='lg:text-4xl md:text-2xl text-xl font-bold'>
                     <span className='text-green-900'>Fromly</span> – Build Smarter Forms, Effortlessly</div>
-                <div className='lg:text-xl text-sm text-gray-500 hover:text-black transition'>Fromly lets you create Notion-style forms with ease. Drag, drop, and customize block, then connect to tools like Google Sheets, Notion, or WhatsApp. Collect leads, automate actions, and get AI-powered summaries — all without code.
+                <div className='lg:text-xl text-sm text-gray-500 hover:text-black transition'>Fromly lets you create Notion-style forms with ease. customize block, then connect to tools like Google Sheets, Notion, or WhatsApp. Collect leads, automate actions, and get AI-powered summaries — all without code.
                 </div>
                 <Button onClick={() => navigate("/signin")} className='bg-green-900 hover:bg-green-700  text-white rounded-full lg:p-6 p-4'>
                     Get Started
