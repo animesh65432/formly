@@ -16,7 +16,8 @@ const config = {
     NODEMAILER_EMAIL: process.env.NODEMAILER_EMAIL,
     NODEMAILER_EMAIL_PASSWORD: process.env.NODEMAILER_EMAIL_PASSWORD,
     UPSTASH_REDIS_REST_URL: process.env.UPSTASH_REDIS_REST_URL,
-    UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN
+    UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
+    FRONTEND_URL: "https://fromly.vercel.app"
 }
 
 export default config

@@ -34,60 +34,69 @@ export const generateOAuthURL = asyncerrorhandler(async (req: Request, res: Resp
     return;
 });
 
-export const handlenotionOAuthCallback = asyncerrorhandler(async (req: Request, res: Response) => {
-    const { code, state } = req.query;
-    if (!code || !state || typeof state !== 'string') {
-        res.status(400).json({ error: 'No authorization code provided' });
+export const handlenotionOAuthCallback = async (req: Request, res: Response) => {
+    try {
+
+
+        const { code, state } = req.query;
+        if (!code || !state || typeof state !== 'string') {
+            res.status(400).json({ error: 'No authorization code provided' });
+            return
+        }
+
+        const userId = await redis.get(state) as string
+
+        if (!userId) {
+            res.status(200).json({
+                message: "user not autheticatd"
+            })
+        }
+
+        const response = await fetch('https://api.notion.com/v1/oauth/token', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Basic ${Buffer.from(`${process.env.NOTION_CLIENT_ID}:${process.env.NOTION_CLIENT_SECRET}`).toString('base64')}`
+            },
+            body: JSON.stringify({
+                grant_type: 'authorization_code',
+                code: code,
+                redirect_uri: config.NOTION_REDIRECT_URI
+            })
+        });
+
+        const tokenData = await response.json();
+
+        if (tokenData.error) {
+            console.log(tokenData.error)
+            throw new Error(tokenData.error_description || 'OAuth token exchange failed');
+        }
+
+        await db.integration.create({
+            data: {
+                type: "NOTION",
+                userId: userId,
+                config: {
+                    access_token: tokenData.access_token,
+                    workspace_name: tokenData.workspace_name,
+                    workspace_icon: tokenData.workspace_icon,
+                    workspace_id: tokenData.workspace_id,
+                    bot_id: tokenData.bot_id
+                }
+            }
+        })
+
+        res.redirect(`${config.FRONTEND_URL}/intergations?notion=success`);
         return
     }
+    catch {
+        res.redirect(`${config.FRONTEND_URL}/intergations?notion=error`);
+        return
 
-    const userId = await redis.get(state) as string
-
-    if (!userId) {
-        res.status(200).json({
-            message: "user not autheticatd"
-        })
     }
 
-    const response = await fetch('https://api.notion.com/v1/oauth/token', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Basic ${Buffer.from(`${process.env.NOTION_CLIENT_ID}:${process.env.NOTION_CLIENT_SECRET}`).toString('base64')}`
-        },
-        body: JSON.stringify({
-            grant_type: 'authorization_code',
-            code: code,
-            redirect_uri: config.NOTION_REDIRECT_URI
-        })
-    });
-
-    const tokenData = await response.json();
-
-    if (tokenData.error) {
-        console.log(tokenData.error)
-        throw new Error(tokenData.error_description || 'OAuth token exchange failed');
-    }
-
-    await db.integration.create({
-        data: {
-            type: "NOTION",
-            userId: userId,
-            config: {
-                access_token: tokenData.access_token,
-                workspace_name: tokenData.workspace_name,
-                workspace_icon: tokenData.workspace_icon,
-                workspace_id: tokenData.workspace_id,
-                bot_id: tokenData.bot_id
-            }
-        }
-    })
-
-    res.redirect(`https://fromly.vercel.app/intergations`);
-    return
-
-})
+}
 
 export const setupDatabaseController = asyncerrorhandler(async (req: Request, res: Response) => {
     const userId = req.user?.id;
