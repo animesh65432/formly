@@ -86,11 +86,11 @@ export const handleGoogleOAuthCallback = async (req: Request, res: Response) => 
 
 
 
-        res.redirect(`${config.FRONTEND_URL}/integrationwindow?google=success`);
+        res.redirect(`${config.FRONTEND_URL}/intergations?google=success`)
         return
     }
     catch {
-        res.redirect(`${config.FRONTEND_URL}/integrationwindow?google=error`);
+        res.redirect(`${config.FRONTEND_URL}/intergations?google=error`)
         return
 
     }
