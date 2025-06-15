@@ -46,8 +46,8 @@ const DateBlock: React.FC<Props> = ({ block, form, isTemplates, isSharefrom }) =
                     <FormItem className={`${isSharefrom
                         ? "w-[75vw] md:w-[25vw] m-auto"
                         : isTemplates
-                            ? "w-[55vw] lg:w-[25vw] m-auto"
-                            : "w-[55vw] lg:w-[25vw] m-auto"
+                            ? "w-[60vw] lg:w-[35vw] m-auto"
+                            : "w-[60vw] lg:w-[35vw] m-auto"
                         }`} onClick={() => handleClick(block.id)} >
                         <div className="flex justify-between items-center mb-2 ">
                             <FormLabel className="text-sm lg:text-xl text-green-800 font-semibold">
@@ -108,7 +108,7 @@ const DateBlock: React.FC<Props> = ({ block, form, isTemplates, isSharefrom }) =
             {!isTemplates &&
                 <div className="flex mt-7 sm:mt-10 gap-2">
                     <Icons.delete
-                        className="text-red-800  w-5 h-5 sm:w-6 sm:h-6 hover:text-red-600"
+                        className="text-red-800 mt-4 md:mt-1 lg:mt-3 w-5 h-5 sm:w-6 sm:h-6 hover:text-red-600"
                         onClick={(e) => {
                             e.stopPropagation()
                             removeBlock(block.id)
@@ -116,7 +116,7 @@ const DateBlock: React.FC<Props> = ({ block, form, isTemplates, isSharefrom }) =
                     />
                     <Popover open={isclickedSmallScreen} >
                         <PopoverTrigger asChild>
-                            {!isclickedSmallScreen ? <Icons.edit className='lg:hidden block  h-5 w-5 sm:h-8 sm:w-8 text-green-800' onClick={() => handleClick(block.id)} /> : <Icons.close className='lg:hidden block text-red-800  h-5 w-5 sm:h-8 sm:w-8' onClick={() => SetisClickedSmallScreen(false)} />}
+                            {!isclickedSmallScreen ? <Icons.edit className='lg:hidden  mt-4 md:mt-0 lg:mt-1 block  h-5 w-5 sm:h-8 sm:w-8 text-green-800' onClick={() => handleClick(block.id)} /> : <Icons.close className='lg:hidden block text-red-800  h-5 w-5 sm:h-8 sm:w-8' onClick={() => SetisClickedSmallScreen(false)} />}
                         </PopoverTrigger>
                         <PopoverContent className='lg:hidden block mt-6 sm:mr-[26vw] md:mr-[30vw] mr-[25vw]'>
                             <ForSmallScreen selectElementId={selectedIdforsmallscreen} />
