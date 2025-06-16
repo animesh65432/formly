@@ -8,7 +8,7 @@ type Props = {
 
 const Mainlayout: React.FC<Props> = ({ children }) => {
     return (
-        <div className="bg-slate-100 w-[100vw] h-dvh grid grid-cols-11 gap-5">
+        <div className="bg-slate-100 w-[100vw] h-[100vh] overflow-hidden grid grid-cols-11 gap-5">
             <div className="col-span-1 lg:col-span-2">
                 <div className=" hidden lg:block">
                     <Sidebar />
