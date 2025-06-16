@@ -20,7 +20,7 @@ const Header: React.FC = () => {
                 </ul>
                 <ul className='text-gray-500 hover:text-black transition'>
                     <a href='#contact'>
-                        Contact
+                        ontact
                     </a>
                 </ul>
             </div>

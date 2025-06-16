@@ -9,9 +9,7 @@ export default function App() {
   const location = useLocation()
   useEffect(() => {
     if (location.pathname === '/') {
-      document.documentElement.style.height = '100vh';
-      document.body.style.height = '100vh';
-      document.body.style.overflow = 'auto';
+      return
     } else {
 
       document.documentElement.style.height = '100%';

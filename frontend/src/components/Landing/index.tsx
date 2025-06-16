@@ -6,8 +6,8 @@ import Whyfromly from './Whyfromly'
 import FAQ from './Faq'
 const Landing: React.FC = () => {
     return (
-        <main className="flex flex-col   min-h-screen  bg-slate-100 w-[100vw] overflow-hidden ">
-            <section id='main' className='w-[100vw] flex justify-center '>
+        <main className="flex flex-col    min-h-screen  bg-slate-100 w-[100vw] ">
+            <section id='main' className='w-full flex justify-center '>
                 <Header />
             </section>
             <section className="flex-grow md:mt-20 mt-40">
