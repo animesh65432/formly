@@ -2,8 +2,9 @@ import { Dashboard } from "../components"
 
 export default function DashboardPage() {
     return (
-
-        <Dashboard />
+        <div className="h-dvh w-[100vw] overflow-hidden">
+            <Dashboard />
+        </div>
 
     )
 }
