@@ -25,9 +25,17 @@ const ButtonBlock: React.FC<Props> = ({ block, isTemplates, isSharefrom = false,
     };
     return (
         <div className='w-[100%] flex justify-center items-center gap-2' >
-            <Button type="submit" onClick={() => handleClick(block.id)} disabled={isTemplates && !isSharefrom} className="bg-green-800  sm:w-[15vw] md:w-[28vw] lg:w-[13vw] xl:w-[10vw]  hover:bg-green-700 rounded-2xl p-3 md:p-5 ">
-                {!isLoading ? block?.label || 'Submit' : <Icons.spinner className='animate-spin h-6 w-6' />}
+            <Button
+                type="submit"
+                onClick={() => handleClick(block.id)}
+                disabled={isTemplates && !isSharefrom}
+                className=" bg-green-800  hover:bg-green-700 rounded-2xl px-4 py-2 md:px-6 md:py-4 min-w-[120px]  max-w-full text-center whitespace-nowrap"
+            >
+                {!isLoading ? block?.label || 'Submit' : (
+                    <Icons.spinner className="animate-spin h-6 w-6" />
+                )}
             </Button>
+
             {!isTemplates &&
                 <>
                     <Icons.delete className='text-red-800' onClick={() => removeBlock(block.id)} />
