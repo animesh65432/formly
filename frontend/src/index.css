@@ -185,7 +185,7 @@ button {
 
   .scrollbar-custom-x::-webkit-scrollbar-thumb {
     background-color: rgba(5, 123, 9, 0.8);
-    border-radius: 4px;
+    border-radius: 1px;
     border: 1px solid transparent;
     background-clip: content-box;
   }

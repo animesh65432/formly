@@ -18,22 +18,24 @@ const Dashboard: React.FC = () => {
     }
     return (
         <Mainlayout >
-            {isLoading && <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-4 p-4">
+            <div className="h-[100vh] w-[100vw] scrollbar-custom-x">
+                {isLoading && <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-4 p-4">
 
-                <SkeletonFrom />
-                <SkeletonFrom />
-                <SkeletonFrom />
-                <SkeletonFrom />
-            </div>}
-            {!isLoading &&
-                <div className="grid  grid-cols-1 lg:grid-cols-2  gap-2 lg:gap-4 p-4">
-                    {blocks?.map((block, index) =>
-                        <div onClick={() => handleclick(block.form_blocks)}>
-                            <Templates block={block} key={index} isDashboard={true} />
-                        </div>
-                    )}
-                </div>
-            }
+                    <SkeletonFrom />
+                    <SkeletonFrom />
+                    <SkeletonFrom />
+                    <SkeletonFrom />
+                </div>}
+                {!isLoading &&
+                    <div className="grid  grid-cols-1 lg:grid-cols-2  gap-2 lg:gap-4 p-4">
+                        {blocks?.map((block, index) =>
+                            <div onClick={() => handleclick(block.form_blocks)}>
+                                <Templates block={block} key={index} isDashboard={true} />
+                            </div>
+                        )}
+                    </div>
+                }
+            </div>
         </Mainlayout >
     )
 }

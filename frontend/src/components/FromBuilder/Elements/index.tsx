@@ -4,7 +4,7 @@ import Element from './Element'
 
 const FormElements: React.FC = () => {
     return (
-        <div className='flex  flex-col gap-4 h-[90vh] scrollbar-custom-x '>
+        <div className='flex  flex-col gap-4 h-[90vh] overflow-x-auto '>
             {
                 formElements.map((element) => <Element key={element.id} element={element} />)
             }

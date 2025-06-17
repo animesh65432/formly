@@ -1,22 +1,9 @@
 import { Route, Routes, Navigate } from "react-router-dom"
 import { Dashboard, LandingPage, SigninPage, BuilderPage, SignupPage, MyfromPage, IntergationsPage, SharefromPage } from "./pages"
 import { useAuth } from "./store/auth"
-import { useEffect } from "react"
-import { useLocation } from 'react-router-dom';
 export default function App() {
   const { token } = useAuth()
   const isLogin = !!token
-  const location = useLocation()
-  useEffect(() => {
-    if (location.pathname === '/') {
-      return
-    } else {
-
-      document.documentElement.style.height = '100%';
-      document.body.style.height = '100%';
-      document.body.style.overflow = 'hidden';
-    }
-  }, [location]);
   return (
     <Routes>
       <Route path="/" element={<LandingPage />} />

@@ -17,7 +17,7 @@ const Mainlayout: React.FC<Props> = ({ children }) => {
                     <MobileSidebar />
                 </div>
             </div>
-            <div className="min-h-screen scrollbar-custom-x flex justify-center col-span-9  w-full">
+            <div className="flex justify-center col-span-9  w-full">
                 {children}
             </div>
         </div>
