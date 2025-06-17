@@ -163,11 +163,11 @@ export const hwt = [
         image: "/integrations.png",
     },
     {
-        title: "Create from",
+        title: "Create Form ",
         image: "/createfrom.png",
     },
     {
-        title: "Share from",
+        title: "Share Form ",
         image: "/sharefrom.png",
     },
     {
