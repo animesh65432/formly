@@ -64,7 +64,7 @@ const SignIn: React.FC = () => {
     }
 
     return (
-        <div className="h-[100vh] overflow-auto md:flex md:flex-row flex flex-col justify-around items-center">
+        <div className="h-[100vh] overflow-x-auto md:flex md:flex-row flex flex-col justify-around items-center">
             <Hi />
             <div>
                 <Card className="w-[90vw] flex flex-col gap-2 max-w-md shadow-xl rounded-2xl bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700">
