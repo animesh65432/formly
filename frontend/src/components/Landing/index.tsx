@@ -6,7 +6,7 @@ import Whyfromly from './Whyfromly'
 import FAQ from './Faq'
 const Landing: React.FC = () => {
     return (
-        <main className="flex flex-col    min-h-screen  bg-slate-100 w-[100vw] ">
+        <main className="flex flex-col    h-[100vh]  bg-slate-100 w-[100vw] overflow-x-auto ">
             <section id='main' className='w-full flex justify-center '>
                 <Header />
             </section>

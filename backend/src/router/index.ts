@@ -7,7 +7,7 @@ import { rateLimiter } from "../middlewares"
 
 
 const router = Router()
-// router.use(rateLimiter(10, 60000) as RequestHandler);
+router.use(rateLimiter(10, 60000) as RequestHandler);
 router.use("/users", usersrouter)
 router.use("/form", form)
 router.use("/integration", integration)

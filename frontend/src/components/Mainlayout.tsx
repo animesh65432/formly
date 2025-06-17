@@ -8,16 +8,19 @@ type Props = {
 
 const Mainlayout: React.FC<Props> = ({ children }) => {
     return (
-        <div className="bg-slate-100 w-[100vw] h-dvh grid grid-cols-11 gap-5">
-            <div className="col-span-1 lg:col-span-2">
-                <div className=" hidden lg:block">
+        <div className="bg-slate-100 w-screen h-screen flex">
+            {/* Sidebar Section */}
+            <div className="w-16 lg:w-64 h-full flex-shrink-0">
+                <div className="hidden lg:block h-full">
                     <Sidebar />
                 </div>
-                <div className=" block lg:hidden col-span-3">
+                <div className="block lg:hidden h-full">
                     <MobileSidebar />
                 </div>
             </div>
-            <div className="flex justify-center col-span-9  w-full">
+
+            {/* Main Content Section */}
+            <div className="flex-1 h-full overflow-hidden">
                 {children}
             </div>
         </div>

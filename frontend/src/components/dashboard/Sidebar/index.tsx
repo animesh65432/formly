@@ -13,7 +13,7 @@ const Sidebar: React.FC = () => {
     };
 
     return (
-        <div className="h-dvh flex flex-col bg-white shadow-lg rounded-r-xl  p-2 justify-start items-stretch text-green-800">
+        <div className="h-full flex flex-col bg-white shadow-lg rounded-r-xl  p-10 justify-start items-stretch text-green-800">
             <nav className="flex-grow">
                 <ul className="space-y-6">
                     {menuItems.map((item) => {

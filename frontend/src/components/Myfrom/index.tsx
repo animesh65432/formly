@@ -14,7 +14,7 @@ const MyFrom: React.FC = () => {
                 <div className='w-[80vw] md:w-[78vw]  flex justify-end h-[5vh]'>
                     <Header />
                 </div>
-                <div className='h-[80vh] scrollbar-custom-x  '>
+                <div className='h-[100vh] w-[100%] scrollbar-custom-x  '>
                     {isLoading
                         &&
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-4 p-4">

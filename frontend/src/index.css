@@ -51,13 +51,29 @@
   --sidebar-ring: oklch(0.705 0.015 286.067);
 }
 
-
+/* FIXED: Remove problematic body styles that cause layout issues */
+html,
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  /* Prevent horizontal scroll */
+}
+
+/* FIXED: Remove the flexbox and centering from body */
+body {
   min-width: 320px;
-  min-height: 100vh;
+  /* Removed: display: flex, place-items: center, min-height: 100vh */
+}
+
+/* FIXED: Add proper root container styles */
+#root {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
 }
 
 h1 {
@@ -73,15 +89,11 @@ button {
   transition: border-color 0.25s;
 }
 
-
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
     background-color: #ffffff;
   }
-
-
-
 }
 
 @theme inline {
@@ -164,13 +176,11 @@ button {
   body {
     @apply bg-background text-foreground;
   }
-
-
 }
 
 @layer utilities {
 
-
+  /* IMPROVED: Better scrollbar utilities */
   .scrollbar-custom-x {
     overflow-x: auto;
   }
@@ -190,7 +200,6 @@ button {
     background-clip: content-box;
   }
 
-
   .scrollbar-custom-y {
     overflow-y: auto;
   }
@@ -208,5 +217,15 @@ button {
     border-radius: 4px;
     border: 2px solid transparent;
     background-clip: content-box;
+  }
+
+  /* NEW: Utility class to prevent overflow issues */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
   }
 }
