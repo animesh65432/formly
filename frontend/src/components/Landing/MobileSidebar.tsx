@@ -13,6 +13,11 @@ const MobileSidebar: React.FC = () => {
                 </a>
             </div>
             <div>
+                <a href='#howitworks'>
+                    How It Works
+                </a>
+            </div>
+            <div>
                 <a href='#contact'>Contact
                 </a>
             </div>

@@ -19,10 +19,16 @@ const Header: React.FC = () => {
                     <a href='#Features'>Features</a>
                 </ul>
                 <ul className='text-gray-500 hover:text-black transition'>
+                    <a href='#howitworks'>
+                        How It Works
+                    </a>
+                </ul>
+                <ul className='text-gray-500 hover:text-black transition'>
                     <a href='#contact'>
                         Contact
                     </a>
                 </ul>
+
             </div>
             <div className='lg:block hidden'>
                 <Button onClick={() => navigate("/signin")} className='bg-green-900 hover:bg-green-700  text-white rounded-full p-5'>

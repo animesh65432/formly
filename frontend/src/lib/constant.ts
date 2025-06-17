@@ -152,3 +152,26 @@ export const menuItems = [
     { id: "integrations", icon: Workflow, label: "Integrations", path: "/intergations" },
     // { id: "Ai", icon: Brain, label: "AI", path: "/ai" }
 ];
+
+export const hwt = [
+    {
+        title: "Sign In",
+        image: "/Singin.png",
+    },
+    {
+        title: "Create integration",
+        image: "/integrations.png",
+    },
+    {
+        title: "Create from",
+        image: "/createfrom.png",
+    },
+    {
+        title: "Share from",
+        image: "/sharefrom.png",
+    },
+    {
+        title: "notified when user upload",
+        image: "/notifiedemail.png",
+    },
+];
