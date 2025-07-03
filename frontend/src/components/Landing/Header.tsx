@@ -10,7 +10,7 @@ const Header: React.FC = () => {
     const [isopen, setopen] = useState<boolean>(false)
     const navigate = useNavigate()
     return (
-        <header className='mt-10  fixed z-50 top-0 h-[10vh] flex lg:justify-around justify-between items-center w-[80vw] m-auto bg-white shadow p-6 border-white rounded-md '>
+        <header className='mt-10  fixed z-50 top-0 h-[10vh] flex lg:justify-around justify-between items-center w-[80%] m-auto bg-white shadow p-6 border-white rounded-md '>
             <div className='lg:text-3xl md:text-2xl text-xl font-bold'>
                 <a href='#main' className='text-green-800'>Fromly</a>
             </div>

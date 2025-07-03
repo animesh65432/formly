@@ -7,8 +7,8 @@ import FAQ from './Faq'
 import Hwt from "./Hwt"
 const Landing: React.FC = () => {
     return (
-        <main className="flex flex-col    h-[100vh]  bg-slate-100 w-[100vw] overflow-x-auto ">
-            <section id='main' className='w-full flex justify-center '>
+        <main className="flex flex-col    h-[100vh]  bg-slate-100 w-[100vw] overflow-y-auto overflow-x-hidden ">
+            <section id='main' className='flex justify-center '>
                 <Header />
             </section>
             <section className="flex-grow md:mt-20 mt-40">
