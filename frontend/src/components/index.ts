@@ -5,6 +5,7 @@ import Signup from "./auth/Singnup"
 import Dashboard from "./dashboard"
 import Frombuilder from "./FromBuilder"
 import Intergations from "./Intergations"
+import Loading from "./Loading"
 
 
-export { Landing, Icons, Singin, Dashboard, Frombuilder, Signup, Intergations }
+export { Landing, Icons, Singin, Dashboard, Frombuilder, Signup, Intergations, Loading }
