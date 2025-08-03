@@ -16,3 +16,4 @@ app.use(errorMiddleware)
 app.listen(config.PORT || 4000, () => {
     console.log(`Server is running on port ${config.PORT}`)
 })
+export default app
