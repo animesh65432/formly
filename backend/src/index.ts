@@ -4,6 +4,7 @@ import express from "express"
 import router from "./router"
 import { errorMiddleware } from "./middlewares"
 
+console.log(config)
 const app = express()
 app.use(cors({
     origin: "*"

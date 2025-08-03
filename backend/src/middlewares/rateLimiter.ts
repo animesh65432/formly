@@ -9,6 +9,8 @@ const RateLimiter = (limit: number, windowMs: number) => {
         try {
             const count = await redis.get<string>(key);
 
+            console.log(count);
+
             if (count && parseInt(count) >= limit) {
                 return res.status(429).json({ message: "Too many requests, please try again later." });
             }
