@@ -75,8 +75,8 @@ const Signup: React.FC = () => {
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <CardContent className="space-y-4 flex flex-col items-center">
                         <div className="grid gap-2 w-[90%]">
-                            <Label htmlFor="email" className="dark:text-white">Name</Label>
-                            <Input id="email" type="email" {...register("name")} />
+                            <Label htmlFor="name" className="dark:text-white">Name</Label>
+                            <Input id="name"  {...register("name")} />
                             {errors.name && (
                                 <p className="text-sm text-red-500">{errors.name?.message}</p>
                             )}
